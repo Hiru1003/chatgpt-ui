@@ -21,7 +21,7 @@ const MainPage = () => {
       justifyContent: 'space-between' ,
       bgcolor: 'grey.900',}}>
 
-      <Box style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start', position: 'absolute', top: '45px', right: '35px' }}>
+      <Box style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start', position: 'absolute', top: '50px', right: '35px' }}>
         <Avatar sx={{ bgcolor: 'orange' }}>HI</Avatar>
       </Box>
 
@@ -43,12 +43,12 @@ const MainPage = () => {
     </Box>
 
       {/* Text Field and IconButton */}
-      <Box sx={{ mt: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '10px' , color: 'white'}}>
+      <Box sx={{ mt: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '10px' , color: 'white', justifyContent: 'center'}}>
         <TextField 
           fullWidth 
           placeholder="Message ChatGPT" 
           sx={{ 
-              width: 'calc(100% - 55px)', 
+              width: 'calc(80% - 55px)', 
               mr: 1, 
               bgcolor: '#333', 
               color: 'white', 

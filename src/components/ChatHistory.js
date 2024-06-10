@@ -43,24 +43,24 @@ const ChatHistory = ({ text }) => {
           },
         }}
       >
-       <MenuItem onClick={handleClose}>
-        <IoShareOutline style={{ marginRight: '10px', color: 'white' }} /> 
-        <Typography variant="body1" sx={{ color: 'white', fontSize: '16px' }}>Share</Typography>
+       <MenuItem onClick={handleClose} sx={{ padding: '18px' }}> 
+        <IoShareOutline style={{ marginRight: '20px', color: 'white' ,fontSize: '24px' }} /> 
+        <Typography variant="body1" sx={{ color: 'white', fontSize: '18px' }}>Share</Typography>
       </MenuItem>
 
-      <MenuItem onClick={handleClose}>
-        <MdOutlineModeEdit style={{ marginRight: '10px', color: 'white' }} /> 
-        <Typography variant="body1" sx={{ color: 'white', fontSize: '16px' }}>Rename</Typography>
+      <MenuItem onClick={handleClose} sx={{ padding: '18px' }}>
+        <MdOutlineModeEdit style={{ marginRight: '18px', color: 'white' ,fontSize: '24px'}} /> 
+        <Typography variant="body1" sx={{ color: 'white', fontSize: '18px' }}>Rename</Typography>
       </MenuItem>
 
-      <MenuItem onClick={handleClose}>
-        <RiInboxUnarchiveLine style={{ marginRight: '10px', color: 'white' }} /> 
-        <Typography variant="body1" sx={{ color: 'white', fontSize: '16px' }}>Archive</Typography>
+      <MenuItem onClick={handleClose} sx={{ padding: '18px'}}> 
+        <RiInboxUnarchiveLine style={{ marginRight: '20px', color: 'white' ,fontSize: '24px'}} /> 
+        <Typography variant="body1" sx={{ color: 'white', fontSize: '18px' }}>Archive</Typography>
       </MenuItem>
 
-      <MenuItem onClick={handleClose}>
-        <RiDeleteBin6Line style={{ marginRight: '10px', color: 'red' }} /> 
-        <Typography variant="body1" sx={{ color: 'red', fontSize: '16px' }}>Delete</Typography>
+      <MenuItem onClick={handleClose} sx={{ padding: '18px'}}>
+        <RiDeleteBin6Line style={{ marginRight: '20px', color: 'red' ,fontSize: '24px'}} /> 
+        <Typography variant="body1" sx={{ color: 'red', fontSize: '18px' }}>Delete</Typography>
       </MenuItem>
        
       </Menu>

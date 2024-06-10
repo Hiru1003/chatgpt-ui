@@ -9,10 +9,9 @@ const SidebarFooter = () => {
         <BsStars style={{ fontSize: '1.5rem', }} />
       </Box>
       <Box sx={{ color: 'white', }}>
-      <Typography style={{color: 'white' , fontSize: '1.2rem'}}>Upgrade Plan<br/></Typography>
-      <Typography   style={{color: 'white', fontSize: '0.9rem' }}>Get GPT-4, DALL-E, and more<br/></Typography>
-      
-      </Box>
+          <Typography style={{color: 'white' , fontSize: '1.2rem'}}>Upgrade Plan<br/></Typography>
+          <Typography   style={{color: 'white', fontSize: '0.9rem' }}>Get GPT-4, DALL-E, and more<br/></Typography>
+     </Box>
     </Box>
   );
 }

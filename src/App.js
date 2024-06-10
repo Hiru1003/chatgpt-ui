@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Sidebar from './components/Sidebar';
 import MainPage from './components/MainPage';
-import Footer from './components/Footer';
 
 const theme = createTheme({
   palette: {
@@ -17,14 +16,26 @@ const theme = createTheme({
 });
 
 function App() {
+  const [isSidebarVisible, setSidebarVisible] = useState(true);
+
+  const toggleSidebar = () => {
+    setSidebarVisible(!isSidebarVisible);
+  };
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log('File selected:', file);
+    }
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div style={{ display: 'flex', height: '100vh' }}>
-        <Sidebar />
+        <Sidebar isVisible={isSidebarVisible} onToggleSidebar={toggleSidebar} />
         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
           <MainPage />
-         
         </div>
       </div>
     </ThemeProvider>
