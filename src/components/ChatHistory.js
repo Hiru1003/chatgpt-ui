@@ -43,25 +43,25 @@ const ChatHistory = ({ text }) => {
           },
         }}
       >
-       <MenuItem onClick={handleClose} sx={{ padding: '18px' }}> 
-        <IoShareOutline style={{ marginRight: '20px', color: 'white' ,fontSize: '24px' }} /> 
-        <Typography variant="body1" sx={{ color: 'white', fontSize: '18px' }}>Share</Typography>
-      </MenuItem>
+        <MenuItem onClick={handleClose} sx={{ padding: '18px' }}> 
+          <IoShareOutline style={{ marginRight: '20px', color: 'white' ,fontSize: '24px' }} /> 
+          <Typography variant="body1" sx={{ color: 'white', fontSize: '18px' }}>Share</Typography>
+        </MenuItem>
 
-      <MenuItem onClick={handleClose} sx={{ padding: '18px' }}>
-        <MdOutlineModeEdit style={{ marginRight: '18px', color: 'white' ,fontSize: '24px'}} /> 
-        <Typography variant="body1" sx={{ color: 'white', fontSize: '18px' }}>Rename</Typography>
-      </MenuItem>
+        <MenuItem onClick={handleClose} sx={{ padding: '18px' }}>
+          <MdOutlineModeEdit style={{ marginRight: '18px', color: 'white' ,fontSize: '24px'}} /> 
+          <Typography variant="body1" sx={{ color: 'white', fontSize: '18px' }}>Rename</Typography>
+        </MenuItem>
 
-      <MenuItem onClick={handleClose} sx={{ padding: '18px'}}> 
-        <RiInboxUnarchiveLine style={{ marginRight: '20px', color: 'white' ,fontSize: '24px'}} /> 
-        <Typography variant="body1" sx={{ color: 'white', fontSize: '18px' }}>Archive</Typography>
-      </MenuItem>
+        <MenuItem onClick={handleClose} sx={{ padding: '18px'}}> 
+          <RiInboxUnarchiveLine style={{ marginRight: '20px', color: 'white' ,fontSize: '24px'}} /> 
+          <Typography variant="body1" sx={{ color: 'white', fontSize: '18px' }}>Archive</Typography>
+        </MenuItem>
 
-      <MenuItem onClick={handleClose} sx={{ padding: '18px'}}>
-        <RiDeleteBin6Line style={{ marginRight: '20px', color: 'red' ,fontSize: '24px'}} /> 
-        <Typography variant="body1" sx={{ color: 'red', fontSize: '18px' }}>Delete</Typography>
-      </MenuItem>
+        <MenuItem onClick={handleClose} sx={{ padding: '18px'}}>
+          <RiDeleteBin6Line style={{ marginRight: '20px', color: 'red' ,fontSize: '24px'}} /> 
+          <Typography variant="body1" sx={{ color: 'red', fontSize: '18px' }}>Delete</Typography>
+        </MenuItem>
        
       </Menu>
 

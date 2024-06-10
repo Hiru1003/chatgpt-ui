@@ -34,7 +34,7 @@ const MainHeader = () => {
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Typography variant="subtitle1" style={{ color: 'white', fontSize: '1.2rem' }}>Chat GPT</Typography>
+          <Typography variant="subtitle1" style={{ color: 'white', fontSize: '1.5rem' }}>ChatGPT</Typography>
           <IconButton onClick={handleClick} aria-controls="menu" aria-haspopup="true">
             <MdKeyboardArrowDown style={{ color: colors.grey[500] }} />
           </IconButton>
@@ -60,6 +60,7 @@ const MainHeader = () => {
                 </Box>
               </Box>
             </MenuItem>
+
             <MenuItem onClick={handleClose}>
               <Box sx={{ bgcolor: 'black', p: 2, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                 <Box sx={{ color: 'white', mr: 3 }}>
@@ -71,6 +72,7 @@ const MainHeader = () => {
                 </Box>
               </Box>
             </MenuItem>
+
             <MenuItem onClick={handleClose}>
               <Box sx={{ bgcolor: 'black', p: 2, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                 <Box sx={{ color: 'white', mr: 3 }}>
@@ -81,13 +83,17 @@ const MainHeader = () => {
                 </Box>
               </Box>
             </MenuItem>
+
           </Menu>
         </Box>
+
         <IconButton onClick={handleUploadClick}>
           <BsBoxArrowUp style={{ color: colors.grey[500], fontSize: '1.8rem'  }} />
         </IconButton>
+
       </Box>
-      {/* Hidden file input */}
+ 
+
       <input
         type="file"
         ref={fileInputRef}
