@@ -3,6 +3,10 @@ import { Box } from '@mui/material';
 import { Menu as MenuIcon, Chat as ChatIcon } from '@mui/icons-material'; 
 import Footer from './Footer';
 import ChatHistory from './ChatHistory';
+import { BsReverseLayoutTextSidebarReverse } from "react-icons/bs";
+import { FaRegPenToSquare } from "react-icons/fa6";
+
+
 
 const Sidebar = () => {
 
@@ -24,8 +28,8 @@ const Sidebar = () => {
           justifyContent: 'space-between',
         }}
       >
-        <MenuIcon fontSize="large" style={{ cursor: 'pointer', color: 'grey' }} onClick={() => {}} />
-        <ChatIcon fontSize="large" style={{ cursor: 'pointer', color: 'grey' }} onClick={() => {}} />
+        <BsReverseLayoutTextSidebarReverse fontSize="x-large" style={{ cursor: 'pointer', color: 'grey' }} onClick={() => {}} />
+        <FaRegPenToSquare fontSize="x-large" style={{ cursor: 'pointer', color: 'grey' }} onClick={() => {}} />
       </Box>
       <Box>
         <ChatHistory/>

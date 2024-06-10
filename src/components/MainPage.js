@@ -1,6 +1,8 @@
 import React from 'react';
 import { Box, Typography, IconButton, TextField } from '@mui/material';
 import { FaCircleArrowUp } from "react-icons/fa6";
+import MainpageContainer from './MainpageContainer';
+import { SiOpenai } from "react-icons/si";
 
 
 const MainPage = () => {
@@ -23,29 +25,9 @@ const MainPage = () => {
           p: 4,
         }}
       >
-        {/* Container 1 */}
-        <Box sx={{ flex: 1, textAlign: 'center', border: '1px solid grey', borderRadius:'5px'}}>
-          <Typography variant="h6" sx={{color:"grey" }}>Container 1</Typography>
-          <Typography variant="body1" sx={{color:"grey" }}>Example content here</Typography>
-        </Box>
-
-        {/* Container 2 */}
-        <Box sx={{ flex: 1, textAlign: 'center', border: '1px solid grey', borderRadius:'5px' }}>
-          <Typography variant="h6" sx={{color:"grey" }}>Container 2</Typography>
-          <Typography variant="body1" sx={{color:"grey" }}>Example content here</Typography>
-        </Box>
-
-        {/* Container 3 */}
-        <Box sx={{ flex: 1, textAlign: 'center', border: '1px solid grey', borderRadius:'5px' }}>
-          <Typography variant="h6" sx={{color:"grey" }}>Container 3</Typography>
-          <Typography variant="body1" sx={{color:"grey" }}>Example content here</Typography>
-        </Box>
-
-        {/* Container 4 */}
-        <Box sx={{ flex: 1, textAlign: 'center', border: '1px solid grey', borderRadius:'5px' }}>
-          <Typography variant="h6" sx={{color:"grey" }}>Container 4</Typography>
-          <Typography variant="body1" sx={{color:"grey" }}>Example content here</Typography>
-        </Box>
+      <SiOpenai sx={{ fontSize: '2.5rem', color: "white" }}/>
+      <MainpageContainer/>
+        
       </Box>
 
       {/* Text Field and IconButton */}
@@ -62,7 +44,9 @@ const MainPage = () => {
             color: 'white' 
           } 
         }} 
-/><IconButton aria-label="send" sx={{ fontSize: '2.5rem', color: "white" }}>
+      />    
+      
+      <IconButton aria-label="send" sx={{ fontSize: '2.5rem', color: "white" }}>
         <FaCircleArrowUp />
       </IconButton>
     </Box>
