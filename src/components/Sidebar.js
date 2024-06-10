@@ -8,24 +8,24 @@ const Sidebar = () => {
       sx={{
         width: '250px',
         height: '100vh',
-        bgcolor: 'grey.200',
+        bgcolor: 'black',
         p: 2,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
       }}
     >
-      <Box>
-        {/* Icon for Hidden Bar */}
-        <Box mr={2}>
-          <MenuIcon fontSize="large" style={{ cursor: 'pointer' }} onClick={() => {}} />
-        </Box>
-        {/* Icon for New Chat */}
-        <ChatIcon fontSize="large" style={{ cursor: 'pointer' }} onClick={() => {}} />
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
+        <MenuIcon fontSize="large" style={{ cursor: 'pointer', color: 'grey' }} onClick={() => {}} />
+        <ChatIcon fontSize="large" style={{ cursor: 'pointer', color: 'grey'  }} onClick={() => {}} />
       </Box>
     </Box>
   );
-  
 };
 
 export default Sidebar;
