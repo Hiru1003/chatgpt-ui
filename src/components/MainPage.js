@@ -3,6 +3,7 @@ import { Box, Typography, IconButton, TextField, Avatar } from '@mui/material';
 import { FaCircleArrowUp } from "react-icons/fa6";
 import MainpageContainer from './MainpageContainer';
 import { SiOpenai } from "react-icons/si";
+import Mainheader from './Mainheader';
 
 
 
@@ -12,7 +13,7 @@ const MainPage = () => {
     <Box sx={{ 
       pl: 10, 
       pr:10, 
-      pt:30, 
+      pt:5, 
       pb:3, 
       flexGrow: 1, 
       display: 'flex', 
@@ -20,13 +21,17 @@ const MainPage = () => {
       justifyContent: 'space-between' ,
       bgcolor: 'grey.900',}}>
 
-      <Box style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start', position: 'absolute', top: '15px', right: '15px' }}>
+      <Box style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start', position: 'absolute', top: '45px', right: '35px' }}>
         <Avatar sx={{ bgcolor: 'orange' }}>HI</Avatar>
       </Box>
 
+
+    <Box >
+      <Mainheader/>
+    </Box>
     
     {/* OpenAI Icon */}
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 20}}>
         <SiOpenai
           size={70}
           style={{ color: 'white', }} 
