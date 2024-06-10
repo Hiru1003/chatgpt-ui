@@ -24,7 +24,7 @@ function App() {
         <Sidebar />
         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
           <MainPage />
-          <Footer />
+         
         </div>
       </div>
     </ThemeProvider>

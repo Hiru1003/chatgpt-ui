@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { Menu as MenuIcon, Chat as ChatIcon } from '@mui/icons-material'; // Importing icons from Material-UI
+import { Menu as MenuIcon, Chat as ChatIcon } from '@mui/icons-material'; 
+import Footer from './Footer';
 
 const Sidebar = () => {
+
   return (
     <Box
       sx={{
@@ -22,7 +24,10 @@ const Sidebar = () => {
         }}
       >
         <MenuIcon fontSize="large" style={{ cursor: 'pointer', color: 'grey' }} onClick={() => {}} />
-        <ChatIcon fontSize="large" style={{ cursor: 'pointer', color: 'grey'  }} onClick={() => {}} />
+        <ChatIcon fontSize="large" style={{ cursor: 'pointer', color: 'grey' }} onClick={() => {}} />
+      </Box>
+      <Box>
+        <Footer />
       </Box>
     </Box>
   );
