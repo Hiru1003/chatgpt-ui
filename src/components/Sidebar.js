@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box } from '@mui/material';
 import { Menu as MenuIcon, Chat as ChatIcon } from '@mui/icons-material'; 
 import Footer from './Footer';
+import ChatHistory from './ChatHistory';
 
 const Sidebar = () => {
 
@@ -25,6 +26,9 @@ const Sidebar = () => {
       >
         <MenuIcon fontSize="large" style={{ cursor: 'pointer', color: 'grey' }} onClick={() => {}} />
         <ChatIcon fontSize="large" style={{ cursor: 'pointer', color: 'grey' }} onClick={() => {}} />
+      </Box>
+      <Box>
+        <ChatHistory/>
       </Box>
       <Box>
         <Footer />
