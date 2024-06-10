@@ -5,30 +5,31 @@ import MainpageContainer from './MainpageContainer';
 import { SiOpenai } from "react-icons/si";
 
 
+
 const MainPage = () => {
   return (
     <Box sx={{ 
       pl: 10, 
       pr:10, 
-      pt:2, 
-      pb:2, 
+      pt:30, 
+      pb:3, 
       flexGrow: 1, 
       display: 'flex', 
       flexDirection: 'column', 
       justifyContent: 'space-between' ,
       bgcolor: 'grey.900',}}>
+    
+    {/* OpenAI Icon */}
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        <SiOpenai
+          size={70}
+          style={{ color: 'white', }} 
+        />
+    </div>
 
-      <Box
-        sx={{
-          display: 'flex',
-          gap: 2,
-          p: 4,
-        }}
-      >
-      <SiOpenai sx={{ fontSize: '2.5rem', color: "white" }}/>
-      <MainpageContainer/>
-        
-      </Box>
+      <Box sx={{display: 'flex', gap: 2, mb: 18}}>
+          <MainpageContainer/>
+       </Box>
 
       {/* Text Field and IconButton */}
       <Box sx={{ mt: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '10px' }}>
