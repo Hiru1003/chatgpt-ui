@@ -1,15 +1,57 @@
-// src/components/MainPage.js
 import React from 'react';
-import { Box, TextField, Button, Typography } from '@mui/material';
+import { Box, Typography, IconButton, TextField, Button } from '@mui/material';
+import { Explore as ExploreIcon } from '@mui/icons-material';
 
 const MainPage = () => {
   return (
     <Box sx={{ p: 2, flexGrow: 1 }}>
-      <Box sx={{ mb: 2, textAlign: 'center' }}>
-        <Typography variant="h3">ChatGPT Interface</Typography>
+      {/* Containers Row */}
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 2, // Adjust the gap between containers
+          border: '1px solid black', // Add black border
+          p: 2, // Add padding
+        }}
+      >
+        {/* Container 1 */}
+        <Box sx={{ flex: 1, textAlign: 'center' }}>
+          <IconButton color="primary" aria-label="explore">
+            <ExploreIcon fontSize="large" />
+          </IconButton>
+          <Typography variant="h6">Container 1</Typography>
+          <Typography variant="body1">Example content here</Typography>
+        </Box>
+
+        {/* Container 2 */}
+        <Box sx={{ flex: 1, textAlign: 'center' }}>
+          <IconButton color="primary" aria-label="explore">
+            <ExploreIcon fontSize="large" />
+          </IconButton>
+          <Typography variant="h6">Container 2</Typography>
+          <Typography variant="body1">Example content here</Typography>
+        </Box>
+
+        {/* Container 3 */}
+        <Box sx={{ flex: 1, textAlign: 'center' }}>
+          <IconButton color="primary" aria-label="explore">
+            <ExploreIcon fontSize="large" />
+          </IconButton>
+          <Typography variant="h6">Container 3</Typography>
+          <Typography variant="body1">Example content here</Typography>
+        </Box>
+
+        {/* Container 4 */}
+        <Box sx={{ flex: 1, textAlign: 'center' }}>
+          <IconButton color="primary" aria-label="explore">
+            <ExploreIcon fontSize="large" />
+          </IconButton>
+          <Typography variant="h6">Container 4</Typography>
+          <Typography variant="body1">Example content here</Typography>
+        </Box>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 200px)', overflowY: 'auto' }}>
-      </Box>
+
+      {/* Text Field and Button */}
       <Box sx={{ mt: 2, display: 'flex' }}>
         <TextField variant="outlined" fullWidth placeholder="Type your message..." />
         <Button variant="contained" color="primary">Send</Button>
