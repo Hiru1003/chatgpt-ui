@@ -1,72 +1,115 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, IconButton, TextField, Avatar } from '@mui/material';
 import { FaCircleArrowUp } from "react-icons/fa6";
 import MainpageContainer from './MainpageContainer';
 import { SiOpenai } from "react-icons/si";
 import Mainheader from './Mainheader';
-
+import { CgAttachment } from "react-icons/cg";
+import { MdKeyboardVoice } from "react-icons/md";
 
 
 const MainPage = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const fileInputRef = React.useRef(null);
+
+  const handleUploadClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log('File selected:', file);
+    }
+  };
+
   return (
-    
     <Box sx={{ 
       pl: 10, 
-      pr:10, 
-      pt:1, 
-      pb:3, 
+      pr: 10, 
+      pt: 1, 
+      pb: 3, 
       flexGrow: 1, 
       display: 'flex', 
       flexDirection: 'column', 
-      justifyContent: 'space-between' ,
-      bgcolor: 'grey.900',}}>
-
+      justifyContent: 'space-between',
+      bgcolor: 'grey.900',
+    }}>
       <Box style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start', position: 'absolute', top: '20px', right: '30px' }}>
         <Avatar sx={{ bgcolor: 'orange' }}>HI</Avatar>
       </Box>
 
-    {/* Main header */}
-    <Box >
-      <Mainheader/>
-    </Box>
-    
-    {/* OpenAI Icon */}
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 20}}>
-        <SiOpenai
-          size={70}
-          style={{ color: 'white', }} 
-        />
-    </div>
+      {/* Main header */}
+      <Box>
+        <Mainheader />
+      </Box>
+      
+      {/* OpenAI Icon */}
+      <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 20 }}>
+        <SiOpenai size={70} style={{ color: 'white' }} />
+      </Box>
 
-
-    {/* Main page container */}
-    <Box sx={{display: 'flex', gap: 2, mb: 18}}>
-      <MainpageContainer/>
-    </Box>
+      {/* Main page container */}
+      <Box sx={{ display: 'flex', gap: 2, mb: 18 }}>
+        <MainpageContainer />
+      </Box>
 
       {/* Text Field and IconButton */}
-      <Box sx={{ mt: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '10px' , color: 'white', justifyContent: 'center',}}>
+      <Box sx={{ 
+        mt: 2, display: 'flex', 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        padding: '10px', 
+        color: 'white', 
+        justifyContent: 'center',
+      }}>
+        <IconButton aria-label="upload" sx={{ fontSize: '2rem', color: "white" }} onClick={handleUploadClick}>
+          <CgAttachment />
+        </IconButton>
+
         <TextField 
           fullWidth 
           placeholder="Message ChatGPT" 
           sx={{ 
-              width: 'calc(80% - 55px)', 
-              mr: 1, 
-              bgcolor: '#333', 
-              color: 'white', 
-              '::placeholder': { 
-                  color: 'white',
-                  animation: 'blink-caret 0.75s step-end infinite'
-              } 
+            width: 'calc(80% - 55px)', 
+            mr: 1, 
+            border: '1px solid black', 
+            borderRadius: '15px', 
+            bgcolor: '#333', 
+            color: 'white',
+            '::placeholder': { 
+              color: 'white',
+              animation: 'blink-caret 0.75s step-end infinite'
+            } 
           }} 
         />
- 
-      
+        
+        
+        <IconButton aria-label="send" sx={{ fontSize: '2.2rem', color: "white" }}>
+          <MdKeyboardVoice />
+        </IconButton>
         <IconButton aria-label="send" sx={{ fontSize: '2.5rem', color: "white" }}>
           <FaCircleArrowUp />
         </IconButton>
+        
+        <input 
+          type="file" 
+          ref={fileInputRef} 
+          style={{ display: 'none' }} 
+          onChange={handleFileUpload} 
+        />
       </Box>
-
     </Box>
   );
 }

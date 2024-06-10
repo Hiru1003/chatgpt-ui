@@ -17,18 +17,17 @@ const MainHeader = () => {
     setAnchorEl(null);
   };
 
-  const handleUploadClick = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      console.log('File selected:', file);
+  const handleShareClick = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: 'ChatGPT',
+        text: 'Check out ChatGPT!',
+        url: window.location.href,
+      }).catch((error) => console.error('Error sharing:', error));
+    } else {
+      alert('Web Share API is not supported in your browser.');
     }
   };
-
-  const fileInputRef = React.useRef(null);
 
   return (
     <Box>
@@ -83,23 +82,13 @@ const MainHeader = () => {
                 </Box>
               </Box>
             </MenuItem>
-
           </Menu>
         </Box>
 
-        <IconButton onClick={handleUploadClick}>
-          <BsBoxArrowUp style={{ color: colors.grey[500], fontSize: '1.8rem'  }} />
+        <IconButton onClick={handleShareClick}>
+          <BsBoxArrowUp style={{ color: colors.grey[500], fontSize: '1.8rem' }} />
         </IconButton>
-
       </Box>
- 
-
-      <input
-        type="file"
-        ref={fileInputRef}
-        style={{ display: 'none' }}
-        onChange={handleFileUpload}
-      />
     </Box>
   );
 }

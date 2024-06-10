@@ -22,12 +22,6 @@ function App() {
     setSidebarVisible(!isSidebarVisible);
   };
 
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      console.log('File selected:', file);
-    }
-  };
 
   return (
     <ThemeProvider theme={theme}>
