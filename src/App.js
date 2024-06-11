@@ -22,7 +22,6 @@ function App() {
     setSidebarVisible(!isSidebarVisible);
   };
 
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
