@@ -5,11 +5,13 @@ import { MdSettings } from "react-icons/md";
 import { BiLogOutCircle } from "react-icons/bi";
 import CustomizeChatGPT from './CustomizeChatGPT'; 
 import SettingsPage from './Settings';
+import { useNavigate } from 'react-router-dom';
 
 const AvatarDropdown = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [customizeChatGPTDialogOpen, setCustomizeChatGPTDialogOpen] = useState(false);
   const [settingsDialogOpen, setSettingsDialogOpen] = useState(false); 
+  const navigate = useNavigate();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -25,7 +27,7 @@ const AvatarDropdown = () => {
   };
 
   const handleLogoutClick = () => {
-    // Handle logout click
+    navigate('/login'); // Redirect to login page
   };
 
   const handleCustomizeChatGPTClick = () => {
@@ -89,7 +91,6 @@ const AvatarDropdown = () => {
             </Box>
           </Box>
         </MenuItem>
-
       </Menu>
 
       {/* Render CustomizeChatGPT dialog if open */}
@@ -102,17 +103,16 @@ const AvatarDropdown = () => {
               left: 0,
               right: 0,
               bottom: 0,
-              bgcolor: 'rgba(0, 0, 240, 0.05)',
-              zIndex: 1200,
-              backdropFilter: 'blur(3px)', // Apply blur to the background overlay
+              bgcolor: 'rgba(0, 0, 0, 0.5)',
+              zIndex: 1300, 
             }}
-            onClick={handleCloseCustomizeChatGPTDialog}
-          />
-          <CustomizeChatGPT onClose={handleCloseCustomizeChatGPTDialog} />
+          >
+            <CustomizeChatGPT open={customizeChatGPTDialogOpen} onClose={handleCloseCustomizeChatGPTDialog} />
+          </Box>
         </>
       )}
 
-      {/* Render SettingsPage dialog if open */}
+      {/* Render Settings dialog if open */}
       {settingsDialogOpen && (
         <>
           <Box 
@@ -122,17 +122,16 @@ const AvatarDropdown = () => {
               left: 0,
               right: 0,
               bottom: 0,
-              bgcolor: 'rgba(0, 0, 240, 0.05)',
-              zIndex: 1200,
-              backdropFilter: 'blur(3px)', // Apply blur to the background overlay
+              bgcolor: 'rgba(0, 0, 0, 0.5)',
+              zIndex: 1300, 
             }}
-            onClick={handleCloseSettingsDialog}
-          />
-          <SettingsPage onClose={handleCloseSettingsDialog} />
+          >
+            <SettingsPage open={settingsDialogOpen} onClose={handleCloseSettingsDialog} />
+          </Box>
         </>
       )}
     </div>
   );
-}
+};
 
 export default AvatarDropdown;
