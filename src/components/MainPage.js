@@ -3,11 +3,12 @@ import { Box, IconButton, TextField, Avatar, Typography } from '@mui/material';
 import { FaCircleArrowUp } from "react-icons/fa6";
 import MainpageContainer from './MainpageContainer';
 import { SiOpenai } from "react-icons/si";
-import Mainheader from './Mainheader';
+import ChatgptDropdownHeader from './ChatgptDropdownHeader';
 import { CgAttachment } from "react-icons/cg";
 import { MdKeyboardVoice } from "react-icons/md";
 import { LiaBookSolid } from "react-icons/lia";
 import UploadForm from './UploadForm';
+import AvatarDropdown from './AvatarDropdown';
 
 const MainPage = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -67,13 +68,15 @@ const MainPage = () => {
       bgcolor: 'grey.900',
       position: 'relative',
     }}>
+
+      {/* Avatar */}
       <Box style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start', position: 'absolute', top: '20px', right: '30px' }}>
-        <Avatar sx={{ bgcolor: 'orange' }}>HI</Avatar>
+        <AvatarDropdown/>
       </Box>
 
       {/* Main header */}
       <Box>
-        <Mainheader />
+        <ChatgptDropdownHeader/>
       </Box>
       
       {/* OpenAI Icon */}
