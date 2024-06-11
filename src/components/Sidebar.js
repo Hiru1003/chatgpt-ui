@@ -4,6 +4,7 @@ import Footer from './Footer';
 import ChatHistory from './ChatHistory';
 import { BsReverseLayoutTextSidebarReverse } from "react-icons/bs";
 import { FaRegPenToSquare } from "react-icons/fa6";
+import { Link } from 'react-router-dom';
 
 const Sidebar = ({ isVisible, onToggleSidebar }) => {
   return (
@@ -25,7 +26,6 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
           justifyContent: isVisible ? 'space-between' : 'center',
         }}
       >
-        
         <IconButton onClick={onToggleSidebar} style={{ color: 'grey' }}>
           <BsReverseLayoutTextSidebarReverse fontSize="x-large" />
         </IconButton>
@@ -36,30 +36,48 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
         )}
       </Box>
       {isVisible && (
-        <>
+        <div style={{ overflowY: 'auto', height: 'calc(100% - 100px)', scrollbarColor: '#666 #333' }}>
           <Box>
             <Box sx={{ paddingLeft: 1 }}>
               <Typography variant="subtitle1" style={{ color: 'grey' }}>Today</Typography>
             </Box>
-            <ChatHistory text="Recipe for cake" />
-            <ChatHistory text="Coding with python" />
-            <ChatHistory text="React app with python" />
-            <ChatHistory text="How to make a diy table" />
-            <Box sx={{ paddingLeft: 1 }}>
-              <Typography variant="subtitle1" style={{ color: 'grey' }}>Previous 7 Days</Typography>
-            </Box>
+
+            <Link  style={{ textDecoration: 'none' }}> {/* Set textDecoration to 'none' to remove underline */}
+              <ChatHistory text="Recipe for cake" />
+            </Link>
+
+            <Link  style={{ textDecoration: 'none' }}>
+              <ChatHistory text="Coding with python" />
+            </Link>
+
+            <Link  style={{ textDecoration: 'none' }}>
+              <ChatHistory text="React app with python" />
+            </Link>
+
+            <Link  style={{ textDecoration: 'none' }}>
+              <ChatHistory text="How to make a diy table" />
+            </Link>
+
+          </Box>
+          <Box sx={{ paddingLeft: 1 }}>
+            <Typography variant="subtitle1" style={{ color: 'grey' }}>Previous 7 Days</Typography>
+          </Box>
+          <Box>
             <ChatHistory text="SE project ideas" />
             <ChatHistory text="Remake the house style" />
             <ChatHistory text="Breakfast ideas" />
             <ChatHistory text="OOP concepts" />
             <ChatHistory text="Meal plan generator" />
             <ChatHistory text="Port change solution" />
-            <ChatHistory text="Free open source" />
+            <ChatHistory text="Breakfast ideas" />
+            <ChatHistory text="OOP concepts" />
+            <ChatHistory text="Meal plan generator" />
+            <ChatHistory text="Port change solution" />
           </Box>
           <Box>
             <Footer />
           </Box>
-        </>
+        </div>
       )}
     </Box>
   );
