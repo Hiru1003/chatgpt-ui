@@ -10,38 +10,26 @@ import { FaCircleArrowUp } from "react-icons/fa6";
 import ChatgptDropdownHeader from './ChatgptDropdownHeader';
 
 const DummyChat = () => {
-    const messages = [
-        { text: 'Hello! How can I help you today?', sender: 'left' },
-        { text: 'I am looking for a recipe for cake.', sender: 'right' },
-        { text: 'Sure, I can help with that! Do you have any specific ingredients in mind?', sender: 'left' },
-        { text: 'I have eggs, flour, and sugar.', sender: 'right' },
-        { text: 'Great! Here is a simple cake recipe you can try...', sender: 'left' },
-        { text: 'Do you have any dietary restrictions?', sender: 'left' },
-        { text: 'Yes, I prefer gluten-free options.', sender: 'right' },
-        { text: 'No problem! Here\'s a gluten-free cake recipe for you:', sender: 'left' },
-        { text: 'Thank you! That sounds perfect.', sender: 'right' },
-        { text: 'You\'re welcome! Let me know if you need any more help.', sender: 'left' },
-        { text: 'Sure, I can help with that.', sender: 'left' },
-        { text: 'I need some advice on gardening.', sender: 'right' },
-        { text: 'What kind of plants are you interested in?', sender: 'left' },
-        { text: 'I want to grow some vegetables in my backyard.', sender: 'right' },
-        { text: 'That\'s a great idea! Here are some tips for growing vegetables:', sender: 'left' },
-        { text: 'Thank you! I\'ll give it a try.', sender: 'right' },
-      ];
+  const messages = [
+    { text: 'Hello! How can I help you today?', sender: 'left' },
+    { text: 'I am looking for a recipe for cake.', sender: 'right' },
+    { text: 'Sure, I can help with that! Do you have any specific ingredients in mind?', sender: 'left' },
+    { text: 'I have eggs, flour, and sugar.', sender: 'right' },
+    { text: 'Great! Here is a simple cake recipe you can try...', sender: 'left' },
+  ];
 
   return (
     <Box sx={{ padding: '10px', height: 'calc(100% - 50px)', overflowY: 'auto' }}>
-        <Box sx={{ paddingBottom: '30px'}}>
+     <Box sx={{ paddingBottom: '30px'}}>
             <ChatgptDropdownHeader/>
         </Box>
-      {messages.map((msg, index) => (
-        
+         {messages.map((msg, index) => (
         <Box
           key={index}
           sx={{
             display: 'flex',
+            paddingRight:10,
             paddingLeft:10,
-              paddingRight:10,
             justifyContent: msg.sender === 'left' ? 'flex-start' : 'flex-end',
             mb: 1,
           }}
@@ -53,7 +41,7 @@ const DummyChat = () => {
               borderRadius: 1,
               p: 1,
               maxWidth: '70%',
-              position: 'relative', // Add position relative to position icons
+              position: 'relative', 
             }}
           >
             <Typography variant="body1">{msg.text}</Typography>
@@ -63,7 +51,7 @@ const DummyChat = () => {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              marginLeft: msg.sender === 'left' ? '5px' : '0', // Adjust icon position based on sender
+              marginLeft: msg.sender === 'left' ? '5px' : '0', 
             }}
           >
             {msg.sender === 'left' && (
