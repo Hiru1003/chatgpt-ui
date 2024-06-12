@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Box, IconButton, TextField, Typography } from '@mui/material';
 import AvatarDropdown from './AvatarDropdown';
 import ChatgptDropdownHeader from './ChatgptDropdownHeader';
@@ -15,6 +15,7 @@ import { FaCircleArrowUp } from "react-icons/fa6";
 const Message = () => {
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState('');
+  const containerRef = useRef(null);
 
   const handleMessageSend = () => {
     if (messageText.trim() !== '') {
@@ -31,10 +32,17 @@ const Message = () => {
   const simulateReceiveMessage = () => {
     const newMessage = {
       text: "This is a message from the other side.",
-      sender: 'other', // Set a different sender identifier
+      sender: 'other', 
     };
     setMessages([...messages, newMessage]);
   };
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
+  }, [messages]);
 
   return (
     <Box sx={{ 
@@ -48,7 +56,7 @@ const Message = () => {
       justifyContent: 'space-between',
       bgcolor: 'grey.900',
       position: 'relative',
-      height: '100vh', // Set height to 100% of viewport height
+      height: '100vh', 
     }}>
       {/* Avatar */}
       <Box style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start', position: 'absolute', top: '20px', right: '30px' }}>
@@ -61,13 +69,14 @@ const Message = () => {
       </Box>
       
       <Box
+        ref={containerRef}
         sx={{
           mt: 2,
           maxHeight: 'calc(100% - 120px)', 
-          overflowY: 'auto', 
+          overflowY: messages.length ? 'auto' : 'hidden', 
           display: 'flex',
           flexDirection: 'column',
-          gap: '10px',
+          gap: '40px',
           px: 2,
           alignItems: 'flex-end', 
           width: '95%', 
@@ -86,42 +95,44 @@ const Message = () => {
           <Box
             key={index}
             sx={{
-              alignSelf: message.sender === 'user' ? 'flex-end' : 'flex-start', 
+              alignSelf: message.sender === 'user' ? 'flex-end' : 'flex-start',
               maxWidth: '70%',
               borderRadius: '10px',
               padding: '8px',
               bgcolor: message.sender === 'user' ? '#3f51b5' : '#e0e0e0',
               color: message.sender === 'user' ? 'white' : 'black',
-              position: 'relative', 
+              position: 'relative',
+              marginBottom: '10px',
+              transition: 'background-color 0.3s',
             }}
           >
             <Typography>{message.text}</Typography>
-            {message.sender === 'user' && ( 
-              <Box 
+            {message.sender === 'user' && (
+              <Box
+                className="iconBox"
                 sx={{
                   position: 'absolute',
-                  bottom: 0,
+                  bottom: '-40px',
                   right: 0,
                   display: 'flex',
                   gap: '5px',
-                  marginTop: '30px',
                   color: 'white',
                 }}
               >
                 <IconButton aria-label="Read Aloud">
-                  <HiOutlineSpeakerWave />
+                  <HiOutlineSpeakerWave style={{ color: 'white' }} />
                 </IconButton>
                 <IconButton aria-label="Copy">
-                  <MdContentCopy />
+                  <MdContentCopy style={{ color: 'white' }} />
                 </IconButton>
                 <IconButton aria-label="Regenerate">
-                  <LiaRedoAltSolid />
+                  <LiaRedoAltSolid style={{ color: 'white' }} />
                 </IconButton>
                 <IconButton aria-label="Dislike">
-                  <BiDislike />
+                  <BiDislike style={{ color: 'white' }} />
                 </IconButton>
                 <IconButton aria-label="Like">
-                  <BiLike />
+                  <BiLike style={{ color: 'white' }} />
                 </IconButton>
               </Box>
             )}
