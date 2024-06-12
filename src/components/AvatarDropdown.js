@@ -27,7 +27,7 @@ const AvatarDropdown = () => {
   };
 
   const handleLogoutClick = () => {
-    navigate('/login'); // Redirect to login page
+    navigate('/login'); 
   };
 
   const handleCustomizeChatGPTClick = () => {
@@ -40,7 +40,7 @@ const AvatarDropdown = () => {
   };
 
   const handleCloseSettingsDialog = () => {
-    setSettingsDialogOpen(false); 
+    setSettingsDialogOpen(true); 
   };
 
   return (
