@@ -5,56 +5,62 @@ import ChatHistory from './ChatHistory';
 import { BsReverseLayoutTextSidebarReverse } from "react-icons/bs";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
+import Message from './Message';
 
 const Sidebar = ({ isVisible, onToggleSidebar }) => {
   return (
     <Box
       sx={{
-        width: isVisible ? '350px' : '50px',
-        transition: 'width 0.3s',
-        height: '100vh',
-        bgcolor: 'black',
-        p: 2,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
+        height: '100vh',
+        bgcolor: 'black',
+        transition: 'width 0.3s',
+        ...(isVisible ? { width: '350px' } : { width: '50px' }),
       }}
     >
       <Box
         sx={{
           display: 'flex',
-          justifyContent: isVisible ? 'space-between' : 'center',
+          flexDirection: isVisible ? 'row' : 'column',
+          justifyContent: 'space-between',
+          padding: '8px',
+          paddingBottom: '10px',
         }}
       >
         <IconButton onClick={onToggleSidebar} style={{ color: 'grey' }}>
-          <BsReverseLayoutTextSidebarReverse fontSize="x-large" />
+          <BsReverseLayoutTextSidebarReverse fontSize="1.3rem" />
         </IconButton>
-        {isVisible && (
+        {!isVisible && (
+          <Link to="/">
           <IconButton style={{ color: 'grey' }}>
-            <FaRegPenToSquare fontSize="x-large" />
+            <FaRegPenToSquare fontSize="1.3rem" />
           </IconButton>
+        </Link>
         )}
+
+        <Box sx={{ marginTop: '5px', display: isVisible ? 'flex' : 'none', justifyContent: 'center' }}>
+        <Link to="/">
+          <IconButton style={{ color: 'grey' }}>
+            <FaRegPenToSquare fontSize="1.3rem" />
+          </IconButton>
+        </Link>
       </Box>
+      </Box>
+
+      
+
       {isVisible && (
-        <div style={{ overflowY: 'auto', height: 'calc(100% - 100px)', scrollbarColor: '#666 #333' }}>
+        <div style={{ overflowY: 'auto', height: 'calc(100% - 50px)', scrollbarColor: '#666 #333', paddingLeft: '10px', paddingTop: '15px' }}>
           <Box>
             <Box sx={{ paddingLeft: 1 }}>
               <Typography variant="subtitle1" style={{ color: 'grey' }}>Today</Typography>
             </Box>
 
-            <Link  style={{ textDecoration: 'none' }}> {/* Set textDecoration to 'none' to remove underline */}
+            <Link style={{ textDecoration: 'none' }} to='/message'> 
               <ChatHistory text="Recipe for cake" />
-            </Link>
-
-            <Link  style={{ textDecoration: 'none' }}>
               <ChatHistory text="Coding with python" />
-            </Link>
-
-            <Link  style={{ textDecoration: 'none' }}>
               <ChatHistory text="React app with python" />
-            </Link>
-
-            <Link  style={{ textDecoration: 'none' }}>
               <ChatHistory text="How to make a diy table" />
             </Link>
 
@@ -63,6 +69,7 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
             <Typography variant="subtitle1" style={{ color: 'grey' }}>Previous 7 Days</Typography>
           </Box>
           <Box>
+            <Link style={{ textDecoration: 'none' }} to='/message'>
             <ChatHistory text="SE project ideas" />
             <ChatHistory text="Remake the house style" />
             <ChatHistory text="Breakfast ideas" />
@@ -73,6 +80,7 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
             <ChatHistory text="OOP concepts" />
             <ChatHistory text="Meal plan generator" />
             <ChatHistory text="Port change solution" />
+            </Link>
           </Box>
           <Box>
             <Footer />
