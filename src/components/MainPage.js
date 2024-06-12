@@ -131,11 +131,10 @@ const MainPage = () => {
       </Box>
       
       <Box sx={{ position: 'relative',bottom: 0,top: 165, display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
-      <Box>
-        <Typography sx={{ color: "grey", fontSize: '16px', textAlign:'center' }}>ChatGPT can make mistakes. Check important info.</Typography>
+        <Box>
+          <Typography sx={{ color: "grey", fontSize: '16px', textAlign:'center' }}>ChatGPT can make mistakes. Check important info.</Typography>
+        </Box>
       </Box>
-      
-    </Box>
 
     <QuestionMarkDropdown/>
 
