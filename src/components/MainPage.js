@@ -9,6 +9,7 @@ import { MdKeyboardVoice } from "react-icons/md";
 import { LiaBookSolid } from "react-icons/lia";
 import UploadForm from './UploadForm';
 import { RxQuestionMarkCircled } from "react-icons/rx";
+import QuestionMarkDropdown from './QuestionMarkDropdown';
 
 
 const MainPage = () => {
@@ -136,9 +137,8 @@ const MainPage = () => {
       </Box>
       
     </Box>
-    <Box sx={{ marginLeft: 'auto' }}>
-        <RxQuestionMarkCircled style={{ fontSize: '1.2rem', color: 'white' }} />
-    </Box>
+
+    <QuestionMarkDropdown/>
 
 
 
