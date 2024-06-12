@@ -53,7 +53,6 @@ const MainPage = () => {
       pr: 10, 
       pt: 1, 
       pb: 3, 
-      width: 'full',
       flexGrow: 1, 
       display: 'flex', 
       flexDirection: 'column', 
@@ -132,11 +131,10 @@ const MainPage = () => {
       </Box>
       
       <Box sx={{ position: 'relative',bottom: 0,top: 165, display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
-      <Box>
-        <Typography sx={{ color: "grey", fontSize: '16px', textAlign:'center' }}>ChatGPT can make mistakes. Check important info.</Typography>
-      </Box>
-      
-    </Box>
+        <Box>
+          <Typography sx={{ color: "grey", fontSize: '16px', textAlign:'center' }}>ChatGPT can make mistakes. Check important info.</Typography>
+        </Box>
+     </Box>
 
     <QuestionMarkDropdown/>
 

@@ -1,11 +1,12 @@
 import React from 'react';
 import { Box, Typography, IconButton } from '@mui/material';
 import Footer from './Footer';
-import ChatHistory from './ChatHistory';
+import DummyChat from './DummyChat';
 import { BsReverseLayoutTextSidebarReverse } from "react-icons/bs";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import { FaQuestionCircle } from "react-icons/fa";
+import ChatHistory from './ChatHistory'
 import { BsStars } from 'react-icons/bs'; 
 
 const Sidebar = ({ isVisible, onToggleSidebar }) => {
@@ -56,7 +57,7 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
               <Typography variant="subtitle1" style={{ color: 'grey' }}>Today</Typography>
             </Box>
 
-            <Link style={{ textDecoration: 'none' }} to='/message'> 
+            <Link style={{ textDecoration: 'none' }} to='/DummyChat'> 
               <ChatHistory text="Recipe for cake" />
               <ChatHistory text="Coding with python" />
               <ChatHistory text="React app with python" />
@@ -68,7 +69,7 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
             <Typography variant="subtitle1" style={{ color: 'grey' }}>Previous 7 Days</Typography>
           </Box>
           <Box>
-            <Link style={{ textDecoration: 'none' }} to='/message'>
+            <Link style={{ textDecoration: 'none' }} to='/DummyChat'>
               <ChatHistory text="SE project ideas" />
               <ChatHistory text="Remake the house style" />
               <ChatHistory text="Breakfast ideas" />

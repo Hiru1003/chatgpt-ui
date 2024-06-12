@@ -9,6 +9,7 @@ import SignupPage from './components/SignUp';
 import ForgotPasswordPage from './components/ForgotPassword'; 
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useMediaQuery, Box } from '@mui/material';
+import DummyChat from './components/DummyChat';
 
 const theme = createTheme({
   palette: {
@@ -60,6 +61,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route path="/DummyChat" element={<DummyChat />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} /> 
             <Route path="/message" element={<MessagePage />} />
             <Route path="/" element={<MainPage />} />

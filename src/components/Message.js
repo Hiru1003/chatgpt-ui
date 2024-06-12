@@ -11,6 +11,7 @@ import { CgAttachment } from "react-icons/cg";
 import { MdKeyboardVoice } from "react-icons/md";
 import { LiaBookSolid } from "react-icons/lia";
 import { FaCircleArrowUp } from "react-icons/fa6";
+import QuestionMarkDropdown from './QuestionMarkDropdown';
 
 const Message = () => {
   const [messages, setMessages] = useState([]);
@@ -72,8 +73,8 @@ const Message = () => {
         ref={containerRef}
         sx={{
           mt: 2,
-          maxHeight: 'calc(100% - 120px)', 
-          overflowY: messages.length ? 'auto' : 'hidden', 
+          flexGrow: 1,
+          overflowY: 'auto', 
           display: 'flex',
           flexDirection: 'column',
           gap: '40px',
@@ -143,6 +144,7 @@ const Message = () => {
       {/* Text Field and IconButton */}
       <Box sx={{ 
           mt: 2, 
+          mb:-3,
           display: 'flex', 
           flexDirection: 'row', 
           alignItems: 'center', 
@@ -168,7 +170,8 @@ const Message = () => {
             }
           }}
           sx={{ 
-            width: 'calc(80% - 55px)', 
+            width: 'calc(70% - 55px)', 
+            
             mr: 1, 
             border: '1px solid black', 
             borderRadius: '15px', 
@@ -189,7 +192,12 @@ const Message = () => {
           <FaCircleArrowUp />
         </IconButton>
       </Box>
-      
+
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt:3 }}>
+        <Typography sx={{ color: "grey", fontSize: '16px', textAlign:'center' }}>ChatGPT can make mistakes. Check important info.</Typography>
+      </Box>
+
+      <QuestionMarkDropdown />
     </Box>
   );
 }
