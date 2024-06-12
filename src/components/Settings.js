@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button, Divider, TextField, Select, MenuItem } from '@mui/material';
+import { Box, Typography, Button, Divider, TextField, Select, MenuItem, IconButton } from '@mui/material';
+import { MdClose } from 'react-icons/md'; // Import the close icon
 import { TbSettings } from "react-icons/tb";
 import { PiWaveformBold } from "react-icons/pi";
 import { BsDatabaseAdd } from "react-icons/bs";
@@ -24,40 +25,56 @@ const Settings = ({ onClose }) => {
 
     const handleImproveModelChange = (event) => {
         setImproveModel(event.target.checked);
-      };
+    };
     
-      const handleSharedLinkChange = (event) => {
+    const handleSharedLinkChange = (event) => {
         setSelectedSharedLink(event.target.value);
-      };
+    };
   
     const handleThemeChange = (event) => {
-      setSelectedTheme(event.target.value);
+        setSelectedTheme(event.target.value);
     };
   
     const handleLanguageChange = (event) => {
-      setSelectedLanguage(event.target.value);
+        setSelectedLanguage(event.target.value);
     };
   
     const handleShowCodeChange = (event) => {
-      setShowCode(event.target.checked);
+        setShowCode(event.target.checked);
     };
 
-  return (
-    <Box
-      sx={{
-        position: 'fixed',
-        top: '50%',
-        left: '50%',
-        width: '50%',
-        transform: 'translate(-50%, -50%)',
-        display: 'flex',
-        flexDirection: 'column',
-        bgcolor: ' #3D3C3B',
-        p: 3,
-        borderRadius: 8,
-        zIndex: 1300,
-      }}
-    >
+    return (
+        <Box
+            sx={{
+                position: 'fixed',
+                top: '50%',
+                left: '50%',
+                width: '50%',
+                transform: 'translate(-50%, -50%)',
+                display: 'flex',
+                flexDirection: 'column',
+                bgcolor: ' #3D3C3B',
+                p: 3,
+                borderRadius: 8,
+                zIndex: 1300,
+            }}
+        >
+            {/* Close Icon */}
+            <IconButton
+                sx={{
+                    position: 'absolute',
+                    top: 0,
+                    right: '10px',
+                    color: 'white',
+                    zIndex: 1500,
+                }}
+                onClick={onClose}
+            >
+                <MdClose />
+            </IconButton>
+      
+      
+      
       <Box sx={{ display: 'flex', flexDirection: 'row', mb: 2 }}>
         <Box sx={{ width: '30%', paddingRight: 2 }}>
           <Typography variant="h5" gutterBottom sx={{ color: 'white', fontWeight:'bold'}}>
@@ -70,7 +87,7 @@ const Settings = ({ onClose }) => {
               variant="subtitle1"
               gutterBottom
               onClick={() => handleTabChange('general')}
-              style={{ cursor: 'pointer', fontSize:'18px', color: activeTab === 'general' ? '#2464ec' : 'white' }}
+              style={{ marginBottom:15, cursor: 'pointer', fontSize:'18px', color: activeTab === 'general' ? '#2464ec' : 'white' }}
             >
              <TbSettings style={{ fontSize: '1.1rem', marginRight:'8px',verticalAlign: 'middle'}}/> 
              General
@@ -79,7 +96,7 @@ const Settings = ({ onClose }) => {
               variant="subtitle1"
               gutterBottom
               onClick={() => handleTabChange('speech')}
-              style={{ cursor: 'pointer', fontSize:'18px', color: activeTab === 'speech' ? '#2464ec' : 'white' }}
+              style={{ marginBottom:15, cursor: 'pointer', fontSize:'18px', color: activeTab === 'speech' ? '#2464ec' : 'white' }}
             >
                 <PiWaveformBold style={{ fontSize: '1.1rem', marginRight:'8px',verticalAlign: 'middle'}}/> 
               Speech
@@ -88,7 +105,7 @@ const Settings = ({ onClose }) => {
               variant="subtitle1"
               gutterBottom
               onClick={() => handleTabChange('data-controls')}
-              style={{ cursor: 'pointer', fontSize:'18px', color: activeTab === 'data-controls' ? '#2464ec' : 'white' }}
+              style={{ marginBottom:15, cursor: 'pointer', fontSize:'18px', color: activeTab === 'data-controls' ? '#2464ec' : 'white' }}
             >
               <BsDatabaseAdd style={{ fontSize: '1.1rem', marginRight:'8px',verticalAlign: 'middle'}}/> 
               Data controls
@@ -97,7 +114,7 @@ const Settings = ({ onClose }) => {
               variant="subtitle1"
               gutterBottom
               onClick={() => handleTabChange('connected-apps')}
-              style={{ cursor: 'pointer', fontSize:'18px', color: activeTab === 'connected-apps' ? '#2464ec' : 'white' }}
+              style={{ marginBottom:15, cursor: 'pointer', fontSize:'18px', color: activeTab === 'connected-apps' ? '#2464ec' : 'white' }}
             >
               <PiCirclesFour style={{ fontSize: '1.1rem', marginRight:'8px',verticalAlign: 'middle'}}/> 
               Connected apps
