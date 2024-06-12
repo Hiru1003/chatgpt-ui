@@ -29,7 +29,6 @@ const Message = () => {
     }
   };
 
-  // Function to simulate receiving messages from the other side
   const simulateReceiveMessage = () => {
     const newMessage = {
       text: "This is a message from the other side.",

@@ -40,10 +40,10 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
         {!isVisible && (
           <>
 
-            <IconButton style={{ color: 'grey' }}>
+            <IconButton style={{ color: 'grey',position: 'fixed',bottom: '45px', }}>
               <BsStars fontSize="1.2rem" />
             </IconButton>
-            <IconButton style={{ color: 'grey' }}>
+            <IconButton style={{ color: 'grey',position: 'fixed', bottom: '10px', }}>
               <FaQuestionCircle fontSize="1.2rem" />
             </IconButton>
           </>
