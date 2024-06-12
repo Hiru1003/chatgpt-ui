@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Box, IconButton, TextField, Avatar, Typography } from '@mui/material';
+import React, { useState, useRef } from 'react';
+import { Box, IconButton, TextField } from '@mui/material';
 import { FaCircleArrowUp } from "react-icons/fa6";
 import MainpageContainer from './MainpageContainer';
 import { SiOpenai } from "react-icons/si";
@@ -8,22 +8,11 @@ import { CgAttachment } from "react-icons/cg";
 import { MdKeyboardVoice } from "react-icons/md";
 import { LiaBookSolid } from "react-icons/lia";
 import UploadForm from './UploadForm';
-import AvatarDropdown from './AvatarDropdown';
 
 const MainPage = () => {
-  const [anchorEl, setAnchorEl] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [activeForm, setActiveForm] = useState('yourPrompts');
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const fileInputRef = React.useRef(null);
+  const fileInputRef = useRef(null);
 
   const handleUploadClick = () => {
     setShowForm(true);
@@ -61,6 +50,7 @@ const MainPage = () => {
       pr: 10, 
       pt: 1, 
       pb: 3, 
+      width: 'full',
       flexGrow: 1, 
       display: 'flex', 
       flexDirection: 'column', 
@@ -68,11 +58,6 @@ const MainPage = () => {
       bgcolor: 'grey.900',
       position: 'relative',
     }}>
-
-      {/* Avatar */}
-      <Box style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start', position: 'absolute', top: '20px', right: '30px' }}>
-        <AvatarDropdown/>
-      </Box>
 
       {/* Main header */}
       <Box>
@@ -109,7 +94,7 @@ const MainPage = () => {
           fullWidth 
           placeholder="Message ChatGPT" 
           sx={{ 
-            width: 'calc(80% - 55px)', 
+            width: '100%', // Adjusted width to 100% for responsiveness
             mr: 1, 
             border: '1px solid black', 
             borderRadius: '15px', 

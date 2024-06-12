@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { Box, IconButton, TextField, Typography } from '@mui/material';
-import { FaCircleArrowUp } from "react-icons/fa6";
+import AvatarDropdown from './AvatarDropdown';
+import ChatgptDropdownHeader from './ChatgptDropdownHeader';
+import { HiOutlineSpeakerWave } from "react-icons/hi2";
+import { LiaRedoAltSolid } from "react-icons/lia";
+import { MdContentCopy } from "react-icons/md";
+import { BiDislike } from "react-icons/bi";
+import { BiLike } from "react-icons/bi";
 import { CgAttachment } from "react-icons/cg";
 import { MdKeyboardVoice } from "react-icons/md";
 import { LiaBookSolid } from "react-icons/lia";
-import AvatarDropdown from './AvatarDropdown';
-import ChatgptDropdownHeader from './ChatgptDropdownHeader';
+import { FaCircleArrowUp } from "react-icons/fa6";
 
 const Message = () => {
   const [messages, setMessages] = useState([]);
@@ -15,7 +20,7 @@ const Message = () => {
     if (messageText.trim() !== '') {
       const newMessage = {
         text: messageText,
-        sender: 'user', // Assuming the user sends the message
+        sender: 'user',
       };
       setMessages([...messages, newMessage]);
       setMessageText('');
@@ -68,12 +73,12 @@ const Message = () => {
           width: '95%', 
           scrollbarColor: '#666 #333',
           '::-webkit-scrollbar': {
-            width: '12px', // Set scrollbar width
-            backgroundColor: '#333', // Set scrollbar background color
+            width: '12px',
+            backgroundColor: '#333', 
           },
           '::-webkit-scrollbar-thumb': {
-            backgroundColor: '#666', // Set scrollbar thumb color
-            borderRadius: '6px', // Set scrollbar thumb border radius
+            backgroundColor: '#666', 
+            borderRadius: '6px', 
           },
         }}
       >
@@ -81,15 +86,45 @@ const Message = () => {
           <Box
             key={index}
             sx={{
-              alignSelf: message.sender === 'user' ? 'flex-end' : 'flex-start', // Align messages dynamically based on sender
+              alignSelf: message.sender === 'user' ? 'flex-end' : 'flex-start', 
               maxWidth: '70%',
               borderRadius: '10px',
               padding: '8px',
               bgcolor: message.sender === 'user' ? '#3f51b5' : '#e0e0e0',
               color: message.sender === 'user' ? 'white' : 'black',
+              position: 'relative', 
             }}
           >
             <Typography>{message.text}</Typography>
+            {message.sender === 'user' && ( 
+              <Box 
+                sx={{
+                  position: 'absolute',
+                  bottom: 0,
+                  right: 0,
+                  display: 'flex',
+                  gap: '5px',
+                  marginTop: '30px',
+                  color: 'white',
+                }}
+              >
+                <IconButton aria-label="Read Aloud">
+                  <HiOutlineSpeakerWave />
+                </IconButton>
+                <IconButton aria-label="Copy">
+                  <MdContentCopy />
+                </IconButton>
+                <IconButton aria-label="Regenerate">
+                  <LiaRedoAltSolid />
+                </IconButton>
+                <IconButton aria-label="Dislike">
+                  <BiDislike />
+                </IconButton>
+                <IconButton aria-label="Like">
+                  <BiLike />
+                </IconButton>
+              </Box>
+            )}
           </Box>
         ))}
       </Box>

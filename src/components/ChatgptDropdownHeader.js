@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Menu, MenuItem, IconButton, Box, colors, Typography } from '@mui/material';
-import { BsBoxArrowUp } from "react-icons/bs";
 import { RiWechatChannelsFill } from "react-icons/ri";
 import { IoChatbubblesOutline } from "react-icons/io5";
 import { BsStars } from 'react-icons/bs';
 import { MdKeyboardArrowDown } from "react-icons/md";
-import { TbSettings } from "react-icons/tb";
+import AvatarDropdown from './AvatarDropdown';
 
 
 const MainHeader = () => {
@@ -33,7 +32,7 @@ const MainHeader = () => {
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px', width:'full' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Typography variant="subtitle1" style={{ color: 'white', fontSize: '1.5rem' }}>ChatGPT</Typography>
           <IconButton onClick={handleClick} aria-controls="menu" aria-haspopup="true">
@@ -85,6 +84,11 @@ const MainHeader = () => {
               </Box>
             </MenuItem>
           </Menu>
+
+          {/* Avatar */}
+      <Box style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start', position: 'absolute', top: '20px', right: '30px' }}>
+        <AvatarDropdown/>
+      </Box>
         </Box>
 
       </Box>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import IconButton from '@mui/material/IconButton';
 import Sidebar from './components/Sidebar';
 import MainPage from './components/MainPage';
 import LoginPage from './components/Login';
@@ -9,7 +8,7 @@ import MessagePage from './components/Message';
 import SignupPage from './components/SignUp';
 import ForgotPasswordPage from './components/ForgotPassword'; 
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { BsReverseLayoutTextSidebarReverse } from "react-icons/bs";
+import { useMediaQuery, Box } from '@mui/material';
 
 const theme = createTheme({
   palette: {
@@ -37,12 +36,13 @@ const theme = createTheme({
 function App() {
   const [isSidebarVisible, setSidebarVisible] = useState(true);
   const location = useLocation();
+  const isLargeScreen = useMediaQuery('(min-width:1000px)');
 
   useEffect(() => {
     // Hide the sidebar on the login, signup, and forgot password pages
     const shouldShowSidebar = !['/login', '/signup', '/forgot-password'].includes(location.pathname);
-    setSidebarVisible(shouldShowSidebar);
-  }, [location]);
+    setSidebarVisible(shouldShowSidebar && isLargeScreen);
+  }, [location, isLargeScreen]);
 
   const handleToggleSidebar = () => {
     setSidebarVisible(prevState => !prevState);
@@ -52,26 +52,11 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div style={{ display: 'flex', height: '100vh', backgroundColor: '#121212' }}>
-        {/* Sidebar Toggle Button */}
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          onClick={handleToggleSidebar}
-          sx={{ position: 'absolute', top: 16, left: 16, zIndex: 1300, color: 'white' }}
-        >
-          <BsReverseLayoutTextSidebarReverse fontSize="x-large" />
-        </IconButton>
-
-        
-
         {/* Sidebar */}
-        {isSidebarVisible && (
-          <Sidebar isVisible={isSidebarVisible} />
-        )}
+        <Sidebar isVisible={isSidebarVisible} onToggleSidebar={handleToggleSidebar} />
 
         {/* Main Content */}
-        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, marginLeft: isSidebarVisible ? '0px' : '0', backgroundColor: '#121212' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, backgroundColor: '#121212' }}>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
