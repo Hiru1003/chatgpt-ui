@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Box, IconButton, TextField } from '@mui/material';
+import { Box, IconButton, TextField,Typography } from '@mui/material';
 import { FaCircleArrowUp } from "react-icons/fa6";
 import MainpageContainer from './MainpageContainer';
 import { SiOpenai } from "react-icons/si";
@@ -8,6 +8,8 @@ import { CgAttachment } from "react-icons/cg";
 import { MdKeyboardVoice } from "react-icons/md";
 import { LiaBookSolid } from "react-icons/lia";
 import UploadForm from './UploadForm';
+import { RxQuestionMarkCircled } from "react-icons/rx";
+
 
 const MainPage = () => {
   const [showForm, setShowForm] = useState(false);
@@ -65,23 +67,28 @@ const MainPage = () => {
       </Box>
       
       {/* OpenAI Icon */}
-      <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 20 }}>
+      <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <SiOpenai size={70} style={{ color: 'white' }} />
       </Box>
 
       {/* Main page container */}
-      <Box sx={{ display: 'flex', gap: 2, mb: 18 }}>
+      <Box sx={{ display: 'flex', gap: 2}}>
         <MainpageContainer />
       </Box>
 
-      {/* Text Field and IconButton */}
+       {/* Text feild container */}
       <Box sx={{ 
-        mt: 2, display: 'flex', 
+        position: 'absolute', 
+        bottom: 45, 
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '70%', 
+        display: 'flex', 
         flexDirection: 'row', 
         alignItems: 'center', 
+        justifyContent: 'center', 
         padding: '10px', 
-        color: 'white', 
-        justifyContent: 'center',
+        color: 'white',
       }}>
         <IconButton aria-label="upload" sx={{ fontSize: '2.5rem', color: "white" }} onClick={handleUploadClick}>
           <LiaBookSolid />
@@ -94,7 +101,7 @@ const MainPage = () => {
           fullWidth 
           placeholder="Message ChatGPT" 
           sx={{ 
-            width: '100%', // Adjusted width to 100% for responsiveness
+            width: '100%',
             mr: 1, 
             border: '1px solid black', 
             borderRadius: '15px', 
@@ -122,6 +129,20 @@ const MainPage = () => {
           onChange={handleFileUpload} 
         />
       </Box>
+      
+      <Box sx={{ position: 'relative',bottom: 0,top: 165, display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
+      <Box>
+        <Typography sx={{ color: "grey", fontSize: '16px', textAlign:'center' }}>ChatGPT can make mistakes. Check important info.</Typography>
+      </Box>
+      
+    </Box>
+    <Box sx={{ marginLeft: 'auto' }}>
+        <RxQuestionMarkCircled style={{ fontSize: '1.2rem', color: 'white' }} />
+    </Box>
+
+
+
+
 
       {/* Forms */}
       {showForm && (
@@ -147,7 +168,9 @@ const MainPage = () => {
           />
         </>
       )}
+
     </Box>
+    
   );
 }
 

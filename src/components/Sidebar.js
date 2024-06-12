@@ -5,7 +5,6 @@ import ChatHistory from './ChatHistory';
 import { BsReverseLayoutTextSidebarReverse } from "react-icons/bs";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
-import Message from './Message';
 
 const Sidebar = ({ isVisible, onToggleSidebar }) => {
   return (
@@ -15,7 +14,6 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
         flexDirection: 'column',
         height: '100vh',
         bgcolor: 'black',
-        transition: 'width 0.3s',
         ...(isVisible ? { width: '350px' } : { width: '50px' }),
       }}
     >
