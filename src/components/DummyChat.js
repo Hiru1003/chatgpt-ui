@@ -80,8 +80,6 @@ const DummyChat = () => {
         
         </Box>
 
-
-
         {/* Text feild container */}
         <Box sx={{ 
             position: 'absolute', 
@@ -139,10 +137,10 @@ const DummyChat = () => {
             <Typography sx={{ color: "grey", fontSize: '16px', textAlign:'center' }}>ChatGPT can make mistakes. Check important info.</Typography>
             </Box>
         </Box>
+
         <Box sx={{ position: 'relative',bottom: 0, display: 'flex', alignItems: 'left', }}>
             <QuestionMarkDropdown/>
         </Box>
-
 
     </Box>
   );

@@ -136,7 +136,7 @@ const MainPage = () => {
         </Box>
       </Box>
 
-    <QuestionMarkDropdown/>
+      <QuestionMarkDropdown/>
 
 
 
