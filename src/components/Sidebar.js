@@ -5,6 +5,8 @@ import ChatHistory from './ChatHistory';
 import { BsReverseLayoutTextSidebarReverse } from "react-icons/bs";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
+import { FaQuestionCircle } from "react-icons/fa";
+import { BsStars } from 'react-icons/bs'; 
 
 const Sidebar = ({ isVisible, onToggleSidebar }) => {
   return (
@@ -22,6 +24,7 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
           display: 'flex',
           flexDirection: isVisible ? 'row' : 'column',
           justifyContent: 'space-between',
+          alignItems: 'center',
           padding: '8px',
           paddingBottom: '10px',
         }}
@@ -29,24 +32,22 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
         <IconButton onClick={onToggleSidebar} style={{ color: 'grey' }}>
           <BsReverseLayoutTextSidebarReverse fontSize="1.3rem" />
         </IconButton>
-        {!isVisible && (
-          <Link to="/">
-          <IconButton style={{ color: 'grey' }}>
-            <FaRegPenToSquare fontSize="1.3rem" />
-          </IconButton>
-        </Link>
-        )}
-
-        <Box sx={{ marginTop: '5px', display: isVisible ? 'flex' : 'none', justifyContent: 'center' }}>
         <Link to="/">
-          <IconButton style={{ color: 'grey' }}>
-            <FaRegPenToSquare fontSize="1.3rem" />
-          </IconButton>
-        </Link>
-      </Box>
-      </Box>
+              <IconButton style={{ color: 'grey' }}>
+                <FaRegPenToSquare fontSize="1.3rem" />
+              </IconButton></Link>
+        {!isVisible && (
+          <>
 
-      
+            <IconButton style={{ color: 'grey' }}>
+              <BsStars fontSize="1.2rem" />
+            </IconButton>
+            <IconButton style={{ color: 'grey' }}>
+              <FaQuestionCircle fontSize="1.2rem" />
+            </IconButton>
+          </>
+        )}
+      </Box>
 
       {isVisible && (
         <div style={{ overflowY: 'auto', height: 'calc(100% - 50px)', scrollbarColor: '#666 #333', paddingLeft: '10px', paddingTop: '15px' }}>
@@ -68,20 +69,36 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
           </Box>
           <Box>
             <Link style={{ textDecoration: 'none' }} to='/message'>
-            <ChatHistory text="SE project ideas" />
-            <ChatHistory text="Remake the house style" />
-            <ChatHistory text="Breakfast ideas" />
-            <ChatHistory text="OOP concepts" />
-            <ChatHistory text="Meal plan generator" />
-            <ChatHistory text="Port change solution" />
-            <ChatHistory text="Breakfast ideas" />
-            <ChatHistory text="OOP concepts" />
-            <ChatHistory text="Meal plan generator" />
-            <ChatHistory text="Port change solution" />
+              <ChatHistory text="SE project ideas" />
+              <ChatHistory text="Remake the house style" />
+              <ChatHistory text="Breakfast ideas" />
+              <ChatHistory text="OOP concepts" />
+              <ChatHistory text="Meal plan generator" />
+              <ChatHistory text="Port change solution" />
+              <ChatHistory text="Breakfast ideas" />
+              <ChatHistory text="OOP concepts" />
+              <ChatHistory text="Meal plan generator" />
+              <ChatHistory text="Port change solution" />
             </Link>
           </Box>
           <Box>
-            <Footer />
+            <Box sx={{ bgcolor: 'black', p: 2, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'left', justifyContent: 'left' }}>
+              <Box sx={{ color: 'white', mr: 3 }}>
+                <BsStars style={{ fontSize: '1.2rem' }} />
+              </Box>
+              <Box sx={{ color: 'white' }}>
+                <Typography style={{ color: 'white', fontSize: '0.9rem' }}>Explore New Release<br /></Typography>
+              </Box>
+            </Box>
+
+            <Box sx={{ bgcolor: 'black', p: 2, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'left', justifyContent: 'left' }}>
+              <Box sx={{ color: 'white', mr: 3 }}>
+                <FaQuestionCircle style={{ fontSize: '1.2rem' }} />
+              </Box>
+              <Box sx={{ color: 'white' }}>
+                <Typography style={{ color: 'white', fontSize: '0.9rem' }}>Get Help<br /></Typography>
+              </Box>
+            </Box>
           </Box>
         </div>
       )}
