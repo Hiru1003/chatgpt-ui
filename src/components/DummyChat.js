@@ -39,7 +39,7 @@ const DummyChat = () => {
             >
             <Box
                 sx={{
-                bgcolor: msg.sender === 'left' ? 'grey.300' : 'grey.500',
+                bgcolor: msg.sender === 'left' ? 'grey.300' : 'lightskyblue',
                 color: 'black',
                 borderRadius: 1,
                 p: 1,
