@@ -14,7 +14,7 @@ import DummyChat from './components/DummyChat';
 const theme = createTheme({
   palette: {
     background: {
-      default: '#121212' // Set the default background color to a dark theme
+      default: '#121212' 
     },
     primary: {
       main: '#1976d2',
@@ -27,7 +27,7 @@ const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundColor: '#121212', // Ensure the body background color is consistent
+          backgroundColor: '#121212', 
         },
       },
     },
@@ -40,7 +40,6 @@ function App() {
   const isLargeScreen = useMediaQuery('(min-width:1000px)');
 
   useEffect(() => {
-    // Hide the sidebar on the login, signup, and forgot password pages
     const shouldShowSidebar = !['/login', '/signup', '/forgot-password'].includes(location.pathname);
     setSidebarVisible(shouldShowSidebar && isLargeScreen);
   }, [location, isLargeScreen]);

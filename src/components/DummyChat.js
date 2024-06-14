@@ -12,6 +12,7 @@ import QuestionMarkDropdown from './QuestionMarkDropdown';
 
 const DummyChat = () => {
   const messages = [
+    { text: 'Hiiii! ', sender: 'right' },
     { text: 'Hello! How can I help you today?', sender: 'left' },
     { text: 'I am looking for a recipe for cake.', sender: 'right' },
     { text: 'Sure, I can help with that! Do you have any specific ingredients in mind?', sender: 'left' },
@@ -34,6 +35,7 @@ const DummyChat = () => {
               alignItems: msg.sender === 'left' ? 'flex-start' : 'flex-end',
               mb: 1,
               paddingRight: 10,
+              paddingBottom:2,
               paddingLeft: 10,
             }}
           >
@@ -139,7 +141,7 @@ const DummyChat = () => {
         </Box>
 
     </Box>
-  );
+  ); 
 };
 
 export default DummyChat;

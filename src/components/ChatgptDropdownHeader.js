@@ -18,18 +18,6 @@ const MainHeader = () => {
     setAnchorEl(null);
   };
 
-  const handleShareClick = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: 'ChatGPT',
-        text: 'Check out ChatGPT!',
-        url: window.location.href,
-      }).catch((error) => console.error('Error sharing:', error));
-    } else {
-      alert('Web Share API is not supported in your browser.');
-    }
-  };
-
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px', width:'full' }}>
