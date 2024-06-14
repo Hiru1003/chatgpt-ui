@@ -21,64 +21,60 @@ const DummyChat = () => {
 
   return (
     <Box sx={{ padding: '10px', height: 'calc(100% - 50px)', overflowY: 'auto' }} >
-        <Box sx={{ padding: '10px', height: 'calc(100% - 50px)', overflowY: 'auto' }}>
-            <Box sx={{ paddingBottom: '30px'}}>
-                <ChatgptDropdownHeader/>
-            </Box>
-            {messages.map((msg, index) => (
-            <Box
-
+      <Box sx={{ padding: '10px', height: 'calc(100% - 50px)', overflowY: 'auto' }}>
+        <Box sx={{ paddingBottom: '30px'}}>
+          <ChatgptDropdownHeader/>
+        </Box>
+        {messages.map((msg, index) => (
+          <Box
             key={index}
             sx={{
-                display: 'flex',
-                paddingRight:10,
-                paddingLeft:10,
-                justifyContent: msg.sender === 'left' ? 'flex-start' : 'flex-end',
-                mb: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: msg.sender === 'left' ? 'flex-start' : 'flex-end',
+              mb: 1,
+              paddingRight: 10,
+              paddingLeft: 10,
             }}
-            >
+          >
             <Box
-                sx={{
+              sx={{
                 bgcolor: msg.sender === 'left' ? 'grey.300' : 'lightskyblue',
                 color: 'black',
                 borderRadius: 1,
                 p: 1,
                 maxWidth: '70%',
-                position: 'relative', 
-                }}
+                position: 'relative',
+              }}
             >
-                <Typography variant="body1">{msg.text}</Typography>
+              <Typography variant="body1">{msg.text}</Typography>
             </Box>
             {/* Icons */}
-            <Box
+            {msg.sender === 'left' && (
+              <Box
                 sx={{
-                display: 'flex',
-                alignItems: 'center',
-                marginLeft: msg.sender === 'left' ? '5px' : '0', 
+                  display: 'flex',
+                  alignItems: 'center',
+                  mt: 1,
                 }}
-            >
-                {msg.sender === 'left' && (
-                <>
-                    <IconButton aria-label="Read Aloud">
-                    <HiOutlineSpeakerWave style={{ color: 'white' }} />
-                    </IconButton>
-                    <IconButton aria-label="Copy">
-                    <MdContentCopy style={{ color: 'white' }} />
-                    </IconButton>
-                    <IconButton aria-label="Dislike">
-                    <BiDislike style={{ color: 'white' }} />
-                    </IconButton>
-                    <IconButton aria-label="Like">
-                    <BiLike style={{ color: 'white' }} />
-                    </IconButton>
-                </>
-                )}
-            </Box>
-            
-            </Box>
+              >
+                <IconButton aria-label="Read Aloud">
+                  <HiOutlineSpeakerWave style={{ color: 'white' }} />
+                </IconButton>
+                <IconButton aria-label="Copy">
+                  <MdContentCopy style={{ color: 'white' }} />
+                </IconButton>
+                <IconButton aria-label="Dislike">
+                  <BiDislike style={{ color: 'white' }} />
+                </IconButton>
+                <IconButton aria-label="Like">
+                  <BiLike style={{ color: 'white' }} />
+                </IconButton>
+              </Box>
+            )}
+          </Box>
         ))}
-        
-        </Box>
+      </Box>
 
         {/* Text feild container */}
         <Box sx={{ 
