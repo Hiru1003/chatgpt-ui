@@ -8,7 +8,6 @@ import { CgAttachment } from "react-icons/cg";
 import { MdKeyboardVoice } from "react-icons/md";
 import { LiaBookSolid } from "react-icons/lia";
 import UploadForm from './UploadForm';
-import { RxQuestionMarkCircled } from "react-icons/rx";
 import QuestionMarkDropdown from './QuestionMarkDropdown';
 
 
@@ -49,6 +48,7 @@ const MainPage = () => {
 
   return (
     <Box sx={{ 
+      height: 'calc(100% - 50px)',
       pl: 10, 
       pr: 10, 
       pt: 1, 
@@ -154,7 +154,7 @@ const MainPage = () => {
               bottom: 0,
               bgcolor: 'rgba(0, 0, 240, 0.05)',
               zIndex: 1200,
-              backdropFilter: 'blur(2px)', // Apply blur to the background overlay
+              backdropFilter: 'blur(2px)', 
             }}
             onClick={handleFormClose}
           />
