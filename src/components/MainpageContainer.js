@@ -16,12 +16,13 @@ const MainpageContainer = () => {
     border: '1px solid grey',
     borderRadius: '20px',
     p: 2,
-    width: '250px', // static width
-    height: '150px', // static height
+    width: isSmallScreen ? '300px' : '250px', // Adjust width dynamically
+    height: isSmallScreen ? '100px' : '130px', // Adjust height dynamically
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
   };
+  
 
   return (
     <Box sx={{ 

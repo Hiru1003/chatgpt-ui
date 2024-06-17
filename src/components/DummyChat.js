@@ -65,7 +65,7 @@ const DummyChat = () => {
   };
 
   return (
-    <Box sx={{ padding: '10px', height: 'calc(100% - 50px)', overflowY: 'auto' }} >
+    <Box sx={{ padding: '10px', height: 'calc(100% - 50px)', overflowY: 'auto' ,bgcolor: 'grey.900', height: '100vh',}} >
       <Box sx={{ padding: '10px', height: 'calc(100% - 50px)', overflowY: 'auto' }}>
         <Box sx={{ paddingBottom: '30px'}}>
           <ChatgptDropdownHeader/>
@@ -77,7 +77,7 @@ const DummyChat = () => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: msg.sender === 'left' ? 'flex-start' : 'flex-end',
-              mb: 2,
+              mb: 3,
               paddingRight: 10,
               paddingBottom: 2,
               paddingLeft: 10,
@@ -90,14 +90,14 @@ const DummyChat = () => {
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                bgcolor: msg.sender === 'left' ? 'grey.700' : 'grey.900',
+                bgcolor: msg.sender === 'left' ? 'grey.700' : 'grey.800',
                 color: 'white',
                 borderRadius: 1,
                 p: 1,
                 maxWidth: '70%',
               }}
             >
-              <Typography variant="body1" sx={{ flexGrow: 1 }}>{msg.text}</Typography>
+              <Typography variant="body1" sx={{ flexGrow: 1, fontSize: '1.2rem' }}>{msg.text}</Typography>
             </Box>
             {/* Icons on hover */}
             {(hoverIndex === index) && (
@@ -141,10 +141,10 @@ const DummyChat = () => {
       {/* Text field container */}
       <Box sx={{ 
           position: 'absolute', 
-          bottom: 65, 
+          bottom: 60, 
           left: '60%',
           transform: 'translateX(-50%)',
-          width: '70%', 
+          width: '60%', 
           display: 'flex', 
           flexDirection: 'row', 
           alignItems: 'center', 
@@ -190,7 +190,7 @@ const DummyChat = () => {
         />
       </Box>
 
-      <Box sx={{ position: 'relative', top: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
+      <Box sx={{ position: 'relative', top: 15, display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
         <Box>
           <Typography sx={{ color: "grey", fontSize: '16px', textAlign:'center' }}>ChatGPT can make mistakes. Check important info.</Typography>
         </Box>
