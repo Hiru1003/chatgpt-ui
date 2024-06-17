@@ -8,7 +8,7 @@ import MessagePage from './components/Message';
 import SignupPage from './components/SignUp';
 import ForgotPasswordPage from './components/ForgotPassword'; 
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { useMediaQuery, Box } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import DummyChat from './components/DummyChat';
 
 const theme = createTheme({
@@ -35,9 +35,9 @@ const theme = createTheme({
 });
 
 function App() {
-  const [isSidebarVisible, setSidebarVisible] = useState(true);
   const location = useLocation();
   const isLargeScreen = useMediaQuery('(min-width:1000px)');
+  const [isSidebarVisible, setSidebarVisible] = useState(true);
 
   useEffect(() => {
     const shouldShowSidebar = !['/login', '/signup', '/forgot-password'].includes(location.pathname);
@@ -60,10 +60,10 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
-            <Route path="/DummyChat" element={<DummyChat />} />
+            <Route path="/DummyChat" element={<DummyChat isVisible={isSidebarVisible} />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} /> 
             <Route path="/message" element={<MessagePage />} />
-            <Route path="/" element={<MainPage />} />
+            <Route path="/" element={<MainPage isVisible={isSidebarVisible} />} />
           </Routes>
         </div>
       </div>

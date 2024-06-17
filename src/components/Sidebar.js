@@ -4,9 +4,9 @@ import { BsReverseLayoutTextSidebarReverse } from "react-icons/bs";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import { FaQuestionCircle } from "react-icons/fa";
-import ChatHistory from './ChatHistory';
+import ChatHistory from './ChatHistory'
 import { BsStars } from 'react-icons/bs'; 
-import SidebarFooter from './Footer';
+import SidebarFooter from './Footer'
 import SidebarHeaderStatic from './SidebarHeaderStatic';
 
 const Sidebar = ({ isVisible, onToggleSidebar }) => {
@@ -17,6 +17,7 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
         flexDirection: 'column',
         height: '100vh',
         bgcolor: 'black',
+        width: '350px',
         ...(isVisible ? { width: '350px' } : { width: '50px' }),
       }}
     >
@@ -28,22 +29,23 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
           alignItems: 'center',
           padding: '8px',
           paddingBottom: '10px',
+          width: '350px',
+        ...(isVisible ? { width: '350px' } : { width: '50px' }),
         }}
       >
         <IconButton onClick={onToggleSidebar} style={{ color: 'grey' }}>
           <BsReverseLayoutTextSidebarReverse fontSize="1.3rem" />
         </IconButton>
         <Link to="/">
-          <IconButton style={{ color: 'grey' }}>
-            <FaRegPenToSquare fontSize="1.3rem" />
-          </IconButton>
-        </Link>
+              <IconButton style={{ color: 'grey' }}>
+                <FaRegPenToSquare fontSize="1.3rem" />
+              </IconButton></Link>
         {!isVisible && (
           <>
-            <IconButton style={{ color: 'grey', position: 'fixed', bottom: '45px' }}>
+            <IconButton style={{ color: 'grey',position: 'fixed',bottom: '45px', }}>
               <BsStars fontSize="1.2rem" />
             </IconButton>
-            <IconButton style={{ color: 'grey', position: 'fixed', bottom: '10px' }}>
+            <IconButton style={{ color: 'grey',position: 'fixed', bottom: '10px', }}>
               <FaQuestionCircle fontSize="1.2rem" />
             </IconButton>
           </>
@@ -52,9 +54,9 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
 
       {isVisible && (
         <>
-          <SidebarHeaderStatic />
-          <div style={{ overflowY: 'auto', height: 'calc(100% - 50px - 50px - 60px)', scrollbarColor: '#666 #333', paddingLeft: '10px', paddingTop: '15px' }}>
+          <div style={{ overflowY: 'auto', height: 'calc(100% - 50px - 60px)', scrollbarColor: '#666 #333', paddingLeft: '10px', paddingTop: '15px' }}>
             <Box>
+            <SidebarHeaderStatic/>
               <Box sx={{ paddingLeft: 1 }}>
                 <Typography variant="subtitle1" style={{ color: 'grey' }}>Today</Typography>
               </Box>
@@ -65,6 +67,7 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
                 <ChatHistory text="React app with python" />
                 <ChatHistory text="How to make a diy table" />
               </Link>
+
             </Box>
             <Box sx={{ paddingLeft: 1 }}>
               <Typography variant="subtitle1" style={{ color: 'grey' }}>Previous 7 Days</Typography>
