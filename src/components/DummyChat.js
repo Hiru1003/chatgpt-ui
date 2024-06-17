@@ -41,8 +41,8 @@ const DummyChat = () => {
           >
             <Box
               sx={{
-                bgcolor: msg.sender === 'left' ? 'grey.300' : 'lightskyblue',
-                color: 'black',
+                bgcolor: msg.sender === 'left' ? 'grey.700' : 'grey.900',
+                color: 'white',
                 borderRadius: 1,
                 p: 1,
                 maxWidth: '70%',
@@ -61,16 +61,16 @@ const DummyChat = () => {
                 }}
               >
                 <IconButton aria-label="Read Aloud">
-                  <HiOutlineSpeakerWave style={{ color: 'white' }} />
+                  <HiOutlineSpeakerWave style={{ color: 'grey' }} />
                 </IconButton>
                 <IconButton aria-label="Copy">
-                  <MdContentCopy style={{ color: 'white' }} />
+                  <MdContentCopy style={{ color: 'grey' }} />
                 </IconButton>
                 <IconButton aria-label="Dislike">
-                  <BiDislike style={{ color: 'white' }} />
+                  <BiDislike style={{ color: 'grey' }} />
                 </IconButton>
                 <IconButton aria-label="Like">
-                  <BiLike style={{ color: 'white' }} />
+                  <BiLike style={{ color: 'grey' }} />
                 </IconButton>
               </Box>
             )}
