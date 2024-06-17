@@ -1,46 +1,64 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { TiPen } from "react-icons/ti";
 import { RiLightbulbLine } from "react-icons/ri";
 import { TbPlaneInflight } from "react-icons/tb";
 import { LuGraduationCap } from "react-icons/lu";
 
 const MainpageContainer = () => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'));
+
+  const containerStyles = {
+    textAlign: 'left',
+    border: '1px solid grey',
+    borderRadius: '20px',
+    p: 2,
+    width: '250px', // static width
+    height: '150px', // static height
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  };
+
   return (
     <Box sx={{ 
-      display: 'flex',
-      pl: 20, 
-      pr: 20, 
+      pl: isSmallScreen ? 2 : 20, 
+      pr: isSmallScreen ? 2 : 20, 
       pb: 2, 
       flexGrow: 1, 
-      gap: 2,
-      justifyContent:'left'
     }}>
-    
+      <Grid container spacing={2} justifyContent="center">
+        <Grid item>
+          <Box sx={containerStyles}>
+            <TiPen style={{ color: 'plum', fontSize: '24px', marginBottom: '8px' }} /> 
+            <Typography variant="h6" sx={{ color: "grey" }}>Email for plumber quote</Typography>
+          </Box>
+        </Grid>
 
-      {/* Container 1 */}
-      <Box sx={{ flex: 1, textAlign: 'left', border: '1px solid grey', borderRadius: '20px' ,p:2}}>
-        <TiPen style={{ color: 'plum', fontSize: '24px', marginBottom: '8px' }} /> 
-        <Typography variant="h6" sx={{ color: "grey" }}>Email for plumber quote</Typography>
-      </Box>
+        <Grid item>
+          <Box sx={containerStyles}>
+            <RiLightbulbLine style={{ color: 'gold', fontSize: '24px', marginBottom: '8px' }} />
+            <Typography variant="h6" sx={{ color: "grey" }}>Recipe with what's in my kitchen</Typography>
+          </Box>
+        </Grid>
 
-      {/* Container 2 */}
-      <Box sx={{ flex: 1, textAlign: 'left', border: '1px solid grey', borderRadius: '20px' ,p:2}}>
-        <RiLightbulbLine style={{ color: 'gold', fontSize: '24px', marginBottom: '8px' }} />
-        <Typography variant="h6" sx={{ color: "grey" }}>Recipe with what's in my kitchen</Typography>
-      </Box>
+        <Grid item>
+          <Box sx={containerStyles}>
+            <TbPlaneInflight style={{ color: 'yellow', fontSize: '24px', marginBottom: '8px' }} />
+            <Typography variant="h6" sx={{ color: "grey" }}>Experience Seoul like a local</Typography>
+          </Box>
+        </Grid>
 
-      {/* Container 3 */}
-      <Box sx={{ flex: 1, textAlign: 'left', border: '1px solid grey', borderRadius: '20px' ,p:2}}>
-        <TbPlaneInflight style={{ color: 'yellow', fontSize: '24px', marginBottom: '8px' }} />
-        <Typography variant="h6" sx={{ color: "grey" }}>Experience Seoul like a local</Typography>
-      </Box>
-
-      {/* Container 4 */}
-      <Box sx={{ flex: 1, textAlign: 'left', border: '1px solid grey', borderRadius: '20px' ,p:2 }}>
-        <LuGraduationCap style={{ color: 'lightskyblue', fontSize: '24px', marginBottom: '8px' }} /> 
-        <Typography variant="h6" sx={{ color: "grey" }}>Explain superconductors</Typography>
-      </Box>
+        <Grid item>
+          <Box sx={containerStyles}>
+            <LuGraduationCap style={{ color: 'lightskyblue', fontSize: '24px', marginBottom: '8px' }} /> 
+            <Typography variant="h6" sx={{ color: "grey" }}>Explain superconductors</Typography>
+          </Box>
+        </Grid>
+      </Grid>
     </Box>
   );
 }
