@@ -116,7 +116,7 @@ const TextAreaTemplete = () => {
               color: 'white',
               resize: 'none',
               fontSize: '1rem',
-              lineHeight: '1.2rem',
+              lineHeight: '0.9rem',
               verticalAlign: 'middle',
               alignItems: 'center',
               justifyContent: 'center',
@@ -130,9 +130,10 @@ const TextAreaTemplete = () => {
         </IconButton>
       </Box>
       
-      {/* Disclaimer */}
       <Box sx={{ position: 'relative', bottom: -30, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Typography sx={{ color: "grey", fontSize: { xs: '12px', sm: '16px' }, textAlign: 'center' }}>ChatGPT can make mistakes. Check important info.</Typography>
+        <Typography sx={{ color: "grey", fontSize: { xs: '8px', sm: '14px' }, textAlign: 'center' }}>
+          ChatGPT can make mistakes. Check important info.
+        </Typography>
       </Box>
 
       {/* Question mark dropdown */}
