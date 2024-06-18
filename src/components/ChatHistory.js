@@ -26,7 +26,7 @@ const ChatHistory = ({ text }) => {
           aria-controls="menu"
           aria-haspopup="true"
           onClick={handleClick}
-          style={{ color: 'white' }}
+          style={{ color: 'white', zIndex: 1, position: 'relative' }}
         >
           <MoreVertIcon />
         </IconButton>
@@ -40,27 +40,37 @@ const ChatHistory = ({ text }) => {
         PaperProps={{
           style: {
             backgroundColor: colors.grey[800],
+            zIndex: 2,
+            marginTop: '5px', // Adjust margin top to prevent overlap with IconButton
           },
+        }}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
         }}
       >
         <MenuItem onClick={handleClose} sx={{ padding: '18px' }}>
-          <IoShareOutline style={{ marginRight: '20px', color: 'white', fontSize: { xs: '0.8rem', sm: '1.3rem' }  }} />
-          <Typography variant="body1" sx={{ color: 'white', fontSize: { xs: '0.7rem', sm: '1rem' }  }}>Share</Typography>
+          <IoShareOutline style={{ marginRight: '20px', color: 'white', fontSize: '1.3rem' }} />
+          <Typography variant="body1" sx={{ color: 'white', fontSize: '1rem' }}>Share</Typography>
         </MenuItem>
 
         <MenuItem onClick={handleClose} sx={{ padding: '18px' }}>
-          <MdOutlineModeEdit style={{ marginRight: '18px', color: 'white', fontSize: {  xs: '0.8rem', sm: '1.3rem' } }} />
-          <Typography variant="body1" sx={{ color: 'white', fontSize: { xs: '0.7rem', sm: '1rem' }   }}>Rename</Typography>
+          <MdOutlineModeEdit style={{ marginRight: '18px', color: 'white', fontSize: '1.3rem' }} />
+          <Typography variant="body1" sx={{ color: 'white', fontSize: '1rem' }}>Rename</Typography>
         </MenuItem>
 
         <MenuItem onClick={handleClose} sx={{ padding: '18px' }}>
-          <RiInboxUnarchiveLine style={{ marginRight: '20px', color: 'white', fontSize: { xs: '0.8rem', sm: '1.3rem' } }} />
-          <Typography variant="body1" sx={{ color: 'white', fontSize: { xs: '0.7rem', sm: '1rem' }   }}>Archive</Typography>
+          <RiInboxUnarchiveLine style={{ marginRight: '20px', color: 'white', fontSize: '1.3rem' }} />
+          <Typography variant="body1" sx={{ color: 'white', fontSize: '1rem' }}>Archive</Typography>
         </MenuItem>
 
         <MenuItem onClick={handleClose} sx={{ padding: '20px' }}>
-          <RiDeleteBin6Line style={{ marginRight: '20px', color: 'red', fontSize: { xs: '0.8rem', sm: '1.3rem' } }} />
-          <Typography variant="body1" sx={{ color: 'red', fontSize: { xs: '0.7rem', sm: '1rem' }  }}>Delete</Typography>
+          <RiDeleteBin6Line style={{ marginRight: '20px', color: 'red', fontSize: '1.3rem' }} />
+          <Typography variant="body1" sx={{ color: 'red', fontSize: '1rem' }}>Delete</Typography>
         </MenuItem>
       </Menu>
     </Box>

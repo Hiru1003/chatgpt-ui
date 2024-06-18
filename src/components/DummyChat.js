@@ -132,7 +132,7 @@ const DummyChat = () => {
         sx={{
           bgcolor: 'grey.900',
         }}
-      >
+       >
         <Box
           sx={{
             marginTop: '50px',
