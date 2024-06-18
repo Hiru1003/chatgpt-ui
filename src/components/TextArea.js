@@ -58,10 +58,10 @@ const TextAreaTemplete = () => {
         padding: '10px', 
         color: 'white',
         }}>
-        <IconButton aria-label="upload" sx={{ fontSize: { xs: '1.5rem', sm: '2.5rem' }, color: "white" }} onClick={handleUploadClick}>
+        <IconButton aria-label="upload" sx={{ fontSize: { xs: '1.8rem', sm: '1.8rem' }, color: "white" }} onClick={handleUploadClick}>
           <LiaBookSolid />
         </IconButton>
-        <IconButton aria-label="upload" sx={{ fontSize: { xs: '1.5rem', sm: '2rem' }, color: "white" }} onClick={handleFileUploadButtonClick}>
+        <IconButton aria-label="upload" sx={{ fontSize: { xs: '1.5rem', sm: '1.5rem' }, color: "white" }} onClick={handleFileUploadButtonClick}>
           <CgAttachment />
         </IconButton>
 
@@ -82,10 +82,10 @@ const TextAreaTemplete = () => {
                 }}
             />
             </Box>
-            <IconButton aria-label="send" sx={{ fontSize: { xs: '1.5rem', sm: '2.2rem' }, color: "white" }}>
+            <IconButton aria-label="send" sx={{ fontSize: { xs: '1.5rem', sm: '1.8rem'}, color: "white" }}>
           <MdKeyboardVoice />
         </IconButton>
-        <IconButton aria-label="send" sx={{ fontSize: { xs: '1.5rem', sm: '2.5rem' }, color: "white" }}>
+        <IconButton aria-label="send" sx={{ fontSize: { xs: '1.5rem', sm: '1.8rem' }, color: "white" }}>
           <FaCircleArrowUp />
         </IconButton>
         

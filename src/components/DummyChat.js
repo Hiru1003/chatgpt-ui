@@ -59,7 +59,7 @@ const DummyChat = () => {
           paddingLeft: '10px', 
           paddingRight: '15px',  
           paddingTop: '15px',
-          paddingBottom: '30px', 
+          paddingBottom: '10px', 
           scrollbarWidth: 'thin',
           position: 'relative',
         }}
