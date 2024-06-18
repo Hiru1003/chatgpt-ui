@@ -30,33 +30,28 @@ const DummyChat = () => {
     <Box 
       sx={{ 
         height: '100vh',
-        pl: { xs: 2, sm: 10 },
-        pr: { xs: 2, sm: 10 },
-        pt: 1, 
-        pb: 3, 
-        flexGrow: 1, 
         display: 'flex', 
         flexDirection: 'column', 
-        justifyContent: 'space-between',
         bgcolor: 'grey.900',
-        position: 'relative',
-        overflowX: 'hidden', 
+        paddingLeft: '10px', 
       }}
     >
-      <Box sx={{ paddingBottom: '30px'}}>
+      <Box sx={{ padding: '10px 0', pl: { xs: 2, sm: 5 }, pr: { xs: 2, sm: 5 }, bgcolor: 'grey.900' }}>
         <ChatgptDropdownHeader/>
       </Box>
 
-      <div style={{ 
-        overflowY: 'auto', 
-        height: 'calc(100% - 50px - 60px)', 
-        scrollbarColor: '#666 #333', 
-        paddingLeft: '10px', 
-        paddingRight: '5px',  // Adding right padding to create space
-        paddingTop: '15px',
-        paddingBottom: '20px', // Adding bottom padding for space after messages
-        scrollbarWidth: 'thin'
-      }}>
+      <Box 
+        sx={{ 
+          flexGrow: 1, 
+          overflowY: 'auto', 
+          scrollbarColor: '#666 #333', 
+          paddingLeft: '10px', 
+          paddingRight: '15px',  
+          paddingTop: '15px',
+          paddingBottom: '40px', 
+          scrollbarWidth: 'thin',
+        }}
+      >
         {messages.map((msg, index) => (
           <Box
             key={index}
@@ -91,8 +86,6 @@ const DummyChat = () => {
                   alignItems: 'center',
                   position: 'absolute',
                   bottom: '-30px',
-                  right: msg.sender === 'left' ? 'auto' : '70px',
-                  left: msg.sender === 'left' ? '70px' : 'auto',
                 }}
               >
                 {msg.sender === 'left' && (
@@ -120,14 +113,14 @@ const DummyChat = () => {
             )}
           </Box>
         ))}
-      </div>
+      </Box>
 
       <Box 
         sx={{
-          display: 'relative', 
-          alignItems: 'center', 
-          justifyContent: 'center',
-          color: 'white',
+          padding: '10px 0', 
+          pl: { xs: 2, sm: 5 }, 
+          pr: { xs: 2, sm: 5 }, 
+          bgcolor: 'grey.900'
         }}
       >
         <TextAreaTemplete/>
