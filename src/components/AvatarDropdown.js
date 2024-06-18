@@ -40,13 +40,18 @@ const AvatarDropdown = () => {
   };
 
   const handleCloseSettingsDialog = () => {
-    setSettingsDialogOpen(true); 
+    setSettingsDialogOpen(false); 
   };
 
   return (
     <div>
       <IconButton onClick={handleClick} aria-controls="avatar-menu" aria-haspopup="true">
-        <Avatar sx={{ bgcolor: 'orange' }}>HI</Avatar>
+        <Avatar sx={{
+          bgcolor: 'orange',
+          width: { xs: 24, sm: 40 }, // Small on xs devices, default on sm and above
+          height: { xs: 24, sm: 40 },
+          fontSize: { xs: '0.75rem', sm: '1rem' }
+        }}>HI</Avatar>
       </IconButton>
       <Menu
         id="avatar-menu"
