@@ -16,8 +16,8 @@ const MainpageContainer = () => {
     border: '1px solid grey',
     borderRadius: '20px',
     p: 2,
-    width: isSmallScreen ? '300px' : '250px', // Adjust width dynamically
-    height: isSmallScreen ? '100px' : '130px', // Adjust height dynamically
+    width: isSmallScreen ? '300px' : '250px',
+    height: isSmallScreen ? '100px' : '130px', 
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -34,29 +34,29 @@ const MainpageContainer = () => {
       <Grid container spacing={2} justifyContent="center">
         <Grid item>
           <Box sx={containerStyles}>
-            <TiPen style={{ color: 'plum', fontSize: '24px', marginBottom: '8px' }} /> 
-            <Typography variant="h6" sx={{ color: "grey" }}>Email for plumber quote</Typography>
+            <TiPen style={{ color: 'plum', fontSize: '22px', marginBottom: '8px' }} /> 
+            <Typography variant="h6" sx={{ color: "grey" ,fontSize: isSmallScreen ? '16px' : '20px'}}>Email for plumber quote</Typography>
           </Box>
         </Grid>
 
         <Grid item>
           <Box sx={containerStyles}>
-            <RiLightbulbLine style={{ color: 'gold', fontSize: '24px', marginBottom: '8px' }} />
-            <Typography variant="h6" sx={{ color: "grey" }}>Recipe with what's in my kitchen</Typography>
+            <RiLightbulbLine style={{ color: 'gold', fontSize: '22px', marginBottom: '8px' }} />
+            <Typography variant="h6" sx={{ color: "grey" ,fontSize: isSmallScreen ? '16px' : '20px'}}>Recipe with what's in kitchen</Typography>
           </Box>
         </Grid>
 
         <Grid item>
           <Box sx={containerStyles}>
-            <TbPlaneInflight style={{ color: 'yellow', fontSize: '24px', marginBottom: '8px' }} />
-            <Typography variant="h6" sx={{ color: "grey" }}>Experience Seoul like a local</Typography>
+            <TbPlaneInflight style={{ color: 'yellow', fontSize: '22px', marginBottom: '8px' }} />
+            <Typography variant="h6" sx={{ color: "grey" ,fontSize: isSmallScreen ? '16px' : '20px'}}>Experience Seoul like a local</Typography>
           </Box>
         </Grid>
 
         <Grid item>
           <Box sx={containerStyles}>
-            <LuGraduationCap style={{ color: 'lightskyblue', fontSize: '24px', marginBottom: '8px' }} /> 
-            <Typography variant="h6" sx={{ color: "grey" }}>Explain superconductors</Typography>
+            <LuGraduationCap style={{ color: 'lightskyblue', fontSize: '22px', marginBottom: '8px' }} /> 
+            <Typography variant="h6" sx={{ color: "grey",fontSize: isSmallScreen ? '16px' : '20px' }}>Explain superconductors</Typography>
           </Box>
         </Grid>
       </Grid>

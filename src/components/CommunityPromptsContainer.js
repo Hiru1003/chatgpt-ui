@@ -24,7 +24,7 @@ const CommunityPromptsContainer = ({ headline, normalText }) => {
       <Box sx={{ display: 'flex', gap: 2 }}>
   
         {/* Use Button Container */}
-        <Box sx={{ bgcolor: '#2464ec', borderRadius: '12px', padding: '8px' }}>
+        <Box sx={{ bgcolor: '#2464ec', borderRadius: '12px', padding: '6px' }}>
             <IconButton sx={{ color: 'white', '& svg': { color: 'white' } }}>
             <ArrowRightAlt />
             <Typography variant="body1" sx={{ color: 'white', fontWeight: 'bold', ml: 1 }}>Use</Typography>
@@ -32,7 +32,7 @@ const CommunityPromptsContainer = ({ headline, normalText }) => {
         </Box>
 
         {/* Add Button Container */}
-        <Box sx={{ bgcolor: '#14a44c', borderRadius: '12px', padding: '8px' }}>
+        <Box sx={{ bgcolor: '#2464ec', borderRadius: '12px', padding: '6px' }}>
             <IconButton sx={{ color: 'white', '& svg': { color: 'white' } }}>
             <Add />
             <Typography variant="body1" sx={{ color: 'white', fontWeight: 'bold' , ml: 1}}>Add</Typography>
