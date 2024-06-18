@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, IconButton, Typography, useMediaQuery } from '@mui/material';
 import { FaCircleArrowUp } from "react-icons/fa6";
 import { CgAttachment } from "react-icons/cg";
-import { MdKeyboardVoice, MdMenu } from "react-icons/md"; // Added MdMenu icon
+import { MdKeyboardVoice, MdMenu } from "react-icons/md";
 import { LiaBookSolid } from "react-icons/lia";
 import UploadForm from './UploadForm';
 import QuestionMarkDropdown from './QuestionMarkDropdown';
@@ -10,8 +10,9 @@ import QuestionMarkDropdown from './QuestionMarkDropdown';
 const TextAreaTemplete = () => {
   const [showForm, setShowForm] = useState(false);
   const [activeForm, setActiveForm] = useState('yourPrompts');
-  const [showIcons, setShowIcons] = useState(true); // Initially show icons in larger screens
+  const [showIcons, setShowIcons] = useState(false); 
   const fileInputRef = useRef(null);
+  const isSmallScreen = useMediaQuery('(max-width:1000px)');
 
   const handleUploadClick = () => {
     setShowForm(true);
@@ -64,16 +65,15 @@ const TextAreaTemplete = () => {
           color: 'white',
         }}
       >
-        {/* New Menu Icon */}
-        <IconButton aria-label="menu" onClick={toggleIcons} sx={{ fontSize: { xs: '1.8rem', sm: '1.8rem' }, color: "white" }}>
-          <MdMenu />
-        </IconButton>
-
-        {/* Expanded Icons (shown in larger screens) */}
-        {showIcons && (
+        {/* Menu Icon for smaller screens */}
+        {isSmallScreen ? (
+          <IconButton aria-label="menu" onClick={toggleIcons} sx={{ fontSize: { xs: '1.8rem', sm: '1.8rem' }, color: "white" }}>
+            <MdMenu />
+          </IconButton>
+        ) : (
           <>
             <IconButton aria-label="upload" sx={{ fontSize: { xs: '1.8rem', sm: '1.8rem' }, color: "white" }} onClick={handleUploadClick}>
-            <LiaBookSolid />
+              <LiaBookSolid />
             </IconButton>
 
             <IconButton aria-label="upload" sx={{ fontSize: { xs: '1.5rem', sm: '1.5rem' }, color: "white" }} onClick={handleFileUploadButtonClick}>
@@ -83,9 +83,24 @@ const TextAreaTemplete = () => {
             <IconButton aria-label="send" sx={{ fontSize: { xs: '1.5rem', sm: '1.8rem' }, color: "white" }}>
               <MdKeyboardVoice />
             </IconButton>
-
-            
           </>
+        )}
+
+        {/* Icons inside the menu for smaller screens */}
+        {isSmallScreen && showIcons && (
+          <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <IconButton aria-label="upload" sx={{ fontSize: { xs: '1.5rem', sm: '1.5rem' }, color: "white" }} onClick={handleUploadClick}>
+              <LiaBookSolid />
+            </IconButton>
+
+            <IconButton aria-label="upload" sx={{ fontSize: { xs: '1.5rem', sm: '1.5rem' }, color: "white" }} onClick={handleFileUploadButtonClick}>
+              <CgAttachment />
+            </IconButton>
+
+            <IconButton aria-label="send" sx={{ fontSize: { xs: '1.5rem', sm: '1.5rem' }, color: "white" }}>
+              <MdKeyboardVoice />
+            </IconButton>
+          </Box>
         )}
 
         {/* Text Area */}
@@ -104,18 +119,17 @@ const TextAreaTemplete = () => {
               lineHeight: '1.2rem',
               verticalAlign: 'middle',
               alignItems: 'center',
-          justifyContent: 'center',
-          boxSizing: 'border-box',
+              justifyContent: 'center',
+              boxSizing: 'border-box',
             }}
           />
-
         </Box>
+        
         <IconButton aria-label="send" sx={{ fontSize: { xs: '1.5rem', sm: '1.8rem' }, color: "white" }}>
-              <FaCircleArrowUp />
-            </IconButton>
+          <FaCircleArrowUp />
+        </IconButton>
       </Box>
       
-
       {/* Disclaimer */}
       <Box sx={{ position: 'relative', bottom: -30, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Typography sx={{ color: "grey", fontSize: { xs: '12px', sm: '16px' }, textAlign: 'center' }}>ChatGPT can make mistakes. Check important info.</Typography>
