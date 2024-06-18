@@ -89,7 +89,7 @@ const DummyChat = () => {
                 maxWidth: '70%',
               }}
             >
-              <Typography variant="body1" sx={{ flexGrow: 1, fontSize: '1.2rem' }}>{msg.text}</Typography>
+              <Typography variant="body1" sx={{ flexGrow: 1, fontSize: '1rem' }}>{msg.text}</Typography>
             </Box>
             {(hoverIndex === index) && (
               <Box

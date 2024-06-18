@@ -103,8 +103,12 @@ const TextAreaTemplete = () => {
               fontSize: '1rem',
               lineHeight: '1.2rem',
               verticalAlign: 'middle',
+              alignItems: 'center',
+          justifyContent: 'center',
+          boxSizing: 'border-box',
             }}
           />
+
         </Box>
         <IconButton aria-label="send" sx={{ fontSize: { xs: '1.5rem', sm: '1.8rem' }, color: "white" }}>
               <FaCircleArrowUp />

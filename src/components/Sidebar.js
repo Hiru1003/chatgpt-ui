@@ -36,11 +36,10 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
         <IconButton onClick={onToggleSidebar} style={{ color: 'grey' }}>
           <BsReverseLayoutTextSidebarReverse fontSize="1.3rem" />
         </IconButton>
-
         <Link to="/">
-          <IconButton style={{ color: 'grey' }}>
-            <FaRegPenToSquare fontSize="1.3rem" />
-          </IconButton></Link>
+              <IconButton style={{ color: 'grey' }}>
+                <FaRegPenToSquare fontSize="1.3rem" />
+              </IconButton></Link>
         {!isVisible && (
           <>
             <IconButton style={{ color: 'grey',position: 'fixed',bottom: '45px', }}>

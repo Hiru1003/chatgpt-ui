@@ -12,7 +12,7 @@ const SidebarFooter = () => {
                 <BsStars style={{ fontSize: '1.2rem' }} />
               </Box>
               <Box sx={{ color: 'white' }}>
-                <Typography style={{ color: 'white', fontSize: '1.1rem' }}>Explore New Release<br /></Typography>
+                <Typography style={{ color: 'white', fontSize: '1rem' }}>Explore New Release<br /></Typography>
               </Box>
             </Box>
 
@@ -21,7 +21,7 @@ const SidebarFooter = () => {
                 <FaQuestionCircle style={{ fontSize: '1.2rem' }} />
               </Box>
               <Box sx={{ color: 'white' }}>
-                <Typography style={{ color: 'white', fontSize: '1.1rem' }}>Get Help<br /></Typography>
+                <Typography style={{ color: 'white', fontSize: '1rem' }}>Get Help<br /></Typography>
               </Box>
             </Box>
           </Box>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, MenuItem, IconButton, Box, Typography, Avatar, useMediaQuery, useTheme } from '@mui/material';
+import { Menu, MenuItem, IconButton, Box, Typography, Avatar } from '@mui/material';
 import { LuBookDown } from "react-icons/lu";
 import { MdSettings } from "react-icons/md";
 import { BiLogOutCircle } from "react-icons/bi";
@@ -12,8 +12,6 @@ const AvatarDropdown = () => {
   const [customizeChatGPTDialogOpen, setCustomizeChatGPTDialogOpen] = useState(false);
   const [settingsDialogOpen, setSettingsDialogOpen] = useState(false); 
   const navigate = useNavigate();
-  const theme = useTheme();
-  const isXSmallScreen = useMediaQuery(theme.breakpoints.down('xs'));
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -67,34 +65,34 @@ const AvatarDropdown = () => {
         }}
       >
         <MenuItem onClick={handleCustomizeChatGPTClick}>
-          <Box sx={{ bgcolor: 'black', p: 1, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+          <Box sx={{ bgcolor: 'black', p: 2, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
             <Box sx={{ color: 'white', mr: 3 , mt:1}}>
               <LuBookDown style={{ fontSize: '1.5rem' }} />
             </Box>
             <Box sx={{ color: 'white' }}>
-              <Typography variant="subtitle1" sx={{ color: 'white', fontSize: isXSmallScreen ? '1rem' : '1.1rem' }}>Customize ChatGPT</Typography>
+              <Typography variant="subtitle1" style={{ color: 'white', fontSize: { xs: '1rem', sm: '1.5rem' }  }}>Customize ChatGPT</Typography>
             </Box>
           </Box>
         </MenuItem>
 
         <MenuItem onClick={handleSettingsClick}>
-          <Box sx={{ bgcolor: 'black', p: 1, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+          <Box sx={{ bgcolor: 'black', p: 2, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
             <Box sx={{ color: 'white', mr: 3 , mt:1}}>
               <MdSettings style={{ fontSize: '1.5rem' }} />
             </Box>
             <Box sx={{ color: 'white' }}>
-              <Typography variant="subtitle1" sx={{ color: 'white', fontSize: isXSmallScreen ? '1rem' : '1.1rem' }}>Settings</Typography>
+              <Typography variant="subtitle1" style={{ color: 'white', fontSize: { xs: '1rem', sm: '1.5rem' } }}>Settings</Typography>
             </Box>
           </Box>
         </MenuItem>
 
         <MenuItem onClick={handleLogoutClick}>
-          <Box sx={{ bgcolor: 'black', p: 1, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+          <Box sx={{ bgcolor: 'black', p: 2, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
             <Box sx={{ color: 'white', mr: 3 }}>
               <BiLogOutCircle style={{ fontSize: '1.5rem' }} />
             </Box>
             <Box sx={{ color: 'white' }}>
-              <Typography variant="subtitle1" sx={{ color: 'white', fontSize: isXSmallScreen ? '1rem' : '1.2rem' }}>Logout</Typography>
+              <Typography variant="subtitle1" style={{ color: 'white', fontSize: { xs: '1rem', sm: '1.5rem' }  }}>Logout</Typography>
             </Box>
           </Box>
         </MenuItem>
