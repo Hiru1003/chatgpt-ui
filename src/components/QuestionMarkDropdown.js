@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, IconButton, Menu, MenuItem, Typography } from '@mui/material';
+import { Box, IconButton, Menu, MenuItem, Typography,useMediaQuery, useTheme  } from '@mui/material';
 import { RxQuestionMarkCircled } from "react-icons/rx";
 import { HiArrowTopRightOnSquare } from "react-icons/hi2";
 import { FaRegKeyboard } from "react-icons/fa6";
@@ -9,6 +9,8 @@ import KeyboardShortcuts from './KeyboardShortcuts';
 
 const QuestionMarkDropdown = () => {
     const [anchorEl, setAnchorEl] = useState(null);
+    const theme = useTheme();
+    const isXSmallScreen = useMediaQuery(theme.breakpoints.down('xs'));
     const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false); 
   
     const handleIconClick = (event) => {
@@ -58,46 +60,46 @@ const QuestionMarkDropdown = () => {
             >
                 {/* Menu Items */}
                 <MenuItem onClick={handleClose}>
-                    <Box sx={{ bgcolor: 'black', p: 2, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <Box sx={{ bgcolor: 'black', p: 1, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <Box sx={{ color: 'white', mr: 3 , mt:1}}>
                             <HiArrowTopRightOnSquare style={{ fontSize: '1.5rem' }} />
                         </Box>
                         <Box sx={{ color: 'white' }}>
-                            <Typography variant="subtitle1" style={{ color: 'white', fontSize: '1.2rem' }}>Help and FAQ</Typography>
+                            <Typography variant="subtitle1" style={{ color: 'white', fontSize: isXSmallScreen ? '1rem' : '1.1rem' }}>Help and FAQ</Typography>
                         </Box>
                     </Box>
                 </MenuItem>
 
                 <MenuItem onClick={handleClose}>
-                    <Box sx={{ bgcolor: 'black', p: 2, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <Box sx={{ bgcolor: 'black', p: 1, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <Box sx={{ color: 'white', mr: 3 , mt:1}}>
                             <HiArrowTopRightOnSquare style={{ fontSize: '1.5rem' }} />
                         </Box>
                         <Box sx={{ color: 'white' }}>
-                            <Typography variant="subtitle1" style={{ color: 'white', fontSize: '1.2rem' }}>Terms and Policies</Typography>
+                            <Typography variant="subtitle1" style={{ color: 'white', fontSize: isXSmallScreen ? '1rem' : '1.1rem'}}>Terms and Policies</Typography>
                         </Box>
                     </Box>
                 </MenuItem>
 
                 <MenuItem onClick={handleClose}>
-                    <Box sx={{ bgcolor: 'black', p: 2, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <Box sx={{ bgcolor: 'black', p: 1, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <Box sx={{ color: 'white', mr: 3 , mt:1}}>
                             <HiArrowTopRightOnSquare style={{ fontSize: '1.5rem' }} />
                         </Box>
                         <Box sx={{ color: 'white' }}>
-                            <Typography variant="subtitle1" style={{ color: 'white', fontSize: '1.2rem' }}>Release Notes</Typography>
+                            <Typography variant="subtitle1" style={{ color: 'white', fontSize: isXSmallScreen ? '1rem' : '1.1rem' }}>Release Notes</Typography>
                         </Box>
                     </Box>
                 </MenuItem>
 
                 {/* Keyboard Shortcuts Menu Item */}
                 <MenuItem onClick={handleKeyboardShortcutsClick}>
-                    <Box sx={{ bgcolor: 'black', p: 2, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <Box sx={{ bgcolor: 'black', p: 1, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <Box sx={{ color: 'white', mr: 3 , mt:1}}>
                             <FaRegKeyboard style={{ fontSize: '1.5rem' }} />
                         </Box>
                         <Box sx={{ color: 'white' }}>
-                            <Typography variant="subtitle1" style={{ color: 'white', fontSize: '1.2rem' }}>Keyboard Shortcuts</Typography>
+                            <Typography variant="subtitle1" style={{ color: 'white', fontSize: isXSmallScreen ? '1rem' : '1.1rem' }}>Keyboard Shortcuts</Typography>
                         </Box>
                     </Box>
                 </MenuItem>
