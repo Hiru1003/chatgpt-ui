@@ -47,21 +47,25 @@ const MainPage = () => {
   return (
     <Box sx={{ 
       height: '100vh',
-      pl: { xs: 2, sm: 10 },
-      pr: { xs: 2, sm: 10 },
-      pt: 1, 
-      pb: 3, 
-      flexGrow: 1, 
-      display: 'flex', 
-      flexDirection: 'column', 
-      justifyContent: 'space-between',
-      bgcolor: 'grey.900',
-      position: 'relative',
-      overflowX: 'hidden', 
+        pl: { xs: 2, sm: 5 },
+        pr: { xs: 2, sm: 0 },
+        pt: 1, 
+        pb: 3, 
+        flexGrow: 1, 
+        display: 'flex', 
+        flexDirection: 'column', 
+        justifyContent: 'space-between',
+        bgcolor: 'grey.900',
+        position: 'relative',
+        overflowX: 'hidden', 
+        paddingLeft: '10px',
+        paddingRight: '10px',
     }}>
 
-      {/* Main header */}
-        <ChatgptDropdownHeader />
+      {/* Header */}
+      <Box sx={{ padding: '10px 0', bgcolor: 'grey.900' }}>
+        <ChatgptDropdownHeader/>
+      </Box>
       
       {/* OpenAI Icon */}
       <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

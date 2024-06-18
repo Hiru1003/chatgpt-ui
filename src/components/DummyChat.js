@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, IconButton } from '@mui/material';
 import { MdContentCopy } from "react-icons/md";
 import { BiDislike, BiLike } from "react-icons/bi";
@@ -30,16 +30,27 @@ const DummyChat = () => {
     <Box 
       sx={{ 
         height: '100vh',
+        pl: { xs: 2, sm: 5 },
+        pr: { xs: 2, sm: 0 },
+        pt: 1, 
+        pb: 3, 
+        flexGrow: 1, 
         display: 'flex', 
         flexDirection: 'column', 
+        justifyContent: 'space-between',
         bgcolor: 'grey.900',
-        paddingLeft: '10px', 
+        position: 'relative',
+        overflowX: 'hidden', 
+        paddingLeft: '10px',
+        paddingRight: '10px',
       }}
     >
-      <Box sx={{ padding: '10px 0', pl: { xs: 2, sm: 5 }, pr: { xs: 2, sm: 5 }, bgcolor: 'grey.900' }}>
+      {/* Header */}
+      <Box sx={{ padding: '10px 0', bgcolor: 'grey.900' }}>
         <ChatgptDropdownHeader/>
       </Box>
 
+      {/* Messages Container */}
       <Box 
         sx={{ 
           flexGrow: 1, 
@@ -48,8 +59,9 @@ const DummyChat = () => {
           paddingLeft: '10px', 
           paddingRight: '15px',  
           paddingTop: '15px',
-          paddingBottom: '40px', 
+          paddingBottom: '30px', 
           scrollbarWidth: 'thin',
+          position: 'relative',
         }}
       >
         {messages.map((msg, index) => (
@@ -115,16 +127,21 @@ const DummyChat = () => {
         ))}
       </Box>
 
+      {/* Footer with TextArea */}
       <Box 
         sx={{
-          padding: '10px 0', 
-          pl: { xs: 2, sm: 5 }, 
-          pr: { xs: 2, sm: 5 }, 
-          bgcolor: 'grey.900'
+          bgcolor: 'grey.900',
         }}
       >
-        <TextAreaTemplete/>
+        <Box
+          sx={{
+            marginTop: '50px',
+          }}
+        >
+          <TextAreaTemplete/>
+        </Box>
       </Box>
+
     </Box>
   ); 
 };
