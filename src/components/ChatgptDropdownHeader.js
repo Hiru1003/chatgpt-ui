@@ -48,7 +48,7 @@ const MainHeader = () => {
               <Box
                 sx={{
                   bgcolor: 'black',
-                  p: 2,
+                  p: 1,
                   textAlign: 'left',
                   display: 'flex',
                   flexDirection: 'row',
@@ -71,7 +71,7 @@ const MainHeader = () => {
               <Box
                 sx={{
                   bgcolor: 'black',
-                  p: 2,
+                  p: 1,
                   textAlign: 'left',
                   display: 'flex',
                   flexDirection: 'row',
@@ -94,7 +94,7 @@ const MainHeader = () => {
               <Box
                 sx={{
                   bgcolor: 'black',
-                  p: 2,
+                  p: 1,
                   textAlign: 'left',
                   display: 'flex',
                   flexDirection: 'row',

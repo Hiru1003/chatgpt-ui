@@ -69,11 +69,11 @@ const MainPage = () => {
       
       {/* OpenAI Icon */}
       <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <SiOpenai size={isSmallScreen ? 30 : 70} style={{ color: 'white' }} />
+      <SiOpenai size={isSmallScreen ? 30 : 60} style={{ color: 'white' }} />
      </Box>
 
       {/* Main page container */}
-      <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
+      <Box sx={{ display: 'flex', gap: 2, marginBottom:'20px', flexDirection: { xs: 'column', sm: 'row' }}}>
         <MainpageContainer />
       </Box>
          

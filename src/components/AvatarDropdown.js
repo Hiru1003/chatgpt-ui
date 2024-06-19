@@ -65,7 +65,7 @@ const AvatarDropdown = () => {
         }}
       >
         <MenuItem onClick={handleCustomizeChatGPTClick}>
-          <Box sx={{ bgcolor: 'black', p: 2, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+          <Box sx={{ bgcolor: 'black', p: 1, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
             <Box sx={{ color: 'white', mr: 3 , mt:1}}>
               <LuBookDown style={{ fontSize: '1.5rem' }} />
             </Box>
@@ -76,7 +76,7 @@ const AvatarDropdown = () => {
         </MenuItem>
 
         <MenuItem onClick={handleSettingsClick}>
-          <Box sx={{ bgcolor: 'black', p: 2, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+          <Box sx={{ bgcolor: 'black', p: 1, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
             <Box sx={{ color: 'white', mr: 3 , mt:1}}>
               <MdSettings style={{ fontSize: '1.5rem' }} />
             </Box>
@@ -87,7 +87,7 @@ const AvatarDropdown = () => {
         </MenuItem>
 
         <MenuItem onClick={handleLogoutClick}>
-          <Box sx={{ bgcolor: 'black', p: 2, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+          <Box sx={{ bgcolor: 'black', p: 1, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
             <Box sx={{ color: 'white', mr: 3 }}>
               <BiLogOutCircle style={{ fontSize: '1.5rem' }} />
             </Box>

@@ -60,7 +60,7 @@ const QuestionMarkDropdown = () => {
             >
                 {/* Menu Items */}
                 <MenuItem onClick={handleClose}>
-                    <Box sx={{ bgcolor: 'black', p: 2, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <Box sx={{ bgcolor: 'black', p: 1, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <Box sx={{ color: 'white', mr: 3 , mt:1}}>
                             <HiArrowTopRightOnSquare style={{ fontSize: '1.5rem' }} />
                         </Box>
@@ -71,7 +71,7 @@ const QuestionMarkDropdown = () => {
                 </MenuItem>
 
                 <MenuItem onClick={handleClose}>
-                    <Box sx={{ bgcolor: 'black', p: 2, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <Box sx={{ bgcolor: 'black', p: 1, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <Box sx={{ color: 'white', mr: 3 , mt:1}}>
                             <HiArrowTopRightOnSquare style={{ fontSize: '1.5rem' }} />
                         </Box>
@@ -82,7 +82,7 @@ const QuestionMarkDropdown = () => {
                 </MenuItem>
 
                 <MenuItem onClick={handleClose}>
-                    <Box sx={{ bgcolor: 'black', p: 2, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <Box sx={{ bgcolor: 'black', p: 1, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <Box sx={{ color: 'white', mr: 3 , mt:1}}>
                             <HiArrowTopRightOnSquare style={{ fontSize: '1.5rem' }} />
                         </Box>
@@ -94,7 +94,7 @@ const QuestionMarkDropdown = () => {
 
                 {/* Keyboard Shortcuts Menu Item */}
                 <MenuItem onClick={handleKeyboardShortcutsClick}>
-                    <Box sx={{ bgcolor: 'black', p: 2, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <Box sx={{ bgcolor: 'black', p: 1, textAlign: 'left', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <Box sx={{ color: 'white', mr: 3 , mt:1}}>
                             <FaRegKeyboard style={{ fontSize: '1.5rem' }} />
                         </Box>
