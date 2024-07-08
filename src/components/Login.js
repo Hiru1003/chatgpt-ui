@@ -45,7 +45,7 @@ const LoginPage = () => {
 
           {/* Right column for login form */}
           <Grid item xs={12} sm={isSmallScreen ? 12 : 6} container justifyContent="center" alignItems="center">
-            <Box >
+            <Box>
               <Typography variant="h4" gutterBottom sx={{ mb: 2, fontWeight: 'bold' }}>
                 Welcome Back!
               </Typography>

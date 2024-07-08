@@ -30,18 +30,14 @@ const SignupPage = () => {
         }}
       >
         <Grid container spacing={3}>
-          {/* Left column for signup image */}
           {!isSmallScreen && (
-            <Grid item xs={12} sm={6} display="flex" alignItems="center" justifyContent="center">
-              <Box display="flex" alignItems="center" justifyContent="center" height="100%">
-                <img src={SignupImage} alt="Logo" style={{ maxWidth: '100%', height: 'auto' }} />
-              </Box>
+            <Grid item xs={12} sm={6}>
+              <img src={SignupImage} alt="Logo" style={{ maxWidth: '100%', height: 'auto' }} />
             </Grid>
           )}
 
-          {/* Right column for signup form */}
           <Grid item xs={12} sm={isSmallScreen ? 12 : 6} container justifyContent="center" alignItems="center">
-            <Box>
+            <Box width="100%">
               <Typography variant="h4" gutterBottom sx={{ mb: 2, fontWeight: 'bold' }}>
                 Get Started!
               </Typography>
@@ -58,28 +54,9 @@ const SignupPage = () => {
               >
                 Sign Up
               </Typography>
-              <TextField
-                id="username"
-                label="Username"
-                variant="outlined"
-                fullWidth
-                sx={{ mb: 2 }}
-              />
-              <TextField
-                id="email"
-                label="Email"
-                variant="outlined"
-                fullWidth
-                sx={{ mb: 2 }}
-              />
-              <TextField
-                id="password"
-                label="Password"
-                type="password"
-                variant="outlined"
-                fullWidth
-                sx={{ mb: 2 }}
-              />
+              <TextField id="username" label="Username" variant="outlined" fullWidth sx={{ mb: 2 }} />
+              <TextField id="email" label="Email" variant="outlined" fullWidth sx={{ mb: 2 }} />
+              <TextField id="password" label="Password" type="password" variant="outlined" fullWidth sx={{ mb: 2 }} />
               <TextField
                 id="confirmPassword"
                 label="Confirm Password"
