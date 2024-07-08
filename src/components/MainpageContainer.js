@@ -8,8 +8,8 @@ import { LuGraduationCap } from "react-icons/lu";
 const MainpageContainer = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const isMediumScreen = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'));
+  // const isMediumScreen = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  // const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'));
 
   const containerStyles = {
     textAlign: 'left',

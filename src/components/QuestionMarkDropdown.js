@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import { Box, IconButton, Menu, MenuItem, Typography,useTheme,useMediaQuery } from '@mui/material';
+import { Box, IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import { RxQuestionMarkCircled } from "react-icons/rx";
 import { HiArrowTopRightOnSquare } from "react-icons/hi2";
 import { FaRegKeyboard } from "react-icons/fa6";
-import { MdOutlinePrivacyTip } from "react-icons/md";
-import { FaQuora } from "react-icons/fa";
 import KeyboardShortcuts from './KeyboardShortcuts';
 
 const QuestionMarkDropdown = () => {
     const [anchorEl, setAnchorEl] = useState(null);
-     const theme = useTheme();
-  const isXSmallScreen = useMediaQuery(theme.breakpoints.down('xs'));
+    //const theme = useTheme();
+
+    //const isXSmallScreen = useMediaQuery(theme.breakpoints.down('xs'));
     const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false); 
   
     const handleIconClick = (event) => {
@@ -28,16 +27,16 @@ const QuestionMarkDropdown = () => {
     
     const open = Boolean(anchorEl);
 
-    const overlayStyle = {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        zIndex: 1000, 
-        backdropFilter: 'blur(3px)', 
-    };
+    // const overlayStyle = {
+    //     position: 'fixed',
+    //     top: 0,
+    //     left: 0,
+    //     width: '100%',
+    //     height: '100%',
+    //     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    //     zIndex: 1000, 
+    //     backdropFilter: 'blur(3px)', 
+    // };
 
 
     return (

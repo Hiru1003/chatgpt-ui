@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Typography, IconButton, Divider, Grid } from '@mui/material';
 import { MdClose } from "react-icons/md";
 
 const KeyboardShortcuts = ({ onClose }) => {
-    const [activeTab, setActiveTab] = useState('general');
-    const [selectedTheme, setSelectedTheme] = useState('system');
+    // const [setActiveTab] = useState('general');
+    // const [setSelectedTheme] = useState('system');
 
-    const handleTabChange = (tabId) => {
-        setActiveTab(tabId);
-    };
+    // const handleTabChange = (tabId) => {
+    //     setActiveTab(tabId);
+    // };
 
-    const handleThemeChange = (event) => {
-        setSelectedTheme(event.target.value);
-    };
+    // const handleThemeChange = (event) => {
+    //     setSelectedTheme(event.target.value);
+    // };
 
     return (
         <Box
@@ -59,13 +59,13 @@ const KeyboardShortcuts = ({ onClose }) => {
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px'}}>
                                     <Typography variant="subtitle1" sx={{ color: 'white', fontSize:'18px', alignItems:'center' }}>Open new chat</Typography>
                                     <Box sx={{ display: 'flex', justifyContent: 'end', mb:'10px'}}>  
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex',  mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>⌘</Typography>
                                         </Box> 
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>Shift</Typography>
                                         </Box> 
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex',  mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>O</Typography>
                                         </Box>  
                                     </Box>  
@@ -74,10 +74,10 @@ const KeyboardShortcuts = ({ onClose }) => {
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px'}}>
                                     <Typography variant="subtitle1" sx={{ color: 'white', fontSize:'18px', alignItems:'center' }}>Focus chat input</Typography>
                                     <Box sx={{ display: 'flex', justifyContent: 'end', mb:'10px'}}>  
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex',  mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>Shift</Typography>
                                         </Box> 
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>Esc</Typography>
                                         </Box>  
                                     </Box>  
@@ -87,13 +87,13 @@ const KeyboardShortcuts = ({ onClose }) => {
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px'}}>
                                     <Typography variant="subtitle1" sx={{ color: 'white', fontSize:'18px', alignItems:'center' }}>Copy last code block</Typography>
                                     <Box sx={{ display: 'flex', justifyContent: 'end', mb:'10px'}}>  
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex',  mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>⌘</Typography>
                                         </Box> 
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>Shift</Typography>
                                         </Box> 
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>;</Typography>
                                         </Box>  
                                     </Box>  
@@ -103,13 +103,13 @@ const KeyboardShortcuts = ({ onClose }) => {
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px'}}>
                                     <Typography variant="subtitle1" sx={{ color: 'white', fontSize:'18px', alignItems:'center' }}>Show shortcuts</Typography>
                                     <Box sx={{ display: 'flex', justifyContent: 'end', mb:'10px'}}>  
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>⌘</Typography>
                                         </Box> 
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>Shift</Typography>
                                         </Box> 
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex',  mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>C</Typography>
                                         </Box>  
                                     </Box>  
@@ -122,13 +122,13 @@ const KeyboardShortcuts = ({ onClose }) => {
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px'}}>
                                     <Typography variant="subtitle1" sx={{ color: 'white', fontSize:'18px', alignItems:'center' }}>Copy last response</Typography>
                                     <Box sx={{ display: 'flex', justifyContent: 'end', mb:'10px'}}>  
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>⌘</Typography>
                                         </Box> 
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex',  mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>Shift</Typography>
                                         </Box> 
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex',  mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>|</Typography>
                                         </Box>  
                                     </Box>  
@@ -137,13 +137,13 @@ const KeyboardShortcuts = ({ onClose }) => {
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px'}}>
                                     <Typography variant="subtitle1" sx={{ color: 'white', fontSize:'18px', alignItems:'center' }}>Toggle sidebar</Typography>
                                     <Box sx={{ display: 'flex', justifyContent: 'end', mb:'10px'}}>  
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>⌘</Typography>
                                         </Box> 
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex',  mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>Shift</Typography>
                                         </Box> 
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>S</Typography>
                                         </Box>  
                                     </Box>  
@@ -153,13 +153,13 @@ const KeyboardShortcuts = ({ onClose }) => {
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px'}}>
                                     <Typography variant="subtitle1" sx={{ color: 'white', fontSize:'18px', alignItems:'center' }}>Delete chat</Typography>
                                     <Box sx={{ display: 'flex', justifyContent: 'end', mb:'10px'}}>  
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>⌘</Typography>
                                         </Box> 
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>Shift</Typography>
                                         </Box> 
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px' ,width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px' ,width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>⌫</Typography>
                                         </Box>  
                                     </Box>  
@@ -169,10 +169,10 @@ const KeyboardShortcuts = ({ onClose }) => {
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px'}}>
                                     <Typography variant="subtitle1" sx={{ color: 'white', fontSize:'18px', alignItems:'center' }}>Show shortcuts</Typography>
                                     <Box sx={{ display: 'flex', justifyContent: 'end', mb:'10px'}}>  
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex',  mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px', marginRight:2, width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>⌘</Typography>
                                         </Box> 
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px',width:'70px', justifyContent:'center'}}> 
+                                        <Box sx={{ display: 'flex',  mb:'10px',borderColor: 'white', border: '1px solid grey',padding:1, borderRadius:'18px',width:'70px', justifyContent:'center'}}> 
                                             <Typography variant="subtitle1" sx={{ color: 'white' }}>/</Typography>
                                         </Box>  
                                     </Box>  

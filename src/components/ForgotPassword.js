@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, TextField, Button, Checkbox, FormControlLabel, Link, Grid , Divider, IconButton} from '@mui/material';
+import { Box, Typography, TextField, Button, Grid } from '@mui/material';
 import forgotpassword from '../assets/forgotpassword.jpeg'
 
 const ForgotPasswordPage = () => {

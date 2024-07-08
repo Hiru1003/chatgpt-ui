@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { Box} from '@mui/material';
 import MainpageContainer from './MainpageContainer';
 import { SiOpenai } from "react-icons/si";
@@ -7,42 +7,42 @@ import { useTheme, useMediaQuery } from '@mui/material';
 import TextAreaTemplete from './TextArea';
 
 const MainPage = () => {
-  const [showForm, setShowForm] = useState(false);
-  const [activeForm, setActiveForm] = useState('yourPrompts');
-  const fileInputRef = useRef(null);
+  // const [setShowForm] = useState(false);
+  // const [setActiveForm] = useState('yourPrompts');
+  // //const fileInputRef = useRef(null);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
 
-  const handleUploadClick = () => {
-    setShowForm(true);
-    setActiveForm('yourPrompts');
-  };
+  // const handleUploadClick = () => {
+  //   setShowForm(true);
+  //   setActiveForm('yourPrompts');
+  // };
 
-  const handleFileUploadButtonClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
+  // const handleFileUploadButtonClick = () => {
+  //   if (fileInputRef.current) {
+  //     fileInputRef.current.click();
+  //   }
+  // };
 
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      console.log('File selected:', file);
-    }
-  };
+  // const handleFileUpload = (event) => {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     console.log('File selected:', file);
+  //   }
+  // };
 
-  const handleFormClose = () => {
-    setShowForm(false);
-  };
+  // const handleFormClose = () => {
+  //   setShowForm(false);
+  // };
 
-  const switchToYourPrompts = () => {
-    setActiveForm('yourPrompts');
-  };
+  // const switchToYourPrompts = () => {
+  //   setActiveForm('yourPrompts');
+  // };
 
-  const switchToCommunityPrompts = () => {
-    setActiveForm('communityPrompts');
-  };
+  // const switchToCommunityPrompts = () => {
+  //   setActiveForm('communityPrompts');
+  // };
 
   return (
     <Box sx={{ 

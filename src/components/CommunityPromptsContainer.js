@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Typography, IconButton, Button } from '@mui/material';
-import { Add, ArrowDownward, ArrowLeft, ArrowRight, ArrowRightAlt } from '@mui/icons-material';
+import { Box, Typography, IconButton} from '@mui/material';
+import { Add,  ArrowRightAlt } from '@mui/icons-material';
 
 const CommunityPromptsContainer = ({ headline, normalText }) => {
   return (

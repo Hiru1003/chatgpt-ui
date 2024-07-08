@@ -42,7 +42,7 @@ function App() {
   useEffect(() => {
     const shouldShowSidebar = !['/login', '/signup', '/forgot-password'].includes(location.pathname);
     setSidebarVisible(shouldShowSidebar && isLargeScreen);
-  }, [location, isLargeScreen]);
+  }, [location.pathname, isLargeScreen]);
 
   const handleToggleSidebar = () => {
     setSidebarVisible(prevState => !prevState);
@@ -52,8 +52,10 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div style={{ display: 'flex', height: '100vh', backgroundColor: '#121212' }}>
-        {/* Sidebar */}
-        <Sidebar isVisible={isSidebarVisible} onToggleSidebar={handleToggleSidebar} />
+        {/* Conditionally render Sidebar */}
+        {isSidebarVisible && (
+          <Sidebar isVisible={isSidebarVisible} onToggleSidebar={handleToggleSidebar} />
+        )}
 
         {/* Main Content */}
         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, backgroundColor: '#121212' }}>

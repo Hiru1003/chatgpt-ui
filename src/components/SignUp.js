@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, TextField, Button, Link, Grid, Divider, IconButton } from '@mui/material';
+import { Box, Typography, TextField, Button, Link, Grid} from '@mui/material';
 import SignupImage from '../assets/signup.jpeg'
 
 const SignupPage = () => {

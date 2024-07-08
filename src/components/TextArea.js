@@ -25,12 +25,6 @@ const TextAreaTemplete = () => {
     }
   };
 
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      console.log('File selected:', file);
-    }
-  };
 
   const handleFormClose = () => {
     setShowForm(false);
