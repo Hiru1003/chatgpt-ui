@@ -29,24 +29,23 @@ const LoginPage = () => {
           alignItems: 'center',
           padding: '20px',
           width: '80%',
-          maxWidth: '900px',
           backgroundColor: 'white',
           boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
         }}
       >
         <Grid container spacing={3}>
           {/* Left column for login form */}
-{!isSmallScreen && (
-  <Grid item xs={12} sm={6} display="flex" alignItems="center" justifyContent="center">
-    <Box display="flex" alignItems="center" justifyContent="center" height="100%">
-      <img src={loginImage} alt="Logo" style={{ maxWidth: '100%', height: 'auto' }} />
-    </Box>
-  </Grid>
-)}
+          {!isSmallScreen && (
+            <Grid item xs={12} sm={6} display="flex" alignItems="center" justifyContent="center">
+              <Box display="flex" alignItems="center" justifyContent="center" height="100%">
+                <img src={loginImage} alt="Logo" style={{ maxWidth: '100%', height: 'auto' }} />
+              </Box>
+            </Grid>
+          )}
 
           {/* Right column for login form */}
           <Grid item xs={12} sm={isSmallScreen ? 12 : 6} container justifyContent="center" alignItems="center">
-            <Box width="100%">
+            <Box >
               <Typography variant="h4" gutterBottom sx={{ mb: 2, fontWeight: 'bold' }}>
                 Welcome Back!
               </Typography>

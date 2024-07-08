@@ -1,8 +1,10 @@
 import React from 'react';
-import { Box, Typography, TextField, Button, Link, Grid} from '@mui/material';
-import SignupImage from '../assets/signup.jpeg'
+import { Box, Typography, TextField, Button, Link, Grid, useMediaQuery } from '@mui/material';
+import SignupImage from '../assets/signup.jpeg';
 
 const SignupPage = () => {
+  const isSmallScreen = useMediaQuery('(max-width:900px)');
+
   return (
     <Box
       sx={{
@@ -28,14 +30,20 @@ const SignupPage = () => {
         }}
       >
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
-          <img src={SignupImage} alt="Logo" style={{ maxWidth: '100%', height: 'auto' }} />
-          
-          </Grid>
-          <Grid item xs={12} sm={6} container justifyContent="center" alignItems="center">
+          {/* Left column for signup image */}
+          {!isSmallScreen && (
+            <Grid item xs={12} sm={6} display="flex" alignItems="center" justifyContent="center">
+              <Box display="flex" alignItems="center" justifyContent="center" height="100%">
+                <img src={SignupImage} alt="Logo" style={{ maxWidth: '100%', height: 'auto' }} />
+              </Box>
+            </Grid>
+          )}
+
+          {/* Right column for signup form */}
+          <Grid item xs={12} sm={isSmallScreen ? 12 : 6} container justifyContent="center" alignItems="center">
             <Box>
-            <Typography variant="h4" gutterBottom sx={{ mb: 2 ,fontWeight:'bold'}} >
-                Get Started !
+              <Typography variant="h4" gutterBottom sx={{ mb: 2, fontWeight: 'bold' }}>
+                Get Started!
               </Typography>
               <Typography
                 variant="h2"
@@ -86,8 +94,6 @@ const SignupPage = () => {
               <Typography variant="body2" sx={{ mb: 1, fontSize: '16px' }}>
                 Already have an account? <Link href="/login">Log In</Link>
               </Typography>
-
-
             </Box>
           </Grid>
         </Grid>
@@ -97,4 +103,3 @@ const SignupPage = () => {
 };
 
 export default SignupPage;
-
