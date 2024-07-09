@@ -1,5 +1,5 @@
+from pydantic import BaseModel, EmailStr, validator
 from fastapi import FastAPI, HTTPException, Depends
-from pydantic import BaseModel, EmailStr
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
@@ -34,6 +34,7 @@ SECRET_KEY = "your_secret_key"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30 * 24 * 60  # 30 days
 
+# Token functions
 def create_access_token(data: dict):
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
@@ -51,6 +52,13 @@ class UserInCreate(BaseModel):
     username: str
     email: EmailStr
     password: str
+    confirm_password: str
+
+    @validator("confirm_password")
+    def passwords_match(cls, v, values, **kwargs):
+        if 'password' in values and v != values['password']:
+            raise ValueError("Passwords do not match")
+        return v
 
 class Token(BaseModel):
     access_token: str
@@ -76,7 +84,7 @@ async def signup(user: UserInCreate):
         raise HTTPException(status_code=409, detail="Email already registered")
 
     hashed_password = pwd_context.hash(user.password)
-    users[user.email] = UserInDB(**user.dict(), hashed_password=hashed_password)
+    users[user.email] = UserInDB(username=user.username, email=user.email, hashed_password=hashed_password)
     token = create_access_token(data={"sub": user.email})
     return {"access_token": token, "token_type": "bearer"}
 
