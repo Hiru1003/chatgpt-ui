@@ -1,13 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, TextField, Button, Checkbox, FormControlLabel, Link, Grid, Divider, IconButton } from '@mui/material';
-import {useMediaQuery } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
+import axios from 'axios';
 import loginImage from '../assets/login.jpeg';
 import GoogleIcon from '@mui/icons-material/Google';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 const LoginPage = () => {
-  //const theme = useTheme();
   const isSmallScreen = useMediaQuery('(max-width:900px)');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/login', { email, password });
+      console.log('Login successful:', response.data);
+    } catch (error) {
+      console.error('Login error:', error);
+      setError(error.response.data.message || 'An error occurred. Please try again.');
+    }
+  };
 
   return (
     <Box
@@ -68,6 +81,8 @@ const LoginPage = () => {
                 variant="outlined"
                 fullWidth
                 sx={{ mb: 2 }}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
                 id="password"
@@ -76,15 +91,18 @@ const LoginPage = () => {
                 variant="outlined"
                 fullWidth
                 sx={{ mb: 2 }}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <FormControlLabel
                 control={<Checkbox defaultChecked />}
                 label="Remember Me"
                 sx={{ mb: 2, textAlign: 'left' }}
               />
-              <Button variant="contained" color="primary" fullWidth sx={{ mb: 2 }}>
+              <Button variant="contained" color="primary" fullWidth sx={{ mb: 2 }} onClick={handleLogin}>
                 Login
               </Button>
+              {error && <Typography color="error" sx={{ mb: 2 }}>{error}</Typography>}
               <Typography variant="body2" sx={{ mb: 1, fontSize: '16px' }}>
                 <Link href="/forgot-password">Forgot Password?</Link>
               </Typography>
