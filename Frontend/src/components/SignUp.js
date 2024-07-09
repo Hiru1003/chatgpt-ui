@@ -20,17 +20,22 @@ const SignupPage = () => {
 
     try {
       const response = await axios.post('/signup', { username, email, password });
-      const { token } = response.data;
 
-      localStorage.setItem('token', token);
+      if (response && response.data) {
+        const { token } = response.data;
+        localStorage.setItem('token', token);
 
-      // Show signup success alert
-      alert('Signup successful!');
+        // Show signup success alert
+        alert('Signup successful!');
 
-      // Optionally redirect user to dashboard or another page
-      window.location.href = '/dashboard';
+        // Optionally redirect user to dashboard or another page
+        window.location.href = '/dashboard';
+      } else {
+        throw new Error('Signup failed, please try again.');
+      }
     } catch (error) {
-      setError('Signup failed. Please try again.');
+      console.error('Signup error:', error);
+      setError(error.response?.data?.message || 'Signup failed. Please try again.');
     }
   };
 
