@@ -34,7 +34,6 @@ SECRET_KEY = "your_secret_key"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30 * 24 * 60  # 30 days
 
-# Token functions
 def create_access_token(data: dict):
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
@@ -102,7 +101,6 @@ async def login(user: UserInLogin):
     token = create_access_token(data={"sub": user.email})
     return {"access_token": token, "token_type": "bearer"}
 
-
 # Forgot Password endpoint
 @app.post("/api/forgot-password")
 async def forgot_password(user: UserInForgotPassword):
@@ -123,9 +121,3 @@ async def reset_password(user: UserInResetPassword):
 @app.post("/api/logout")
 async def logout(token: str = Depends(oauth2_scheme)):
     return {"message": "Logged out successfully"}
-
-# How to run Backend
-# python -m venv venv
-# Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process 
-# .\venv\Scripts\activate
-# uvicorn main:app --reload

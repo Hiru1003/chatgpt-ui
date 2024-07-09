@@ -27,7 +27,7 @@ const AvatarDropdown = () => {
   };
 
   const handleLogoutClick = () => {
-    navigate('/login'); 
+    navigate('/signup'); 
   };
 
   const handleCustomizeChatGPTClick = () => {
