@@ -1,9 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, TextField, Button, Grid, useMediaQuery } from '@mui/material';
+import axios from 'axios';
 import forgotpassword from '../assets/forgotpassword.jpeg';
 
 const ForgotPasswordPage = () => {
   const isSmallScreen = useMediaQuery('(max-width:900px)');
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleResetPassword = async () => {
+    try {
+      const response = await axios.post('/api/reset-password', {
+        oldPassword,
+        newPassword,
+        confirmNewPassword,
+      });
+      console.log('Password reset successful:', response.data);
+      alert('Password reset successful. You can now log in with your new password.');
+      // Optionally redirect user to login page
+      window.location.href = '/login';
+    } catch (error) {
+      console.error('Password reset error:', error);
+      setError(error.response?.data?.detail || 'An error occurred. Please try again.');
+    }
+  };
 
   return (
     <Box
@@ -30,11 +52,11 @@ const ForgotPasswordPage = () => {
         }}
       >
         <Grid container spacing={3}>
-          {/* Left column for forgot password form */}
+          {/* Left column for forgot password image */}
           {!isSmallScreen && (
             <Grid item xs={12} sm={6} display="flex" alignItems="center" justifyContent="center">
               <Box display="flex" alignItems="center" justifyContent="center" height="100%">
-                <img src={forgotpassword} alt="Logo" style={{ maxWidth: '100%', height: 'auto' }} />
+                <img src={forgotpassword} alt="Forgot Password" style={{ maxWidth: '100%', height: 'auto' }} />
               </Box>
             </Grid>
           )}
@@ -61,9 +83,12 @@ const ForgotPasswordPage = () => {
               <TextField
                 id="old-password"
                 label="Old Password"
+                type="password"
                 variant="outlined"
                 fullWidth
                 sx={{ mb: 2 }}
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
               />
               <TextField
                 id="new-password"
@@ -72,6 +97,8 @@ const ForgotPasswordPage = () => {
                 variant="outlined"
                 fullWidth
                 sx={{ mb: 2 }}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
               />
               <TextField
                 id="confirm-new-password"
@@ -80,9 +107,12 @@ const ForgotPasswordPage = () => {
                 variant="outlined"
                 fullWidth
                 sx={{ mb: 2 }}
+                value={confirmNewPassword}
+                onChange={(e) => setConfirmNewPassword(e.target.value)}
               />
 
-              <Button variant="contained" color="primary" fullWidth sx={{ mb: 2 }}>
+              {error && <Typography color="error" sx={{ mb: 2 }}>{error}</Typography>}
+              <Button variant="contained" color="primary" fullWidth sx={{ mb: 2 }} onClick={handleResetPassword}>
                 Reset Password
               </Button>
             </Box>

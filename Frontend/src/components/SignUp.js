@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from '../axios'; // Import the Axios instance
+import axios from '../axios'; 
 import { Box, Typography, TextField, Button, Link, Grid, useMediaQuery } from '@mui/material';
 import SignupImage from '../assets/signup.jpeg';
 
@@ -18,26 +18,28 @@ const SignupPage = () => {
       return;
     }
 
+    if (password.length < 8) {
+      setError("Password should be at least 8 characters");
+      return;
+    }
+
     try {
-      const response = await axios.post('/signup', { username, email, password });
+      const response = await axios.post('/api/signup', { username, email, password });
 
-      if (response && response.data) {
-        const { token } = response.data;
-        localStorage.setItem('token', token);
-
-        // Show signup success alert
+      if (response && response.data && response.data.access_token) {
+        const { access_token } = response.data;
+        localStorage.setItem('token', access_token);
         alert('Signup successful!');
-
-        // Optionally redirect user to dashboard or another page
         window.location.href = '/dashboard';
       } else {
         throw new Error('Signup failed, please try again.');
       }
     } catch (error) {
       console.error('Signup error:', error);
-      setError(error.response?.data?.message || 'Signup failed. Please try again.');
+      setError(error.response?.data?.detail || 'Signup failed. Please try again.');
     }
   };
+
 
   return (
     <Box

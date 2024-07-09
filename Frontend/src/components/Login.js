@@ -14,11 +14,25 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/api/login', { email, password });
+      const response = await axios.post('/api/login', { email, password });
       console.log('Login successful:', response.data);
+      const { token } = response.data;
+      localStorage.setItem('token', token);
+      window.location.href = '/dashboard'; 
     } catch (error) {
       console.error('Login error:', error);
-      setError(error.response.data.message || 'An error occurred. Please try again.');
+      setError(error.response?.data?.detail || 'An error occurred. Please try again.');
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    try {
+      const response = await axios.post('/api/forgot-password', { email });
+      console.log('Forgot password request successful:', response.data);
+      alert('Password reset email sent. Check your email for instructions.');
+    } catch (error) {
+      console.error('Forgot password error:', error);
+      setError(error.response?.data?.detail || 'An error occurred. Please try again.');
     }
   };
 
@@ -104,7 +118,9 @@ const LoginPage = () => {
               </Button>
               {error && <Typography color="error" sx={{ mb: 2 }}>{error}</Typography>}
               <Typography variant="body2" sx={{ mb: 1, fontSize: '16px' }}>
-                <Link href="/forgot-password">Forgot Password?</Link>
+                <Link href="/forgot-password" onClick={handleForgotPassword}>
+                  Forgot Password?
+                </Link>
               </Typography>
               <Typography variant="body2" sx={{ mb: 2, fontSize: '16px' }}>
                 Don't have an account? <Link href="/signup">Sign Up</Link>

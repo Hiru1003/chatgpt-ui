@@ -1,11 +1,27 @@
 from fastapi import FastAPI, HTTPException, Depends
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.middleware.cors import CORSMiddleware
+
+origins = [
+    "http://localhost",
+    "http://localhost:3000", 
+    "http://127.0.0.1:8000",
+]
 
 app = FastAPI()
+
+# CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["*"],
+)
 
 # Sample user storage (replace with your database or data structure)
 users = {}
@@ -16,7 +32,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # JWT settings
 SECRET_KEY = "your_secret_key"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 30 * 24 * 60  # 30 days
 
 # Token functions
 def create_access_token(data: dict):
@@ -34,7 +50,7 @@ class UserInDB(BaseModel):
 
 class UserInCreate(BaseModel):
     username: str
-    email: str
+    email: EmailStr
     password: str
 
 class Token(BaseModel):
@@ -42,8 +58,15 @@ class Token(BaseModel):
     token_type: str
 
 class UserInLogin(BaseModel):
-    email: str
+    email: EmailStr
     password: str
+
+class UserInForgotPassword(BaseModel):
+    email: EmailStr
+
+class UserInResetPassword(BaseModel):
+    email: EmailStr
+    new_password: str
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/login")
 
@@ -79,27 +102,27 @@ async def login(user: UserInLogin):
     token = create_access_token(data={"sub": user.email})
     return {"access_token": token, "token_type": "bearer"}
 
-# Test endpoint to get current user
-@app.get("/api/users/me")
-async def read_users_me(token: str = Depends(oauth2_scheme)):
-    credentials_exception = HTTPException(
-        status_code=401,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        email: str = payload.get("sub")
-        if email is None:
-            raise credentials_exception
-    except JWTError:
-        raise credentials_exception
-    user = users.get(email)
-    if user is None:
-        raise credentials_exception
-    return user
 
-    
+# Forgot Password endpoint
+@app.post("/api/forgot-password")
+async def forgot_password(user: UserInForgotPassword):
+    if user.email not in users:
+        raise HTTPException(status_code=404, detail="Email not registered")
+    return {"message": f"Password reset instructions sent to {user.email}"}
+
+# Reset Password endpoint
+@app.post("/api/reset-password")
+async def reset_password(user: UserInResetPassword):
+    if user.email not in users:
+        raise HTTPException(status_code=404, detail="Email not registered")
+    hashed_password = pwd_context.hash(user.new_password)
+    users[user.email].hashed_password = hashed_password
+    return {"message": "Password reset successful"}
+
+# Logout endpoint (revokes token by not storing it on client-side)
+@app.post("/api/logout")
+async def logout(token: str = Depends(oauth2_scheme)):
+    return {"message": "Logged out successfully"}
 
 # How to run Backend
 # python -m venv venv
