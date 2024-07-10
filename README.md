@@ -2,7 +2,6 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-
 ## Available Scripts
 
 In the project directory, you can run:
@@ -30,3 +29,10 @@ The build is minified and the filenames include the hashes.
 Your app is ready to be deployed!
 
 
+
+### `Running backend`
+
+ python -m venv venv </br>
+ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process </br>
+ .\venv\Scripts\activate </br>
+ uvicorn main:app --reload </br>
