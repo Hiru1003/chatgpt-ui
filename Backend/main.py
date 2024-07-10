@@ -62,7 +62,6 @@ class UserInCreate(BaseModel):
 
 class Token(BaseModel):
     access_token: str
-    token_type: str
 
 class UserInLogin(BaseModel):
     email: EmailStr
@@ -86,7 +85,7 @@ async def signup(user: UserInCreate):
     hashed_password = pwd_context.hash(user.password)
     users[user.email] = UserInDB(username=user.username, email=user.email, hashed_password=hashed_password)
     token = create_access_token(data={"sub": user.email})
-    return {"access_token": token, "token_type": "bearer"}
+    return {"access_token": token}
 
 # Verify password
 def verify_password(plain_password, hashed_password):
@@ -107,7 +106,7 @@ async def login(user: UserInLogin):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     token = create_access_token(data={"sub": user.email})
-    return {"access_token": token, "token_type": "bearer"}
+    return {"access_token": token}
 
 # Forgot Password endpoint
 @app.post("/api/forgot-password")
@@ -129,3 +128,12 @@ async def reset_password(user: UserInResetPassword):
 @app.post("/api/logout")
 async def logout(token: str = Depends(oauth2_scheme)):
     return {"message": "Logged out successfully"}
+
+
+
+
+# How to run Backend
+# python -m venv venv
+# Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process 
+# .\venv\Scripts\activate
+# uvicorn main:app --reload

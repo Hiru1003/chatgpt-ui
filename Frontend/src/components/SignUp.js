@@ -35,7 +35,7 @@ const SignupPage = () => {
         const { access_token } = response.data;
         localStorage.setItem('token', access_token);
         alert('Signup successful!');
-        window.location.href = '/MainPage'; // Replace with your desired redirect path
+        window.location.href = '/MainPage';
       } else {
         throw new Error('Signup failed, please try again.');
       }
