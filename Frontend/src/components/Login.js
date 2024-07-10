@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Typography, TextField, Button, Checkbox, FormControlLabel, Link, Grid, Divider, IconButton } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import axios from 'axios';
-import loginImage from '../assets/login.jpeg';
+import loginImage from '../assets/login.png';
 import GoogleIcon from '@mui/icons-material/Google';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
@@ -43,7 +43,7 @@ const LoginPage = () => {
         alignItems: 'center',
         justifyContent: 'center',
         height: '100vh',
-        bgcolor: 'white',
+        bgcolor: 'black',
         padding: '20px',
       }}
     >
@@ -56,7 +56,7 @@ const LoginPage = () => {
           alignItems: 'center',
           padding: '20px',
           width: '80%',
-          backgroundColor: 'white',
+          backgroundColor: '#404042',
           boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
         }}
       >
@@ -73,7 +73,7 @@ const LoginPage = () => {
           {/* Right column for login form */}
           <Grid item xs={12} sm={isSmallScreen ? 12 : 6} container justifyContent="center" alignItems="center">
             <Box>
-              <Typography variant="h4" gutterBottom sx={{ mb: 2, fontWeight: 'bold' }}>
+              <Typography variant="h4" gutterBottom sx={{ mb: 2, fontWeight: 'bold' , color:'white'}}>
                 Welcome Back!
               </Typography>
               <Typography
@@ -82,7 +82,7 @@ const LoginPage = () => {
                 sx={{
                   mb: 2,
                   fontWeight: 'bold',
-                  background: 'linear-gradient(90deg, #84a6f0, #02031a)',
+                  background: 'linear-gradient(90deg, #84a6f0, #161EDD)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                 }}
@@ -94,8 +94,15 @@ const LoginPage = () => {
                 label="Email"
                 variant="outlined"
                 fullWidth
-                sx={{ mb: 2 }}
+                sx={{ mb: 2,border: '1px solid #ccc', borderRadius: '5px' }}
                 value={email}
+                InputProps={{
+                  style: { color: 'white' }, 
+                  placeholder: 'Email', 
+                }}
+                InputLabelProps={{
+                  style: { color: 'white' }, 
+                }}
                 onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
@@ -104,14 +111,21 @@ const LoginPage = () => {
                 type="password"
                 variant="outlined"
                 fullWidth
-                sx={{ mb: 2 }}
+                sx={{ mb: 2 ,border: '1px solid #ccc', borderRadius: '5px'}}
                 value={password}
+                InputProps={{
+                  style: { color: 'white' }, 
+                  placeholder: 'Password', 
+                }}
+                InputLabelProps={{
+                  style: { color: 'white' }, 
+                }}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <FormControlLabel
                 control={<Checkbox defaultChecked />}
                 label="Remember Me"
-                sx={{ mb: 2, textAlign: 'left' }}
+                sx={{ mb: 2, textAlign: 'left', color:'white' }}
               />
               <Button variant="contained" color="primary" fullWidth sx={{ mb: 2 }} onClick={handleLogin}>
                 Login
@@ -122,7 +136,7 @@ const LoginPage = () => {
                   Forgot Password?
                 </Link>
               </Typography>
-              <Typography variant="body2" sx={{ mb: 2, fontSize: '16px' }}>
+              <Typography variant="body2" sx={{ mb: 2, fontSize: '16px' , color:'white'}}>
                 Don't have an account? <Link href="/signup">Sign Up</Link>
               </Typography>
 
@@ -140,9 +154,9 @@ const LoginPage = () => {
                   {/* Google login */}
                   <Box sx={{ border: '1px solid #ccc', borderRadius: '5px', p: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <IconButton>
-                      <GoogleIcon />
+                      <GoogleIcon sx={{color:'white'}}/>
                     </IconButton>
-                    <Typography variant="body2" sx={{ ml: 2 }}>
+                    <Typography variant="body2" sx={{ ml: 2 , color:'white'}}>
                       Continue with Google
                     </Typography>
                   </Box>
@@ -151,9 +165,9 @@ const LoginPage = () => {
                   {/* LinkedIn login */}
                   <Box sx={{ border: '1px solid #ccc', borderRadius: '5px', p: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <IconButton>
-                      <LinkedInIcon />
+                      <LinkedInIcon sx={{color:'white'}}/>
                     </IconButton>
-                    <Typography variant="body2" sx={{ ml: 2 }}>
+                    <Typography variant="body2" sx={{ ml: 2 , color:'white'}}>
                       Continue with LinkedIn
                     </Typography>
                   </Box>

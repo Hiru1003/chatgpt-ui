@@ -1,28 +1,23 @@
 import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, Grid, useMediaQuery } from '@mui/material';
+import { Box, Typography, TextField, Button, Grid, useMediaQuery, Link } from '@mui/material';
+import { useHistory } from 'react-router-dom';  
 import axios from 'axios';
-import forgotpassword from '../assets/forgotpassword.jpeg';
+import forgotpassword from '../assets/forgotpassword.png';
 
 const ForgotPasswordPage = () => {
+  const history = useHistory();  // Initialize history for navigation
   const isSmallScreen = useMediaQuery('(max-width:900px)');
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [email, setEmail] = useState('');
   const [error, setError] = useState('');
 
   const handleResetPassword = async () => {
     try {
-      const response = await axios.post('/api/reset-password', {
-        oldPassword,
-        newPassword,
-        confirmNewPassword,
-      });
-      console.log('Password reset successful:', response.data);
-      alert('Password reset successful. You can now log in with your new password.');
-      // Optionally redirect user to login page
-      window.location.href = '/login';
+      const response = await axios.post('/api/forgot-password', { email });
+      console.log('Forgot password request successful:', response.data);
+      // Redirect to success page after successful password reset
+      history.push('/reset-success');
     } catch (error) {
-      console.error('Password reset error:', error);
+      console.error('Forgot password error:', error);
       setError(error.response?.data?.detail || 'An error occurred. Please try again.');
     }
   };
@@ -34,7 +29,7 @@ const ForgotPasswordPage = () => {
         alignItems: 'center',
         justifyContent: 'center',
         height: '100vh',
-        bgcolor: 'white',
+        bgcolor: 'black',
         padding: '20px',
       }}
     >
@@ -47,7 +42,7 @@ const ForgotPasswordPage = () => {
           alignItems: 'center',
           padding: '20px',
           width: '80%',
-          backgroundColor: 'white',
+          backgroundColor: '#404042',
           boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
         }}
       >
@@ -64,7 +59,7 @@ const ForgotPasswordPage = () => {
           {/* Right column for forgot password form */}
           <Grid item xs={12} sm={isSmallScreen ? 12 : 6} container justifyContent="center" alignItems="center">
             <Box>
-              <Typography variant="h4" gutterBottom sx={{ mb: 2, fontWeight: 'bold' }}>
+              <Typography variant="h4" gutterBottom sx={{ mb: 2, fontWeight: 'bold', color: 'white' }}>
                 Recover Password Here!
               </Typography>
               <Typography
@@ -81,40 +76,31 @@ const ForgotPasswordPage = () => {
                 Forgot Password
               </Typography>
               <TextField
-                id="old-password"
-                label="Old Password"
-                type="password"
+                id="email"
+                label="Email"
                 variant="outlined"
                 fullWidth
-                sx={{ mb: 2 }}
-                value={oldPassword}
-                onChange={(e) => setOldPassword(e.target.value)}
-              />
-              <TextField
-                id="new-password"
-                label="New Password"
-                type="password"
-                variant="outlined"
-                fullWidth
-                sx={{ mb: 2 }}
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-              />
-              <TextField
-                id="confirm-new-password"
-                label="Confirm New Password"
-                type="password"
-                variant="outlined"
-                fullWidth
-                sx={{ mb: 2 }}
-                value={confirmNewPassword}
-                onChange={(e) => setConfirmNewPassword(e.target.value)}
+                sx={{ mb: 2, border: '1px solid #ccc', borderRadius: '5px' }}
+                value={email}
+                InputProps={{
+                  style: { color: 'white' },
+                  placeholder: 'Email',
+                }}
+                InputLabelProps={{
+                  style: { color: 'white' },
+                }}
+                onChange={(e) => setEmail(e.target.value)}
               />
 
-              {error && <Typography color="error" sx={{ mb: 2 }}>{error}</Typography>}
+              {error && typeof error === 'string' && (
+                <Typography color="error" sx={{ mb: 2 }}>{error}</Typography>
+              )}
               <Button variant="contained" color="primary" fullWidth sx={{ mb: 2 }} onClick={handleResetPassword}>
                 Reset Password
               </Button>
+              <Typography variant="body2" sx={{ mb: 2, fontSize: '16px', color: 'white' }}>
+                <Link href="/login">Back to Login</Link>
+              </Typography>
             </Box>
           </Grid>
         </Grid>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import axios from '../axios';
+import axios from 'axios'; 
 import { Box, Typography, TextField, Button, Link, Grid, useMediaQuery } from '@mui/material';
-import SignupImage from '../assets/signup.jpeg';
+import SignupImage from '../assets/signup.png';
 
 const SignupPage = () => {
   const isSmallScreen = useMediaQuery('(max-width:900px)');
@@ -18,24 +18,14 @@ const SignupPage = () => {
       return;
     }
 
-    if (password.length < 8) {
-      setError("Password should be at least 8 characters");
-      return;
-    }
-
     try {
-      const response = await axios.post('/api/signup', {
-        username,
-        email,
-        password,
-        confirm_password: confirmPassword,
-      });
+      const response = await axios.post('http://127.0.0.1:8000/api/signup', { username, email, password, confirm_password: confirmPassword });
 
       if (response && response.data && response.data.access_token) {
         const { access_token } = response.data;
-        localStorage.setItem('token', access_token);
+        document.cookie = `token=${access_token}; path=/`;
         alert('Signup successful!');
-        window.location.href = '/MainPage';
+        window.location.href = '/MainPage'; 
       } else {
         throw new Error('Signup failed, please try again.');
       }
@@ -52,7 +42,7 @@ const SignupPage = () => {
         alignItems: 'center',
         justifyContent: 'center',
         height: '100vh',
-        bgcolor: 'white',
+        bgcolor: 'black',
         padding: '20px',
       }}
     >
@@ -65,20 +55,20 @@ const SignupPage = () => {
           alignItems: 'center',
           padding: '20px',
           width: '80%',
-          backgroundColor: 'white',
+          backgroundColor: '#404042',
           boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
         }}
       >
         <Grid container spacing={3}>
           {!isSmallScreen && (
             <Grid item xs={12} sm={6}>
-              <img src={SignupImage} alt="Logo" style={{ maxWidth: '100%', height: 'auto' }} />
+              <img src={SignupImage} alt="Signup" style={{ maxWidth: '100%', height: 'auto' }} />
             </Grid>
           )}
 
           <Grid item xs={12} sm={isSmallScreen ? 12 : 6} container justifyContent="center" alignItems="center">
             <Box width="100%">
-              <Typography variant="h4" gutterBottom sx={{ mb: 2, fontWeight: 'bold' }}>
+              <Typography variant="h4" gutterBottom sx={{ mb: 2, fontWeight: 'bold' , color:'white'}}>
                 Get Started!
               </Typography>
               <Typography
@@ -87,7 +77,7 @@ const SignupPage = () => {
                 sx={{
                   mb: 2,
                   fontWeight: 'bold',
-                  background: 'linear-gradient(90deg, #84a6f0, #02031a)',
+                  background: 'linear-gradient(90deg, #84a6f0, #161EDD)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                 }}
@@ -102,7 +92,15 @@ const SignupPage = () => {
                   fullWidth
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 2,border: '1px solid #ccc', borderRadius: '5px' }}
+                  InputProps={{
+                    style: { color: 'white' }, 
+                    placeholder: 'Username', 
+                  }}
+                  InputLabelProps={{
+                    style: { color: 'white' }, 
+                  }}
+                  required
                 />
                 <TextField
                   id="email"
@@ -111,7 +109,14 @@ const SignupPage = () => {
                   fullWidth
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 2 ,border: '1px solid #ccc', borderRadius: '5px'}}
+                  InputProps={{
+                    placeholder: 'Email', 
+                  }}
+                  InputLabelProps={{
+                    style: { color: 'white' }, 
+                  }}
+                  required
                 />
                 <TextField
                   id="password"
@@ -121,25 +126,40 @@ const SignupPage = () => {
                   fullWidth
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 2 ,border: '1px solid #ccc', borderRadius: '5px'}}
+                  InputProps={{
+                    placeholder: 'Password', 
+                  }}
+                  InputLabelProps={{
+                    style: { color: 'white' }, 
+                  }}
+                  required
                 />
                 <TextField
                   id="confirmPassword"
                   label="Confirm Password"
                   type="password"
-                  variant="outlined"
                   fullWidth
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 2 ,border: '1px solid #ccc', borderRadius: '5px'}}
+                  InputProps={{
+                    style: { color: 'white' }, 
+                    placeholder: 'Confirm Password', 
+                  }}
+                  InputLabelProps={{
+                    style: { color: 'white' }, 
+                  }}
+                  required
                 />
                 {error && <Typography color="error" sx={{ mb: 2 }}>{error}</Typography>}
                 <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mb: 2 }}>
                   Sign Up
                 </Button>
               </form>
-              <Typography variant="body2" sx={{ mb: 1, fontSize: '16px' }}>
-                Already have an account? <Link href="/login">Log In</Link>
+              <Typography variant="body2" sx={{ mb: 1, fontSize: '16px', color:'white'}}>
+                Already have an account? 
+                <Link href="/login">Log In</Link>
               </Typography>
             </Box>
           </Grid>

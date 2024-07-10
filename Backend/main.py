@@ -1,20 +1,22 @@
-from pydantic import BaseModel, EmailStr, validator
-from fastapi import FastAPI, HTTPException, Depends
-from passlib.context import CryptContext
-from jose import JWTError, jwt
 from datetime import datetime, timedelta
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from fastapi.middleware.cors import CORSMiddleware
+from typing import Optional
 
+from fastapi import FastAPI, HTTPException, status, Depends
+from fastapi.security import OAuth2PasswordBearer
+from fastapi.middleware.cors import CORSMiddleware
+from passlib.context import CryptContext
+from pydantic import BaseModel, EmailStr, validator
+from jose import jwt, JWTError
+
+# FastAPI instance
+app = FastAPI()
+
+# CORS middleware configuration
 origins = [
     "http://localhost",
     "http://localhost:3000", 
     "http://127.0.0.1:8000",
 ]
-
-app = FastAPI()
-
-# CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -23,21 +25,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Sample user storage (replace with your database or data structure)
+# Sample user storage (in memory)
 users = {}
 
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # JWT settings
-SECRET_KEY = "your_secret_key"
+SECRET_KEY = "CoJsCG9ueQIF-xGL7H2iOTWH1ot9jZQbwr5Wwc6yim8"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30 * 24 * 60  # 30 days
 
 # Token functions
-def create_access_token(data: dict):
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
@@ -73,6 +75,13 @@ class UserInForgotPassword(BaseModel):
 class UserInResetPassword(BaseModel):
     email: EmailStr
     new_password: str
+    confirm_password: str
+
+    @validator("confirm_password")
+    def passwords_match(cls, v, values, **kwargs):
+        if 'new_password' in values and v != values['new_password']:
+            raise ValueError("Passwords do not match")
+        return v
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/login")
 
@@ -80,7 +89,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/login")
 @app.post("/api/signup", response_model=Token)
 async def signup(user: UserInCreate):
     if user.email in users:
-        raise HTTPException(status_code=409, detail="Email already registered")
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Email already registered")
 
     hashed_password = pwd_context.hash(user.password)
     users[user.email] = UserInDB(username=user.username, email=user.email, hashed_password=hashed_password)
@@ -103,7 +112,7 @@ def authenticate_user(email: str, password: str):
 async def login(user: UserInLogin):
     authenticated_user = authenticate_user(user.email, user.password)
     if not authenticated_user:
-        raise HTTPException(status_code=401, detail="Invalid credentials")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
 
     token = create_access_token(data={"sub": user.email})
     return {"access_token": token}
@@ -112,14 +121,16 @@ async def login(user: UserInLogin):
 @app.post("/api/forgot-password")
 async def forgot_password(user: UserInForgotPassword):
     if user.email not in users:
-        raise HTTPException(status_code=404, detail="Email not registered")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Email not registered")
     return {"message": f"Password reset instructions sent to {user.email}"}
 
 # Reset Password endpoint
 @app.post("/api/reset-password")
 async def reset_password(user: UserInResetPassword):
     if user.email not in users:
-        raise HTTPException(status_code=404, detail="Email not registered")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Email not registered")
+    if user.new_password != user.confirm_password:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Passwords do not match")
     hashed_password = pwd_context.hash(user.new_password)
     users[user.email].hashed_password = hashed_password
     return {"message": "Password reset successful"}
@@ -128,8 +139,6 @@ async def reset_password(user: UserInResetPassword):
 @app.post("/api/logout")
 async def logout(token: str = Depends(oauth2_scheme)):
     return {"message": "Logged out successfully"}
-
-
 
 
 # How to run Backend
