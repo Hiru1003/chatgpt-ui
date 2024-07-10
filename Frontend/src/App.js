@@ -6,11 +6,12 @@ import MainPage from './components/MainPage';
 import LoginPage from './components/Login';
 import MessagePage from './components/Message';
 import SignupPage from './components/SignUp';
-import ResetSuccessPage from './components/ResetSuccessPage';
 import ForgotPasswordPage from './components/ForgotPassword'; 
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useMediaQuery } from '@mui/material';
 import DummyChat from './components/DummyChat';
+import ResetPasswordPage from './components/Resetpassword';
+
 
 const theme = createTheme({
   palette: {
@@ -41,7 +42,7 @@ function App() {
   const [isSidebarVisible, setSidebarVisible] = useState(true);
 
   useEffect(() => {
-    const shouldShowSidebar = !['/login', '/signup', '/forgot-password','/reset-success'].includes(location.pathname);
+    const shouldShowSidebar = !['/login', '/signup', '/forgot-password','/reset-password'].includes(location.pathname);
     setSidebarVisible(shouldShowSidebar && isLargeScreen);
   }, [location.pathname, isLargeScreen]);
 
@@ -63,8 +64,8 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
-            <Route path="/reset-success" element={<ResetSuccessPage />} />
             <Route path="/DummyChat" element={<DummyChat isVisible={isSidebarVisible} />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} /> 
             <Route path="/forgot-password" element={<ForgotPasswordPage />} /> 
             <Route path="/message" element={<MessagePage />} />
             <Route path="/" element={<MainPage isVisible={isSidebarVisible} />} />

@@ -1,25 +1,12 @@
 import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, Grid, useMediaQuery,Link } from '@mui/material';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; 
+import { Box, Typography,Button, Grid, useMediaQuery } from '@mui/material';
 import forgotpassword from '../assets/forgotpassword.png';
+import { useNavigate } from 'react-router-dom';
 
-const ForgotPasswordPage = () => {
-  const navigate = useNavigate(); 
+const ResetPasswordPage = () => {
+  const navigate = useNavigate();
   const isSmallScreen = useMediaQuery('(max-width:900px)');
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
-
-  const handleResetPassword = async () => {
-    try {
-      const response = await axios.post('/api/forgot-password', { email });
-      console.log('Forgot password request successful:', response.data);
-      navigate('/reset-password');
-    } catch (error) {
-      console.error('Forgot password error:', error);
-      setError(error.response?.data?.detail || 'An error occurred. Please try again.');
-    }
-  };
+  const [error] = useState('');
 
   return (
     <Box
@@ -58,9 +45,7 @@ const ForgotPasswordPage = () => {
           {/* Right column for forgot password form */}
           <Grid item xs={12} sm={isSmallScreen ? 12 : 6} container justifyContent="center" alignItems="center">
             <Box>
-              <Typography variant="h4" gutterBottom sx={{ mb: 2, fontWeight: 'bold', color:'white' }}>
-                Recover Password Here!
-              </Typography>
+              
               <Typography
                 variant="h2"
                 gutterBottom
@@ -72,34 +57,23 @@ const ForgotPasswordPage = () => {
                   WebkitTextFillColor: 'transparent',
                 }}
               >
-                Forgot Password
+                Recover Password!
               </Typography>
-              <TextField
-                id="email"
-                label="Email"
-                variant="outlined"
-                fullWidth
-                sx={{ mb: 2,border: '1px solid #ccc', borderRadius: '5px' }}
-                value={email}
-                InputProps={{
-                  style: { color: 'white' }, 
-                  placeholder: 'Email', 
-                }}
-                InputLabelProps={{
-                  style: { color: 'white' }, 
-                }}
-                onChange={(e) => setEmail(e.target.value)}
-              />
 
+              <Typography variant="h6" gutterBottom sx={{ mb: 2, fontWeight: 'semibold', color:'white' }}>
+              Password reset email sent. Check your email for instructions.
+              </Typography>
               {error && typeof error === 'string' && (
                 <Typography color="error" sx={{ mb: 2 }}>{error}</Typography>
               )}
-              <Button variant="contained" color="primary" fullWidth sx={{ mb: 2 }} onClick={handleResetPassword}>
-                Forgot Password
+              {/* eslint-disable-next-line */}
+              <Button variant="contained" color="primary" fullWidth sx={{ mb: 2 }} onClick={() => navigate('/login')}>
+                Back to Login
               </Button>
-              <Typography variant="body2" sx={{ mb: 2, fontSize: '16px' , color:'white'}}>
-                 <Link href="/login">Back to Login</Link>
-              </Typography>
+              {/* eslint-disable-next-line */}
+              <Button variant="contained" color="primary" fullWidth sx={{ mb: 2 }} onClick={() => navigate('/signup')}>
+                Back to Signup
+              </Button>
             </Box>
           </Grid>
         </Grid>
@@ -108,4 +82,4 @@ const ForgotPasswordPage = () => {
   );
 };
 
-export default ForgotPasswordPage;
+export default ResetPasswordPage;
