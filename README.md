@@ -32,3 +32,7 @@ Your app is ready to be deployed!
 
 ### `Running backend`
 
+# python -m venv venv
+# Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process 
+# .\venv\Scripts\activate
+# uvicorn main:app --reload
