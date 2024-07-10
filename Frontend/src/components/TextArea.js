@@ -3,14 +3,14 @@ import { Box, IconButton, Typography, useMediaQuery } from '@mui/material';
 import { FaCircleArrowUp } from "react-icons/fa6";
 import { CgAttachment } from "react-icons/cg";
 import { MdKeyboardVoice, MdMenu } from "react-icons/md";
-import { LiaBookSolid } from "react-icons/lia";
+import { RiBook3Fill } from "react-icons/ri"; 
 import UploadForm from './UploadForm';
 import QuestionMarkDropdown from './QuestionMarkDropdown';
 
 const TextAreaTemplete = () => {
   const [showForm, setShowForm] = useState(false);
   const [activeForm, setActiveForm] = useState('yourPrompts');
-  const [showIcons, setShowIcons] = useState(false); 
+  const [showIcons, setShowIcons] = useState(false);
   const fileInputRef = useRef(null);
   const isSmallScreen = useMediaQuery('(max-width:1000px)');
 
@@ -25,6 +25,13 @@ const TextAreaTemplete = () => {
     }
   };
 
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log('File selected:', file);
+      // Perform further actions with the selected file if needed
+    }
+  };
 
   const handleFormClose = () => {
     setShowForm(false);
@@ -67,11 +74,17 @@ const TextAreaTemplete = () => {
         ) : (
           <>
             <IconButton aria-label="upload" sx={{ fontSize: { xs: '1.8rem', sm: '1.8rem' }, color: "white" }} onClick={handleUploadClick}>
-              <LiaBookSolid />
+              <RiBook3Fill />
             </IconButton>
 
             <IconButton aria-label="upload" sx={{ fontSize: { xs: '1.5rem', sm: '1.5rem' }, color: "white" }} onClick={handleFileUploadButtonClick}>
               <CgAttachment />
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileUpload}
+                style={{ display: 'none' }}
+              />
             </IconButton>
 
             <IconButton aria-label="send" sx={{ fontSize: { xs: '1.5rem', sm: '1.8rem' }, color: "white" }}>
@@ -84,11 +97,17 @@ const TextAreaTemplete = () => {
         {isSmallScreen && showIcons && (
           <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
             <IconButton aria-label="upload" sx={{ fontSize: { xs: '1.5rem', sm: '1.5rem' }, color: "white" }} onClick={handleUploadClick}>
-              <LiaBookSolid />
+              <RiBook3Fill />
             </IconButton>
 
             <IconButton aria-label="upload" sx={{ fontSize: { xs: '1.5rem', sm: '1.5rem' }, color: "white" }} onClick={handleFileUploadButtonClick}>
               <CgAttachment />
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileUpload}
+                style={{ display: 'none' }}
+              />
             </IconButton>
 
             <IconButton aria-label="send" sx={{ fontSize: { xs: '1.5rem', sm: '1.5rem' }, color: "white" }}>
@@ -118,12 +137,12 @@ const TextAreaTemplete = () => {
             }}
           />
         </Box>
-        
+
         <IconButton aria-label="send" sx={{ fontSize: { xs: '1.5rem', sm: '1.8rem' }, color: "white" }}>
           <FaCircleArrowUp />
         </IconButton>
       </Box>
-      
+
       <Box sx={{ position: 'relative', bottom: -30, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Typography sx={{ color: "grey", fontSize: { xs: '8px', sm: '14px' }, textAlign: 'center' }}>
           ChatGPT can make mistakes. Check important info.
@@ -160,7 +179,7 @@ const TextAreaTemplete = () => {
         </>
       )}
     </div>
-  )
-}
+  );
+};
 
 export default TextAreaTemplete;
