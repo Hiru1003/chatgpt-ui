@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, IconButton, Menu, MenuItem, TextField, colors } from '@mui/material';
+import { Box, Typography, IconButton, Menu, MenuItem, TextField, colors, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IoShareOutline } from "react-icons/io5";
 import { MdOutlineModeEdit } from "react-icons/md";
@@ -24,15 +24,14 @@ const ChatHistory = ({ text, onDelete, onRename }) => {
     handleClose();
   };
 
-  const handleRenameSubmit = (event) => {
-    event.preventDefault();
+  const handleRenameSubmit = () => {
     if (newText.trim()) {
       onRename(text, newText);
     }
     setIsRenaming(false);
   };
 
-  const handleDelete = () => {
+  const handleDeleteClick = () => {
     onDelete(text);
     handleClose();
   };
@@ -40,23 +39,9 @@ const ChatHistory = ({ text, onDelete, onRename }) => {
   return (
     <Box sx={{ p: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', width: '100%' }}>
-        {isRenaming ? (
-          <form onSubmit={handleRenameSubmit} style={{ flexGrow: 1, marginRight: '8px' }}>
-            <TextField
-              value={newText}
-              onChange={(e) => setNewText(e.target.value)}
-              variant="outlined"
-              size="small"
-              fullWidth
-              autoFocus
-              onBlur={() => setIsRenaming(false)}
-            />
-          </form>
-        ) : (
-          <Typography variant="subtitle1" style={{ color: 'white', flexGrow: 1, fontSize: '17px', marginRight: '8px' }}>
-            {text}
-          </Typography>
-        )}
+        <Typography variant="subtitle1" style={{ color: 'white', flexGrow: 1, fontSize: '17px', marginRight: '8px' }}>
+          {text}
+        </Typography>
         <IconButton
           aria-label="more"
           aria-controls="menu"
@@ -104,11 +89,35 @@ const ChatHistory = ({ text, onDelete, onRename }) => {
           <Typography variant="body1" sx={{ color: 'white', fontSize: '1rem' }}>Archive</Typography>
         </MenuItem>
 
-        <MenuItem onClick={handleDelete} sx={{ padding: '20px' }}>
+        <MenuItem onClick={handleDeleteClick} sx={{ padding: '20px' }}>
           <RiDeleteBin6Line style={{ marginRight: '20px', color: 'red', fontSize: '1.3rem' }} />
           <Typography variant="body1" sx={{ color: 'red', fontSize: '1rem' }}>Delete</Typography>
         </MenuItem>
       </Menu>
+
+      <Dialog open={isRenaming} onClose={() => setIsRenaming(false)} PaperProps={{ style: { backgroundColor: '#333' } }}>
+        <DialogTitle sx={{ color: 'white' }}>Rename Chat</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="New Name"
+            type="text"
+            fullWidth
+            value={newText}
+            onChange={(e) => setNewText(e.target.value)}
+            sx={{ input: { color: 'white' }, label: { color: 'white' }, '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: 'white' }, '&:hover fieldset': { borderColor: 'white' }, '&.Mui-focused fieldset': { borderColor: 'white' } } }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsRenaming(false)} sx={{ color: 'white' }}>
+            Cancel
+          </Button>
+          <Button onClick={handleRenameSubmit} sx={{ color: 'white' }}>
+            Rename
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
