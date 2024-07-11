@@ -39,11 +39,8 @@ const DummyChat = () => {
     const file = event.target.files[0];
     if (file) {
       console.log('File selected:', file);
-      // Perform further actions with the selected file if needed
     }
   };
-
-
 
   const [inputText, setInputText] = useState('');
   const messagesEndRef = useRef(null);
@@ -194,7 +191,6 @@ const DummyChat = () => {
             )}
           </Box>
         ))}
-        {/* Dummy element to scroll to */}
         <div ref={messagesEndRef} />
       </Box>
 
@@ -224,13 +220,19 @@ const DummyChat = () => {
               <MdKeyboardVoice />
             </IconButton>
 
-            <Box sx={{ width: '100%', mr: 1, position: 'relative' }}>
+            <Box sx={{ width: '80%', mr: 1, position: 'relative', justifyContent:'center' }}>
                 <textarea
                 fullWidth
                 value={inputText}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault(); 
+                    handleSubmit(e); 
+                  }
+                }}
                 onChange={(e) => setInputText(e.target.value)}
                 variant="outlined"
-                placeholder="Type a message..."
+                placeholder="Message ChatGPT"
                 size="small"
                 sx={{
                   mr: 1,
@@ -242,7 +244,7 @@ const DummyChat = () => {
                   }
                 }}
                 style={{
-                  width: '80%',
+                  width: '100%',
                   padding: '10px',
                   border: '1px solid black',
                   borderRadius: '15px',
@@ -256,7 +258,7 @@ const DummyChat = () => {
                   justifyContent: 'center',
                   boxSizing: 'border-box',
                 }}
-              />
+               />
           </Box>
 
           <IconButton type="submit" aria-label="Send" sx={{ fontSize: { xs: '1.5rem', sm: '1.8rem' }, color: "white" }}>
