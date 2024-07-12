@@ -13,6 +13,8 @@ const TextAreaTemplete = () => {
   const [showIcons, setShowIcons] = useState(false);
   const fileInputRef = useRef(null);
   const isSmallScreen = useMediaQuery('(max-width:1000px)');
+  const [messages, setMessages] = useState();
+
 
   const handleUploadClick = () => {
     setShowForm(true);
@@ -47,6 +49,39 @@ const TextAreaTemplete = () => {
 
   const toggleIcons = () => {
     setShowIcons(!showIcons);
+  };
+
+
+  const [inputText, setInputText] = useState('');
+  const messagesEndRef = useRef(null);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (inputText.trim() === '') return;
+
+    const newMessages = [...messages, { text: inputText, sender: 'right' }];
+    setMessages(newMessages);
+    setInputText('');
+
+    setTimeout(() => {
+      simulateBotResponse(newMessages);
+    }, 500);
+  };
+
+  const simulateBotResponse = (currentMessages) => {
+    const botMessage = "Hi, how can I help you?";
+    let botText = '';
+    let index = 0;
+
+    const interval = setInterval(() => {
+      if (index < botMessage.length) {
+        botText += botMessage[index];
+        setMessages([...currentMessages, { text: botText, sender: 'left' }]);
+        index++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 100);
   };
 
   return (
@@ -120,6 +155,12 @@ const TextAreaTemplete = () => {
         <Box sx={{ width: '100%', mr: 1, position: 'relative' }}>
           <textarea
             placeholder="Message ChatGPT"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault(); 
+                handleSubmit(e); 
+              }
+            }}
             style={{
               width: '100%',
               padding: '10px',

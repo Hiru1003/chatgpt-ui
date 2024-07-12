@@ -86,9 +86,7 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
                 <Typography variant="subtitle1" style={{ color: 'grey' }}>Today</Typography>
               </Box>
               {chatHistory.slice(0, 4).map((item) => (
-                <Link style={{ textDecoration: 'none' }} to='/DummyChat' key={item.text}>
-                  <ChatHistory text={item.text} onDelete={handleDelete} onRename={handleRename} />
-                </Link>
+                <ChatHistory text={item.text} onDelete={handleDelete} onRename={handleRename} key={item.text} />
               ))}
             </Box>
             <Box sx={{ paddingLeft: 1 }}>
@@ -96,9 +94,7 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
             </Box>
             <Box>
               {chatHistory.slice(4).map((item) => (
-                <Link style={{ textDecoration: 'none' }} to='/DummyChat' key={item.text}>
-                  <ChatHistory text={item.text} onDelete={handleDelete} onRename={handleRename} />
-                </Link>
+                <ChatHistory text={item.text} onDelete={handleDelete} onRename={handleRename} key={item.text} />
               ))}
             </Box>
           </div>

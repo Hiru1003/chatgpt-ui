@@ -5,6 +5,7 @@ import { IoShareOutline } from "react-icons/io5";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { RiInboxUnarchiveLine } from "react-icons/ri";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { Link } from 'react-router-dom';
 
 const ChatHistory = ({ text, onDelete, onRename }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -36,11 +37,21 @@ const ChatHistory = ({ text, onDelete, onRename }) => {
     handleClose();
   };
 
+  const handleAchieveClick = () => {
+    // Handle achieve action here
+    handleClose();
+  };
+
+  const handleShareClick = () => {
+    // Handle share action here
+    handleClose();
+  };
+
   return (
     <Box sx={{ p: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', width: '100%' }}>
         <Typography variant="subtitle1" style={{ color: 'white', flexGrow: 1, fontSize: '17px', marginRight: '8px' }}>
-          {text}
+          <Link to="/DummyChat" style={{ textDecoration: 'none', color: 'inherit' }}>{text}</Link>
         </Typography>
         <IconButton
           aria-label="more"
@@ -74,7 +85,7 @@ const ChatHistory = ({ text, onDelete, onRename }) => {
           horizontal: 'right',
         }}
       >
-        <MenuItem onClick={handleClose} sx={{ padding: '18px' }}>
+        <MenuItem onClick={handleShareClick} sx={{ padding: '18px' }}>
           <IoShareOutline style={{ marginRight: '20px', color: 'white', fontSize: '1.3rem' }} />
           <Typography variant="body1" sx={{ color: 'white', fontSize: '1rem' }}>Share</Typography>
         </MenuItem>
@@ -84,9 +95,9 @@ const ChatHistory = ({ text, onDelete, onRename }) => {
           <Typography variant="body1" sx={{ color: 'white', fontSize: '1rem' }}>Rename</Typography>
         </MenuItem>
 
-        <MenuItem onClick={handleClose} sx={{ padding: '18px' }}>
+        <MenuItem onClick={handleAchieveClick} sx={{ padding: '18px' }}>
           <RiInboxUnarchiveLine style={{ marginRight: '20px', color: 'white', fontSize: '1.3rem' }} />
-          <Typography variant="body1" sx={{ color: 'white', fontSize: '1rem' }}>Archive</Typography>
+          <Typography variant="body1" sx={{ color: 'white', fontSize: '1rem' }}>Achieve</Typography>
         </MenuItem>
 
         <MenuItem onClick={handleDeleteClick} sx={{ padding: '20px' }}>
@@ -94,7 +105,6 @@ const ChatHistory = ({ text, onDelete, onRename }) => {
           <Typography variant="body1" sx={{ color: 'red', fontSize: '1rem' }}>Delete</Typography>
         </MenuItem>
       </Menu>
-      
 
       <Dialog open={isRenaming} onClose={() => setIsRenaming(false)} PaperProps={{ style: { backgroundColor: '#333' } }}>
         <DialogTitle sx={{ color: 'white' }}>Rename Chat</DialogTitle>
