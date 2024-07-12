@@ -42,14 +42,14 @@ const MainpageContainer = () => {
         <Grid item>
           <Box sx={containerStyles}>
             <RiLightbulbLine style={{ color: 'gold', fontSize: '22px', marginBottom: '8px' }} />
-            <Typography variant="h6" sx={{ color: "grey" ,fontSize: isSmallScreen ? '14px' : '18px'}}>Recipe with what's in kitchen</Typography>
+            <Typography variant="h6" sx={{ color: "grey" ,fontSize: isSmallScreen ? '14px' : '18px'}}>Recipe in kitchen</Typography>
           </Box>
         </Grid>
 
         <Grid item>
           <Box sx={containerStyles}>
-            <TbPlaneInflight style={{ color: 'yellow', fontSize: '22px', marginBottom: '8px' }} />
-            <Typography variant="h6" sx={{ color: "grey" ,fontSize: isSmallScreen ? '14px' : '18px'}}>Experience Seoul like a local</Typography>
+            <TbPlaneInflight style={{ color: 'green', fontSize: '22px', marginBottom: '8px' }} />
+            <Typography variant="h6" sx={{ color: "grey" ,fontSize: isSmallScreen ? '14px' : '18px'}}>Experience Seoul</Typography>
           </Box>
         </Grid>
 

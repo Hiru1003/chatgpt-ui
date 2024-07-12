@@ -1,18 +1,16 @@
-import React, { useState,useRef,useEffect } from 'react';
-import { Box, Typography, IconButton} from '@mui/material';
+import React, { useState, useRef, useEffect } from 'react';
+import { Box, Typography, IconButton } from '@mui/material';
 import { MdContentCopy } from "react-icons/md";
 import { BiDislike, BiLike } from "react-icons/bi";
 import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { FaCircleArrowUp } from "react-icons/fa6";
 import ChatgptDropdownHeader from './ChatgptDropdownHeader';
-import { RiBook3Fill } from "react-icons/ri"; 
+import { RiBook3Fill } from "react-icons/ri";
 import { CgAttachment } from "react-icons/cg";
 import { MdKeyboardVoice } from "react-icons/md";
 
 const DummyChat = () => {
-  const [setShowForm] = useState(false);
-  const [setActiveForm] = useState('yourPrompts');
   const fileInputRef = useRef(null);
   const [hoverIndex, setHoverIndex] = useState(null);
   const [messages, setMessages] = useState([
@@ -23,25 +21,6 @@ const DummyChat = () => {
     { text: 'I have eggs, flour, and sugar.', sender: 'right' },
     { text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sit amet accumsan tortor. Ut pellentesque nulla in nunc bibendum, ac euismod metus bibendum. Morbi eget tortor non quam sollicitudin dictum. Vivamus euismod, purus a ullamcorper facilisis, urna nunc lacinia risus, non feugiat justo velit nec urna. Nam ac elit justo. Donec id sapien nec est dapibus vestibulum. Aenean convallis tincidunt nisl vel elementum. Nullam vehicula lacus non libero sagittis, in tempus est fermentum. Sed non odio libero. Nulla facilisi. Integer non urna non neque convallis pretium id ac odio. Fusce at lectus sit amet est placerat gravida.', sender: 'left' },
   ]);
-
-  const handleUploadClick = () => {
-    setShowForm(true);
-    setActiveForm('yourPrompts');
-  };
-
-  const handleFileUploadButtonClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      console.log('File selected:', file);
-    }
-  };
-
   const [inputText, setInputText] = useState('');
   const messagesEndRef = useRef(null);
 
@@ -63,7 +42,7 @@ const DummyChat = () => {
     setHoverIndex(null);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (inputText.trim() === '') return;
 
@@ -71,61 +50,82 @@ const DummyChat = () => {
     setMessages(newMessages);
     setInputText('');
 
-    setTimeout(() => {
-      simulateBotResponse(newMessages);
-    }, 500);
+    try {
+      const response = await fetch('/bot/response', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: inputText }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const responseData = await response.json();
+      const botResponse = { text: responseData.text, sender: 'left' };
+      setMessages([...newMessages, botResponse]);
+    } catch (error) {
+      console.error('Error fetching bot response:', error);
+      // Handle error state if needed
+    }
   };
 
-  const simulateBotResponse = (currentMessages) => {
-    const botMessage = "Hi, how can I help you?";
-    let botText = '';
-    let index = 0;
+  const handleUploadClick = () => {
+    // Define your upload click logic here
+    console.log('Upload button clicked');
+  };
 
-    const interval = setInterval(() => {
-      if (index < botMessage.length) {
-        botText += botMessage[index];
-        setMessages([...currentMessages, { text: botText, sender: 'left' }]);
-        index++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 100);
+  const handleFileUploadButtonClick = () => {
+    // Define your file upload button click logic here
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileUpload = (event) => {
+    // Define your file upload logic here
+    const file = event.target.files[0];
+    if (file) {
+      console.log('File selected:', file);
+    }
   };
 
   return (
-    <Box 
-      sx={{ 
+    <Box
+      sx={{
         height: '100vh',
         pl: { xs: 2, sm: 5 },
         pr: { xs: 2, sm: 0 },
-        pt: 1, 
-        pb: 3, 
-        flexGrow: 1, 
-        display: 'flex', 
-        flexDirection: 'column', 
+        pt: 1,
+        pb: 3,
+        flexGrow: 1,
+        display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'space-between',
         bgcolor: '#212121',
         position: 'relative',
-        overflowX: 'hidden', 
+        overflowX: 'hidden',
         paddingLeft: '10px',
         paddingRight: '10px',
       }}
     >
       {/* Header */}
       <Box sx={{ padding: '10px 0', bgcolor: 'grey.900' }}>
-        <ChatgptDropdownHeader/>
+        <ChatgptDropdownHeader />
       </Box>
 
       {/* Messages Container */}
-      <Box 
-        sx={{ 
-          flexGrow: 1, 
-          overflowY: 'auto', 
-          scrollbarColor: '#666 #333', 
-          paddingLeft: '10px', 
-          paddingRight: '15px',  
+      <Box
+        sx={{
+          flexGrow: 1,
+          overflowY: 'auto',
+          scrollbarColor: '#666 #333',
+          paddingLeft: '10px',
+          paddingRight: '15px',
           paddingTop: '15px',
-          paddingBottom: '10px', 
+          paddingBottom: '10px',
           scrollbarWidth: 'thin',
           position: 'relative',
         }}
@@ -169,21 +169,21 @@ const DummyChat = () => {
                 {msg.sender === 'left' && (
                   <>
                     <IconButton aria-label="Read Aloud">
-                      <HiOutlineSpeakerWave style={{ color: 'grey', fontSize:'1.2rem' }} />
+                      <HiOutlineSpeakerWave style={{ color: 'grey', fontSize: '1.2rem' }} />
                     </IconButton>
                     <IconButton aria-label="Copy">
-                      <MdContentCopy style={{ color: 'grey', fontSize:'1.2rem'  }} />
+                      <MdContentCopy style={{ color: 'grey', fontSize: '1.2rem' }} />
                     </IconButton>
                     <IconButton aria-label="Dislike">
-                      <BiDislike style={{ color: 'grey', fontSize:'1.2rem'  }} />
+                      <BiDislike style={{ color: 'grey', fontSize: '1.2rem' }} />
                     </IconButton>
                     <IconButton aria-label="Like">
-                      <BiLike style={{ color: 'grey', fontSize:'1.2rem'  }} />
+                      <BiLike style={{ color: 'grey', fontSize: '1.2rem' }} />
                     </IconButton>
                   </>
                 )}
                 {msg.sender === 'right' && (
-                  <IconButton aria-label="edit" sx={{ color: 'grey', fontSize:'1.2rem' }}>
+                  <IconButton aria-label="edit" sx={{ color: 'grey', fontSize: '1.2rem' }}>
                     <FaRegPenToSquare />
                   </IconButton>
                 )}
@@ -195,7 +195,7 @@ const DummyChat = () => {
       </Box>
 
       {/* Footer with TextArea */}
-      <Box 
+      <Box
         sx={{
           bgcolor: 'grey.900',
           padding: '10px',
@@ -203,62 +203,62 @@ const DummyChat = () => {
       >
         <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center' }}>
           <IconButton aria-label="upload" sx={{ fontSize: { xs: '1.5rem', sm: '1.5rem' }, color: "white" }} onClick={handleUploadClick}>
-              <RiBook3Fill />
-            </IconButton>
+            <RiBook3Fill />
+          </IconButton>
 
-            <IconButton aria-label="upload" sx={{ fontSize: { xs: '1.5rem', sm: '1.5rem' }, color: "white" }} onClick={handleFileUploadButtonClick}>
-              <CgAttachment />
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileUpload}
-                style={{ display: 'none' }}
-              />
-            </IconButton>
+          <IconButton aria-label="upload" sx={{ fontSize: { xs: '1.5rem', sm: '1.5rem' }, color: "white" }} onClick={handleFileUploadButtonClick}>
+            <CgAttachment />
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileUpload}
+              style={{ display: 'none' }}
+            />
+          </IconButton>
 
-            <IconButton aria-label="send" sx={{ fontSize: { xs: '1.5rem', sm: '1.5rem' }, color: "white" }}>
-              <MdKeyboardVoice />
-            </IconButton>
+          <IconButton aria-label="send" sx={{ fontSize: { xs: '1.5rem', sm: '1.5rem' }, color: "white" }}>
+            <MdKeyboardVoice />
+          </IconButton>
 
-            <Box sx={{ width: '80%', mr: 1, position: 'relative', justifyContent:'center' }}>
-                <textarea
-                fullWidth
-                value={inputText}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault(); 
-                    handleSubmit(e); 
-                  }
-                }}
-                onChange={(e) => setInputText(e.target.value)}
-                variant="outlined"
-                placeholder="Message ChatGPT"
-                size="small"
-                sx={{
-                  mr: 1,
-                  borderRadius: 1,
-                  backgroundColor: '#333',
-                  color: 'white',
-                  '::placeholder': {
-                    color: 'white'
-                  }
-                }}
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  border: '1px solid black',
-                  borderRadius: '15px',
-                  backgroundColor: '#333',
-                  color: 'white',
-                  resize: 'none',
-                  fontSize: '1rem',
-                  lineHeight: '0.9rem',
-                  verticalAlign: 'middle',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxSizing: 'border-box',
-                }}
-               />
+          <Box sx={{ width: '80%', mr: 1, position: 'relative', justifyContent: 'center' }}>
+            <textarea
+              fullWidth
+              value={inputText}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSubmit(e);
+                }
+              }}
+              onChange={(e) => setInputText(e.target.value)}
+              variant="outlined"
+              placeholder="Message ChatGPT"
+              size="small"
+              sx={{
+                mr: 1,
+                borderRadius: 1,
+                backgroundColor: '#333',
+                color: 'white',
+                '::placeholder': {
+                  color: 'white'
+                }
+              }}
+              style={{
+                width: '100%',
+                padding: '10px',
+                border: '1px solid black',
+                borderRadius: '15px',
+                backgroundColor: '#333',
+                color: 'white',
+                resize: 'none',
+                fontSize: '1rem',
+                lineHeight: '0.9rem',
+                verticalAlign: 'middle',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxSizing: 'border-box',
+              }}
+            />
           </Box>
 
           <IconButton type="submit" aria-label="Send" sx={{ fontSize: { xs: '1.5rem', sm: '1.8rem' }, color: "white" }}>
@@ -268,7 +268,7 @@ const DummyChat = () => {
       </Box>
 
     </Box>
-  ); 
+  );
 };
 
 export default DummyChat;

@@ -141,6 +141,20 @@ async def logout(token: str = Depends(oauth2_scheme)):
     return {"message": "Logged out successfully"}
 
 
+# Bot Response
+class TextRequest(BaseModel):
+    text: str
+
+class TextResponse(BaseModel):
+    text: str
+
+@app.post("/bot/response", response_model=TextResponse)
+async def get_bot_response(request: TextRequest):
+    response_text = "Hi, how can I assist you?"
+    return {"text": response_text}
+
+
+
 # How to run Backend
 # python -m venv venv
 # Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process 
