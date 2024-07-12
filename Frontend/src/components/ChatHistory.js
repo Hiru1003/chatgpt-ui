@@ -94,6 +94,7 @@ const ChatHistory = ({ text, onDelete, onRename }) => {
           <Typography variant="body1" sx={{ color: 'red', fontSize: '1rem' }}>Delete</Typography>
         </MenuItem>
       </Menu>
+      
 
       <Dialog open={isRenaming} onClose={() => setIsRenaming(false)} PaperProps={{ style: { backgroundColor: '#333' } }}>
         <DialogTitle sx={{ color: 'white' }}>Rename Chat</DialogTitle>
