@@ -12,7 +12,6 @@ import { useMediaQuery } from '@mui/material';
 import DummyChat from './components/DummyChat';
 import ResetPasswordPage from './components/Resetpassword';
 
-
 const theme = createTheme({
   palette: {
     background: {
@@ -44,7 +43,7 @@ function App() {
   useEffect(() => {
     const shouldShowSidebar = !['/login', '/signup', '/forgot-password','/reset-password'].includes(location.pathname);
     setSidebarVisible(shouldShowSidebar && isLargeScreen);
-  }, [location.pathname, isLargeScreen]);
+  }, [location, isLargeScreen]);
 
   const handleToggleSidebar = () => {
     setSidebarVisible(prevState => !prevState);
@@ -54,10 +53,8 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div style={{ display: 'flex', height: '100vh', backgroundColor: '#121212' }}>
-        {/* Conditionally render Sidebar */}
-        {isSidebarVisible && (
-          <Sidebar isVisible={isSidebarVisible} onToggleSidebar={handleToggleSidebar} />
-        )}
+        {/* Sidebar */}
+        <Sidebar isVisible={isSidebarVisible} onToggleSidebar={handleToggleSidebar} />
 
         {/* Main Content */}
         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, backgroundColor: '#121212' }}>
@@ -65,8 +62,8 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/DummyChat" element={<DummyChat isVisible={isSidebarVisible} />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} /> 
             <Route path="/forgot-password" element={<ForgotPasswordPage />} /> 
+            <Route path="/reset-password" element={<ResetPasswordPage />} /> 
             <Route path="/message" element={<MessagePage />} />
             <Route path="/" element={<MainPage isVisible={isSidebarVisible} />} />
           </Routes>
