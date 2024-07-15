@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { Box} from '@mui/material';
 import MainpageContainer from './MainpageContainer';
 import { SiOpenai } from "react-icons/si";
@@ -7,42 +7,56 @@ import { useTheme, useMediaQuery } from '@mui/material';
 import TextAreaTemplete from './TextArea';
 
 const MainPage = () => {
-  // const [setShowForm] = useState(false);
-  // const [setActiveForm] = useState('yourPrompts');
-  // //const fileInputRef = useRef(null);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const [messages, setMessages] = useState('');
+  const [inputText, setInputText] = useState('');
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (inputText.trim() === '') return;
 
+    const newMessages = [...messages, { text: inputText, sender: 'right' }];
+    setMessages(newMessages);
+    setInputText('');
 
-  // const handleUploadClick = () => {
-  //   setShowForm(true);
-  //   setActiveForm('yourPrompts');
-  // };
+    try {
+      const response = await fetch('/bot/response', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: inputText }),
+      });
 
-  // const handleFileUploadButtonClick = () => {
-  //   if (fileInputRef.current) {
-  //     fileInputRef.current.click();
-  //   }
-  // };
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
 
-  // const handleFileUpload = (event) => {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     console.log('File selected:', file);
-  //   }
-  // };
+      const responseData = await response.json();
+      const fullBotResponse = responseData.text;
 
-  // const handleFormClose = () => {
-  //   setShowForm(false);
-  // };
+      let botResponse = '';
+      setMessages((prevMessages) => [...prevMessages, { text: '', sender: 'left' }]);
 
-  // const switchToYourPrompts = () => {
-  //   setActiveForm('yourPrompts');
-  // };
+      const interval = setInterval(() => {
+        botResponse += fullBotResponse[botResponse.length];
+        setMessages((prevMessages) => {
+          const lastMessage = prevMessages[prevMessages.length - 1];
+          return [
+            ...prevMessages.slice(0, prevMessages.length - 1),
+            { ...lastMessage, text: botResponse }
+          ];
+        });
 
-  // const switchToCommunityPrompts = () => {
-  //   setActiveForm('communityPrompts');
-  // };
+        if (botResponse.length === fullBotResponse.length) {
+          clearInterval(interval);
+        }
+      }, 50);
+
+    } catch (error) {
+      console.error('Error fetching bot response:', error);
+    }
+  };
 
   return (
     <Box sx={{ 
@@ -77,7 +91,9 @@ const MainPage = () => {
         <MainpageContainer />
       </Box>
          
-      <TextAreaTemplete/>
+      <form onSubmit={handleSubmit} >
+          <TextAreaTemplete inputText={inputText} setInputText={setInputText} handleSubmit={handleSubmit} />
+        </form>   
     </Box>
   );
 }

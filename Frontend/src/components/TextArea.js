@@ -7,15 +7,13 @@ import { RiBook3Fill } from "react-icons/ri";
 import UploadForm from './UploadForm';
 import QuestionMarkDropdown from './QuestionMarkDropdown';
 
-const TextAreaTemplete = () => {
+const TextAreaTemplete = ({ inputText, setInputText, handleSubmit }) => {
   const [showForm, setShowForm] = useState(false);
   const [activeForm, setActiveForm] = useState('yourPrompts');
   const [showIcons, setShowIcons] = useState(false);
   const fileInputRef = useRef(null);
   const isSmallScreen = useMediaQuery('(max-width:1000px)');
-  const [messages, setMessages] = useState();
-
-
+  
   const handleUploadClick = () => {
     setShowForm(true);
     setActiveForm('yourPrompts');
@@ -31,7 +29,6 @@ const TextAreaTemplete = () => {
     const file = event.target.files[0];
     if (file) {
       console.log('File selected:', file);
-      // Perform further actions with the selected file if needed
     }
   };
 
@@ -51,39 +48,6 @@ const TextAreaTemplete = () => {
     setShowIcons(!showIcons);
   };
 
-
-  const [inputText, setInputText] = useState('');
-  const messagesEndRef = useRef(null);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (inputText.trim() === '') return;
-
-    const newMessages = [...messages, { text: inputText, sender: 'right' }];
-    setMessages(newMessages);
-    setInputText('');
-
-    setTimeout(() => {
-      simulateBotResponse(newMessages);
-    }, 500);
-  };
-
-  const simulateBotResponse = (currentMessages) => {
-    const botMessage = "Hi, how can I help you?";
-    let botText = '';
-    let index = 0;
-
-    const interval = setInterval(() => {
-      if (index < botMessage.length) {
-        botText += botMessage[index];
-        setMessages([...currentMessages, { text: botText, sender: 'left' }]);
-        index++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 100);
-  };
-
   return (
     <div>
       <Box
@@ -92,7 +56,7 @@ const TextAreaTemplete = () => {
           bottom: 45,
           left: '50%',
           transform: 'translateX(-50%)',
-          width: { xs: '90%', sm: '70%' },
+          width: { xs: '90%', sm: '90%' },
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
@@ -153,14 +117,17 @@ const TextAreaTemplete = () => {
 
         {/* Text Area */}
         <Box sx={{ width: '100%', mr: 1, position: 'relative' }}>
+          
           <textarea
             placeholder="Message ChatGPT"
+            value={inputText}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault(); 
                 handleSubmit(e); 
               }
             }}
+            onChange={(e) => setInputText(e.target.value)}
             style={{
               width: '100%',
               padding: '10px',
@@ -179,12 +146,12 @@ const TextAreaTemplete = () => {
           />
         </Box>
 
-        <IconButton aria-label="send" sx={{ fontSize: { xs: '1.5rem', sm: '1.8rem' }, color: "white" }}>
-          <FaCircleArrowUp />
+        <IconButton type="submit" aria-label="Send" sx={{ fontSize: { xs: '1.5rem', sm: '1.8rem' }, color: "white" }}>
+            <FaCircleArrowUp />
         </IconButton>
       </Box>
 
-      <Box sx={{ position: 'relative', bottom: -30, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Box sx={{ position: 'relative', bottom: -35, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Typography sx={{ color: "grey", fontSize: { xs: '8px', sm: '14px' }, textAlign: 'center' }}>
           ChatGPT can make mistakes. Check important info.
         </Typography>
