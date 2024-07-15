@@ -6,13 +6,14 @@ import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import ChatgptDropdownHeader from './ChatgptDropdownHeader';
 import TextAreaTemplete from './TextArea';
+import MessageSender from './MessageSender';
 
 const DummyChat = () => {
   const [hoverIndex, setHoverIndex] = useState(null);
   const [messages, setMessages] = useState([
     { text: 'I am looking for a recipe for cake.', sender: 'right' },
     { text: 'Sure, I can help with that! Do you have any specific ingredients in mind?', sender: 'left' },
- ]);
+  ]);
   const [inputText, setInputText] = useState('');
   const messagesEndRef = useRef(null);
 
@@ -81,8 +82,6 @@ const DummyChat = () => {
     }
   };
 
-
-
   return (
     <Box
       sx={{
@@ -122,65 +121,14 @@ const DummyChat = () => {
         }}
       >
         {messages.map((msg, index) => (
-          <Box
+          <MessageSender
             key={index}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: msg.sender === 'left' ? 'flex-start' : 'flex-end',
-              mb: 3,
-              paddingBottom: 2,
-              position: 'relative',
-            }}
-            onMouseEnter={() => handleMouseEnter(index)}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                bgcolor: msg.sender === 'left' ? '#1D1A1A' : '#343131',
-                color: 'white',
-                borderRadius: 1,
-                p: 1,
-                maxWidth: '70%',
-              }}
-            >
-              <Typography variant="body1" sx={{ flexGrow: 1, fontSize: '1.2rem' }}>{msg.text}</Typography>
-            </Box>
-            {(hoverIndex === index) && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  position: 'absolute',
-                  bottom: '-30px',
-                }}
-              >
-                {msg.sender === 'left' && (
-                  <>
-                    <IconButton aria-label="Read Aloud">
-                      <HiOutlineSpeakerWave style={{ color: 'grey', fontSize: '1.2rem' }} />
-                    </IconButton>
-                    <IconButton aria-label="Copy">
-                      <MdContentCopy style={{ color: 'grey', fontSize: '1.2rem' }} />
-                    </IconButton>
-                    <IconButton aria-label="Dislike">
-                      <BiDislike style={{ color: 'grey', fontSize: '1.2rem' }} />
-                    </IconButton>
-                    <IconButton aria-label="Like">
-                      <BiLike style={{ color: 'grey', fontSize: '1.2rem' }} />
-                    </IconButton>
-                  </>
-                )}
-                {msg.sender === 'right' && (
-                  <IconButton aria-label="edit" sx={{ color: 'grey', fontSize: '1.2rem' }}>
-                    <FaRegPenToSquare />
-                  </IconButton>
-                )}
-              </Box>
-            )}
-          </Box>
+            msg={msg}
+            index={index}
+            hoverIndex={hoverIndex}
+            handleMouseEnter={handleMouseEnter}
+            handleMouseLeave={handleMouseLeave}
+          />
         ))}
         <div ref={messagesEndRef} />
       </Box>
@@ -190,7 +138,7 @@ const DummyChat = () => {
         sx={{
           bgcolor: 'grey.900',
           padding: '10px',
-          marginTop: 3   ,
+          marginTop: 3,
         }}
       >
         <form onSubmit={handleSubmit}>
