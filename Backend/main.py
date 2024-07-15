@@ -160,3 +160,4 @@ async def get_bot_response(request: TextRequest):
 # Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process 
 # .\venv\Scripts\activate
 # uvicorn main:app --reload
+

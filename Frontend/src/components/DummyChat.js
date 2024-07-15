@@ -64,8 +64,26 @@ const DummyChat = () => {
       }
 
       const responseData = await response.json();
-      const botResponse = { text: responseData.text, sender: 'left' };
-      setMessages([...newMessages, botResponse]);
+      const fullBotResponse = responseData.text;
+
+      let botResponse = '';
+      setMessages((prevMessages) => [...prevMessages, { text: '', sender: 'left' }]);
+
+      const interval = setInterval(() => {
+        botResponse += fullBotResponse[botResponse.length];
+        setMessages((prevMessages) => {
+          const lastMessage = prevMessages[prevMessages.length - 1];
+          return [
+            ...prevMessages.slice(0, prevMessages.length - 1),
+            { ...lastMessage, text: botResponse }
+          ];
+        });
+
+        if (botResponse.length === fullBotResponse.length) {
+          clearInterval(interval);
+        }
+      }, 50);
+
     } catch (error) {
       console.error('Error fetching bot response:', error);
       // Handle error state if needed

@@ -38,12 +38,10 @@ const ChatHistory = ({ text, onDelete, onRename }) => {
   };
 
   const handleAchieveClick = () => {
-    // Handle achieve action here
     handleClose();
   };
 
   const handleShareClick = () => {
-    // Handle share action here
     handleClose();
   };
 
