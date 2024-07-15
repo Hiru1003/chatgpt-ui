@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Box} from '@mui/material';
+import { Box } from '@mui/material';
 import { SiOpenai } from "react-icons/si";
 import ChatgptDropdownHeader from './ChatgptDropdownHeader';
 import TextAreaTemplete from './TextArea';
@@ -104,13 +104,15 @@ const MainPage = () => {
       </Box>
 
       {/* OpenAI Icon */}
-      <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <SiOpenai size={isSmallScreen ? 30 : 60} style={{ color: 'white' }} />
-      </Box>
+      {messages.length === 0 && (
+        <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <SiOpenai size={isSmallScreen ? 30 : 60} style={{ color: 'white' }} />
+        </Box>
+      )}
 
       {/* Conditional rendering of MainpageContainer */}
       {messages.length === 0 && (
-        <Box sx={{ display: 'flex', gap: 2, marginBottom: '20px', flexDirection: { xs: 'column', sm: 'row' }}}>
+        <Box sx={{ display: 'flex', gap: 2, marginBottom: '20px', flexDirection: { xs: 'column', sm: 'row' } }}>
           <MainpageContainer />
         </Box>
       )}

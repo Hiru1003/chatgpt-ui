@@ -142,6 +142,7 @@ const TextAreaTemplete = ({ inputText, setInputText, handleSubmit }) => {
               alignItems: 'center',
               justifyContent: 'center',
               boxSizing: 'border-box',
+              fontFamily: 'sans-serif',
             }}
           />
         </Box>

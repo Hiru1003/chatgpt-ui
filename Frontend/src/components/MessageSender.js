@@ -6,6 +6,10 @@ import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { FaRegPenToSquare } from "react-icons/fa6";
 
 const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLeave }) => {
+  const isCodeMessage = msg.text.startsWith('```') && msg.text.endsWith('```');
+  const messageWidth = isCodeMessage ? '60%' : 'auto'; // Adjusted to 'auto' for normal messages
+  const codeContent = isCodeMessage ? msg.text.slice(3, -3) : msg.text;
+
   return (
     <Box
       sx={{
@@ -13,25 +17,53 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
         flexDirection: 'column',
         alignItems: msg.sender === 'left' ? 'flex-start' : 'flex-end',
         mb: 3,
-        paddingBottom: 2,
+        pb: 2,
         position: 'relative',
+        pr: 7,
+        pl: 4,
+        backgroundColor: isCodeMessage ? 'transparent' : 'transparent',
+        borderRadius: isCodeMessage ? '10px' : '0',
+        width: '100%', 
       }}
       onMouseEnter={() => handleMouseEnter(index)}
       onMouseLeave={handleMouseLeave}
     >
+      {isCodeMessage && (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            bgcolor: '#383830',
+            borderTopLeftRadius: '10px',
+            borderTopRightRadius: '10px',
+            p: 1,
+            mb: 1,
+            width: '60%', // Fixed width for code messages
+          }}
+        >
+          <Typography variant="body2" sx={{ color: 'grey.500', mr: 1 }}>console</Typography> 
+          <IconButton aria-label="Copy" sx={{ color: 'grey', fontSize: '0.8rem', ml: 'auto' }}>
+            <MdContentCopy style={{ color: 'grey', fontSize: '1.1rem' }} />
+          </IconButton>
+        </Box>
+      )}
+
       <Box
         sx={{
-          display: 'flex',
-          alignItems: 'center',
-          bgcolor: msg.sender === 'left' ? '#1D1A1A' : '#343131',
+          bgcolor: isCodeMessage ? '#272822' : (msg.sender === 'left' ? '#1D1A1A' : '#343131'),
           color: 'white',
           borderRadius: 1,
           p: 1,
-          maxWidth: '70%',
+          mt: isCodeMessage ? '-1px' : '0', 
+          maxWidth: '60%',
+          width: messageWidth,
         }}
       >
-        <Typography variant="body1" sx={{ flexGrow: 1, fontSize: '1.2rem' }}>{msg.text}</Typography>
+        <Typography variant="body1" sx={{ fontSize: '1.2rem', maxWidth: '100%', wordBreak: 'break-word' }}>
+          {codeContent}
+        </Typography>
       </Box>
+
       {(hoverIndex === index) && (
         <Box
           sx={{
@@ -46,15 +78,19 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
               <IconButton aria-label="Read Aloud">
                 <HiOutlineSpeakerWave style={{ color: 'grey', fontSize: '1.2rem' }} />
               </IconButton>
-              <IconButton aria-label="Copy">
-                <MdContentCopy style={{ color: 'grey', fontSize: '1.2rem' }} />
-              </IconButton>
-              <IconButton aria-label="Dislike">
-                <BiDislike style={{ color: 'grey', fontSize: '1.2rem' }} />
-              </IconButton>
-              <IconButton aria-label="Like">
-                <BiLike style={{ color: 'grey', fontSize: '1.2rem' }} />
-              </IconButton>
+              {!isCodeMessage && (
+                <>
+                  <IconButton aria-label="Copy">
+                    <MdContentCopy style={{ color: 'grey', fontSize: '1.2rem' }} />
+                  </IconButton>
+                  <IconButton aria-label="Dislike">
+                    <BiDislike style={{ color: 'grey', fontSize: '1.2rem' }} />
+                  </IconButton>
+                  <IconButton aria-label="Like">
+                    <BiLike style={{ color: 'grey', fontSize: '1.2rem' }} />
+                  </IconButton>
+                </>
+              )}
             </>
           )}
           {msg.sender === 'right' && (

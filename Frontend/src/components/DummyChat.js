@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Box} from '@mui/material';
+import { Box } from '@mui/material';
 import ChatgptDropdownHeader from './ChatgptDropdownHeader';
 import TextAreaTemplete from './TextArea';
 import MessageSender from './MessageSender';
@@ -7,8 +7,10 @@ import MessageSender from './MessageSender';
 const DummyChat = () => {
   const [hoverIndex, setHoverIndex] = useState(null);
   const [messages, setMessages] = useState([
-    { text: 'I am looking for a recipe for cake.', sender: 'right' },
-    { text: 'Sure, I can help with that! Do you have any specific ingredients in mind?', sender: 'left' },
+    { text: 'I am looking for a java code.', sender: 'right' },
+    { text: 'Sure, I can help with that! Do you have any specific code in mind?', sender: 'left' },
+    { text: 'No.', sender: 'right' },
+    { text: '```<TextField id="confirmPassword" label="Confirm Password" type="password" variant="outlined" fullWidth value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} sx={{ mb: 2 }} required/>```', sender: 'left' },
   ]);
   const [inputText, setInputText] = useState('');
   const messagesEndRef = useRef(null);
