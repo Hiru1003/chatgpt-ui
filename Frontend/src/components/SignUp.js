@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios'; 
+import axios from 'axios';
 import { Box, Typography, TextField, Button, Link, Grid, useMediaQuery } from '@mui/material';
 import SignupImage from '../assets/signup.png';
 
@@ -19,13 +19,19 @@ const SignupPage = () => {
     }
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/signup', { username, email, password, confirm_password: confirmPassword });
+      const response = await axios.post('http://127.0.0.1:8000/api/signup', {
+        username,
+        email,
+        password,
+        confirm_password: confirmPassword
+      });
 
       if (response && response.data && response.data.access_token) {
         const { access_token } = response.data;
-        document.cookie = `token=${access_token}; path=/`;
+        // Store token in localStorage or cookies as needed
+        localStorage.setItem('accessToken', access_token);
         alert('Signup successful!');
-        window.location.href = '/MainPage'; 
+        window.location.href = '/main'; // Redirect to main page after successful signup
       } else {
         throw new Error('Signup failed, please try again.');
       }
@@ -68,7 +74,7 @@ const SignupPage = () => {
 
           <Grid item xs={12} sm={isSmallScreen ? 12 : 6} container justifyContent="center" alignItems="center">
             <Box width="100%">
-              <Typography variant="h4" gutterBottom sx={{ mb: 2, fontWeight: 'bold' , color:'white'}}>
+              <Typography variant="h4" gutterBottom sx={{ mb: 2, fontWeight: 'bold', color: 'white' }}>
                 Get Started!
               </Typography>
               <Typography
@@ -92,13 +98,13 @@ const SignupPage = () => {
                   fullWidth
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  sx={{ mb: 2,border: '1px solid #ccc', borderRadius: '5px' }}
+                  sx={{ mb: 2, border: '1px solid #ccc', borderRadius: '5px' }}
                   InputProps={{
-                    style: { color: 'white' }, 
-                    placeholder: 'Username', 
+                    style: { color: 'white' },
+                    placeholder: 'Username',
                   }}
                   InputLabelProps={{
-                    style: { color: 'white' }, 
+                    style: { color: 'white' },
                   }}
                   required
                 />
@@ -109,12 +115,13 @@ const SignupPage = () => {
                   fullWidth
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  sx={{ mb: 2 ,border: '1px solid #ccc', borderRadius: '5px'}}
+                  sx={{ mb: 2, border: '1px solid #ccc', borderRadius: '5px' }}
                   InputProps={{
-                    placeholder: 'Email', 
+                    style: { color: 'white' },
+                    placeholder: 'Email',
                   }}
                   InputLabelProps={{
-                    style: { color: 'white' }, 
+                    style: { color: 'white' },
                   }}
                   required
                 />
@@ -126,12 +133,13 @@ const SignupPage = () => {
                   fullWidth
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  sx={{ mb: 2 ,border: '1px solid #ccc', borderRadius: '5px'}}
+                  sx={{ mb: 2, border: '1px solid #ccc', borderRadius: '5px' }}
                   InputProps={{
-                    placeholder: 'Password', 
+                    style: { color: 'white' },
+                    placeholder: 'Password',
                   }}
                   InputLabelProps={{
-                    style: { color: 'white' }, 
+                    style: { color: 'white' },
                   }}
                   required
                 />
@@ -142,13 +150,13 @@ const SignupPage = () => {
                   fullWidth
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  sx={{ mb: 2 ,border: '1px solid #ccc', borderRadius: '5px'}}
+                  sx={{ mb: 2, border: '1px solid #ccc', borderRadius: '5px' }}
                   InputProps={{
-                    style: { color: 'white' }, 
-                    placeholder: 'Confirm Password', 
+                    style: { color: 'white' },
+                    placeholder: 'Confirm Password',
                   }}
                   InputLabelProps={{
-                    style: { color: 'white' }, 
+                    style: { color: 'white' },
                   }}
                   required
                 />
@@ -157,8 +165,8 @@ const SignupPage = () => {
                   Sign Up
                 </Button>
               </form>
-              <Typography variant="body2" sx={{ mb: 1, fontSize: '16px', color:'white'}}>
-                Already have an account? 
+              <Typography variant="body2" sx={{ mb: 1, fontSize: '16px', color: 'white' }}>
+                Already have an account?
                 <Link href="/login">Log In</Link>
               </Typography>
             </Box>

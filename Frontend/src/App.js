@@ -41,7 +41,7 @@ function App() {
   const [isSidebarVisible, setSidebarVisible] = useState(true);
 
   useEffect(() => {
-    const shouldShowSidebar = !['/login', '/signup', '/forgot-password','/reset-password'].includes(location.pathname);
+    const shouldShowSidebar = !['/login', '/signup', '/forgot-password', '/reset-password'].includes(location.pathname);
     setSidebarVisible(shouldShowSidebar && isLargeScreen);
   }, [location, isLargeScreen]);
 
@@ -54,7 +54,7 @@ function App() {
       <CssBaseline />
       <div style={{ display: 'flex', height: '100vh', backgroundColor: '#121212' }}>
         {/* Sidebar */}
-        <Sidebar isVisible={isSidebarVisible} onToggleSidebar={handleToggleSidebar} />
+        {isSidebarVisible && <Sidebar isVisible={isSidebarVisible} onToggleSidebar={handleToggleSidebar} />}
 
         {/* Main Content */}
         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, backgroundColor: '#121212' }}>

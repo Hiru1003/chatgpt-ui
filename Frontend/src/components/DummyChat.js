@@ -1,9 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Box, Typography, IconButton } from '@mui/material';
-import { MdContentCopy } from "react-icons/md";
-import { BiDislike, BiLike } from "react-icons/bi";
-import { HiOutlineSpeakerWave } from "react-icons/hi2";
-import { FaRegPenToSquare } from "react-icons/fa6";
+import { Box} from '@mui/material';
 import ChatgptDropdownHeader from './ChatgptDropdownHeader';
 import TextAreaTemplete from './TextArea';
 import MessageSender from './MessageSender';
