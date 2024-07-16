@@ -6,16 +6,17 @@ import MainPage from './components/MainPage';
 import LoginPage from './components/Login';
 import MessagePage from './components/Message';
 import SignupPage from './components/SignUp';
-import ForgotPasswordPage from './components/ForgotPassword'; 
+import ForgotPasswordPage from './components/ForgotPassword';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useMediaQuery } from '@mui/material';
 import DummyChat from './components/DummyChat';
 import ResetPasswordPage from './components/Resetpassword';
+import ProtectedRoute from './components/ProtectedRoute'; // Import the ProtectedRoute component
 
 const theme = createTheme({
   palette: {
     background: {
-      default: '#121212' 
+      default: '#121212'
     },
     primary: {
       main: '#1976d2',
@@ -28,7 +29,7 @@ const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundColor: '#121212', 
+          backgroundColor: '#121212',
         },
       },
     },
@@ -61,11 +62,11 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
-            <Route path="/DummyChat" element={<DummyChat isVisible={isSidebarVisible} />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} /> 
-            <Route path="/reset-password" element={<ResetPasswordPage />} /> 
-            <Route path="/message" element={<MessagePage />} />
-            <Route path="/" element={<MainPage isVisible={isSidebarVisible} />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/DummyChat" element={<ProtectedRoute><DummyChat isVisible={isSidebarVisible} /></ProtectedRoute>} />
+            <Route path="/message" element={<ProtectedRoute><MessagePage /></ProtectedRoute>} />
+            <Route path="/" element={<ProtectedRoute><MainPage isVisible={isSidebarVisible} /></ProtectedRoute>} />
           </Routes>
         </div>
       </div>

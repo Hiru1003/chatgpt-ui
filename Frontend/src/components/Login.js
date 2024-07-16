@@ -18,7 +18,7 @@ const LoginPage = () => {
       console.log('Login successful:', response.data);
       const { token } = response.data;
       localStorage.setItem('token', token);
-      window.location.href = '/MainPage'; 
+      window.location.href = '/'; 
     } catch (error) {
       console.error('Login error:', error);
       setError(error.response?.data?.detail || 'An error occurred. Please try again.');

@@ -117,6 +117,7 @@ async def login(user: UserInLogin):
     token = create_access_token(data={"sub": user.email})
     return {"access_token": token}
 
+
 # Forgot Password endpoint
 @app.post("/api/forgot-password")
 async def forgot_password(user: UserInForgotPassword):

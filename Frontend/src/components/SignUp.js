@@ -28,10 +28,9 @@ const SignupPage = () => {
 
       if (response && response.data && response.data.access_token) {
         const { access_token } = response.data;
-        // Store token in localStorage or cookies as needed
         localStorage.setItem('accessToken', access_token);
         alert('Signup successful!');
-        window.location.href = '/main'; // Redirect to main page after successful signup
+        window.location.href = '/';
       } else {
         throw new Error('Signup failed, please try again.');
       }

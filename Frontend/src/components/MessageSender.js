@@ -7,7 +7,7 @@ import { FaRegPenToSquare } from "react-icons/fa6";
 
 const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLeave }) => {
   const isCodeMessage = msg.text.startsWith('```') && msg.text.endsWith('```');
-  const messageWidth = isCodeMessage ? '60%' : 'auto'; // Adjusted to 'auto' for normal messages
+  const messageWidth = isCodeMessage ? '60%' : 'auto'; 
   const codeContent = isCodeMessage ? msg.text.slice(3, -3) : msg.text;
 
   return (
@@ -38,7 +38,7 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
             borderTopRightRadius: '10px',
             p: 1,
             mb: 1,
-            width: '60%', // Fixed width for code messages
+            width: '60%',
           }}
         >
           <Typography variant="body2" sx={{ color: 'grey.500', mr: 1 }}>console</Typography> 
