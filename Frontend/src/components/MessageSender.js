@@ -37,7 +37,6 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
             borderTopLeftRadius: '10px',
             borderTopRightRadius: '10px',
             p: 1,
-            mb: 1,
             width: '60%',
           }}
         >
@@ -78,8 +77,7 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
               <IconButton aria-label="Read Aloud">
                 <HiOutlineSpeakerWave style={{ color: 'grey', fontSize: '1.2rem' }} />
               </IconButton>
-              {!isCodeMessage && (
-                <>
+
                   <IconButton aria-label="Copy">
                     <MdContentCopy style={{ color: 'grey', fontSize: '1.2rem' }} />
                   </IconButton>
@@ -89,8 +87,6 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
                   <IconButton aria-label="Like">
                     <BiLike style={{ color: 'grey', fontSize: '1.2rem' }} />
                   </IconButton>
-                </>
-              )}
             </>
           )}
           {msg.sender === 'right' && (
