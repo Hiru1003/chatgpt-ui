@@ -26,15 +26,16 @@ const AvatarDropdown = () => {
     setAnchorEl(null);
   };
 
-  const handleLogoutClick = async () => {
+  const handleLogoutClick = async () => {  
     try {
       const response = await fetch('http://localhost:8000/api/logout', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`, 
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
           'Content-Type': 'application/json',
         },
       });
+  
       if (response.ok) {
         localStorage.removeItem('accessToken');
         navigate('/signup'); // Redirect to signup page after successful logout
@@ -43,11 +44,10 @@ const AvatarDropdown = () => {
       }
     } catch (error) {
       console.error('Logout error:', error);
-      // Handle error if needed
     }
-    handleClose(); // Close the menu after logout
   };
 
+  
   const handleCustomizeChatGPTClick = () => {
     setCustomizeChatGPTDialogOpen(true); 
     setAnchorEl(null); 

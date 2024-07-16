@@ -1,10 +1,14 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Route, Navigate } from 'react-router-dom';
 
-const ProtectedRoute = ({ children }) => {
-  const isAuthenticated = !!localStorage.getItem('token');
-  
-  return isAuthenticated ? children : <Navigate to="/" />;
+const ProtectedRoute = ({ element, ...props }) => {
+  const isAuthenticated = !!localStorage.getItem('accessToken'); 
+
+  return isAuthenticated ? (
+    <Route {...props} element={element} />
+  ) : (
+    <Navigate to="/signup" replace />
+  );
 };
 
 export default ProtectedRoute;
