@@ -1,38 +1,35 @@
 import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, Checkbox, FormControlLabel, Link, Grid, Divider, IconButton } from '@mui/material';
-import { useMediaQuery } from '@mui/material';
 import axios from 'axios';
+import { Box, Typography, TextField, Button, Link, Grid, useMediaQuery } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import loginImage from '../assets/login.png';
-import GoogleIcon from '@mui/icons-material/Google';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 const LoginPage = () => {
   const isSmallScreen = useMediaQuery('(max-width:900px)');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.post('/api/login', { email, password });
-      console.log('Login successful:', response.data);
-      const { token } = response.data;
-      localStorage.setItem('token', token);
-      window.location.href = '/'; 
+      const response = await axios.post('http://127.0.0.1:8000/api/login', {
+        email,
+        password,
+      });
+
+      if (response && response.data && response.data.access_token) {
+        const { access_token } = response.data;
+        localStorage.setItem('accessToken', access_token);
+        alert('Login successful!');
+        navigate('/');
+      } else {
+        throw new Error('Login failed, please try again.');
+      }
     } catch (error) {
       console.error('Login error:', error);
-      setError(error.response?.data?.detail || 'An error occurred. Please try again.');
-    }
-  };
-
-  const handleForgotPassword = async () => {
-    try {
-      const response = await axios.post('/api/forgot-password', { email });
-      console.log('Forgot password request successful:', response.data);
-      alert('Password reset email sent. Check your email for instructions.');
-    } catch (error) {
-      console.error('Forgot password error:', error);
-      setError(error.response?.data?.detail || 'An error occurred. Please try again.');
+      setError(error.response?.data?.detail || 'Login failed. Please try again.');
     }
   };
 
@@ -61,19 +58,15 @@ const LoginPage = () => {
         }}
       >
         <Grid container spacing={3}>
-          {/* Left column for login form */}
           {!isSmallScreen && (
-            <Grid item xs={12} sm={6} display="flex" alignItems="center" justifyContent="center">
-              <Box display="flex" alignItems="center" justifyContent="center" height="100%">
-                <img src={loginImage} alt="Logo" style={{ maxWidth: '100%', height: 'auto' }} />
-              </Box>
+            <Grid item xs={12} sm={6}>
+              <img src={loginImage} alt="Login" style={{ maxWidth: '100%', height: 'auto' }} />
             </Grid>
           )}
 
-          {/* Right column for login form */}
           <Grid item xs={12} sm={isSmallScreen ? 12 : 6} container justifyContent="center" alignItems="center">
-            <Box>
-              <Typography variant="h4" gutterBottom sx={{ mb: 2, fontWeight: 'bold' , color:'white'}}>
+            <Box width="100%">
+              <Typography variant="h4" gutterBottom sx={{ mb: 2, fontWeight: 'bold', color: 'white' }}>
                 Welcome Back!
               </Typography>
               <Typography
@@ -87,92 +80,64 @@ const LoginPage = () => {
                   WebkitTextFillColor: 'transparent',
                 }}
               >
-                Log In
-              </Typography>
-              <TextField
-                id="email"
-                label="Email"
-                variant="outlined"
-                fullWidth
-                sx={{ mb: 2,border: '1px solid #ccc', borderRadius: '5px' }}
-                value={email}
-                InputProps={{
-                  style: { color: 'white' }, 
-                  placeholder: 'Email', 
-                }}
-                InputLabelProps={{
-                  style: { color: 'white' }, 
-                }}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <TextField
-                id="password"
-                label="Password"
-                type="password"
-                variant="outlined"
-                fullWidth
-                sx={{ mb: 2 ,border: '1px solid #ccc', borderRadius: '5px'}}
-                value={password}
-                InputProps={{
-                  style: { color: 'white' }, 
-                  placeholder: 'Password', 
-                }}
-                InputLabelProps={{
-                  style: { color: 'white' }, 
-                }}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <FormControlLabel
-                control={<Checkbox defaultChecked />}
-                label="Remember Me"
-                sx={{ mb: 2, textAlign: 'left', color:'white' }}
-              />
-              <Button variant="contained" color="primary" fullWidth sx={{ mb: 2 }} onClick={handleLogin}>
                 Login
-              </Button>
-              {error && <Typography color="error" sx={{ mb: 2 }}>{error}</Typography>}
-              <Typography variant="body2" sx={{ mb: 1, fontSize: '16px' }}>
-                <Link href="/forgot-password" onClick={handleForgotPassword}>
+              </Typography>
+              <form onSubmit={handleSubmit}>
+                <TextField
+                  id="email"
+                  label="Email"
+                  variant="outlined"
+                  fullWidth
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  sx={{ mb: 2, border: '1px solid #ccc', borderRadius: '5px' }}
+                  InputProps={{
+                    style: { color: 'white' },
+                    placeholder: 'Email',
+                  }}
+                  InputLabelProps={{
+                    style: { color: 'white' },
+                  }}
+                  required
+                />
+                <TextField
+                  id="password"
+                  label="Password"
+                  type="password"
+                  variant="outlined"
+                  fullWidth
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  sx={{ mb: 2, border: '1px solid #ccc', borderRadius: '5px' }}
+                  InputProps={{
+                    style: { color: 'white' },
+                    placeholder: 'Password',
+                  }}
+                  InputLabelProps={{
+                    style: { color: 'white' },
+                  }}
+                  required
+                />
+                {error && (
+                  <Typography variant="body1" color="error" sx={{ mb: 2 }}>
+                    {error}
+                  </Typography>
+                )}
+                <Button type="submit" variant="contained" color="primary" fullWidth>
+                  Log In
+                </Button>
+              </form>
+              <Typography variant="body1" sx={{ mt: 2, color: 'white' }}>
+                Don't have an account?{' '}
+                <Link href="/signup" sx={{ color: '#ccc' }}>
+                  Sign Up
+                </Link>
+              </Typography>
+              <Typography variant="body1" sx={{ mt: 2, color: 'white' }}>
+                <Link href="/forgot-password" sx={{ color: '#ccc' }}>
                   Forgot Password?
                 </Link>
               </Typography>
-              <Typography variant="body2" sx={{ mb: 2, fontSize: '16px' , color:'white'}}>
-                Don't have an account? <Link href="/signup">Sign Up</Link>
-              </Typography>
-
-              {/* Divider and "or login with" text */}
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', my: 2 }}>
-                <Divider sx={{ width: '33%', backgroundColor: 'black' }} />
-                <Typography variant="body2" sx={{ color: '#ccc', px: 2, fontSize: '18px' }}>
-                  or login with
-                </Typography>
-                <Divider sx={{ width: '33%', backgroundColor: 'black' }} />
-              </Box>
-
-              <Grid container spacing={2} justifyContent="center" alignItems="center">
-                <Grid item xs={12} sm={6}>
-                  {/* Google login */}
-                  <Box sx={{ border: '1px solid #ccc', borderRadius: '5px', p: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <IconButton>
-                      <GoogleIcon sx={{color:'white'}}/>
-                    </IconButton>
-                    <Typography variant="body2" sx={{ ml: 2 , color:'white'}}>
-                      Continue with Google
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  {/* LinkedIn login */}
-                  <Box sx={{ border: '1px solid #ccc', borderRadius: '5px', p: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <IconButton>
-                      <LinkedInIcon sx={{color:'white'}}/>
-                    </IconButton>
-                    <Typography variant="body2" sx={{ ml: 2 , color:'white'}}>
-                      Continue with LinkedIn
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Grid>
             </Box>
           </Grid>
         </Grid>

@@ -51,8 +51,10 @@ function App() {
     setIsLoggedIn(!!accessToken);
     setSidebarVisible(shouldShowSidebar && isLargeScreen);
 
-    if (!!accessToken && ['/login', '/signup', '/forgot-password', '/reset-password'].includes(location.pathname)) {
+    if (accessToken && ['/login', '/signup', '/forgot-password', '/reset-password'].includes(location.pathname)) {
       navigate('/');
+    } else if (!accessToken && !['/login', '/signup', '/forgot-password', '/reset-password'].includes(location.pathname)) {
+      navigate('/signup');
     }
   }, [location, isLargeScreen, navigate]);
 
@@ -62,13 +64,33 @@ function App() {
 
   const isSidebarVisibleOnCurrentPage = !['/login', '/signup', '/forgot-password'].includes(location.pathname);
 
+  const handleLogoutClick = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/logout', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`, 
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        localStorage.removeItem('accessToken');
+        setIsLoggedIn(false);
+        navigate('/signup');
+      } else {
+        throw new Error('Logout failed');
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div style={{ display: 'flex', height: '100vh', backgroundColor: '#121212' }}>
         {/* Sidebar */}
-        {isSidebarVisibleOnCurrentPage && <Sidebar isVisible={isSidebarVisible} onToggleSidebar={handleToggleSidebar} />}
+        {isSidebarVisibleOnCurrentPage && <Sidebar isVisible={isSidebarVisible} onToggleSidebar={handleToggleSidebar} onLogout={handleLogoutClick} />}
 
         {/* Main Content */}
         <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, backgroundColor: '#121212' }}>
@@ -77,30 +99,10 @@ function App() {
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="/" element={<MainPage isVisible={isSidebarVisible} />} />
-            <Route path="/DummyChat" element={<DummyChat isVisible={isSidebarVisible} />} />
-            {/* Protected Routes */}
-            <Route
-              path="/message"
-              element={
-                isLoggedIn ? (
-                  <ProtectedRoute element={<MessagePage />} />
-                ) : (
-                  <Navigate to="/signup" replace />
-                )
-              }
-            />
-            {/* Handle all other paths */}
-            <Route
-              path="*"
-              element={
-                isLoggedIn ? (
-                  <Navigate to="/" replace />
-                ) : (
-                  <Navigate to="/signup" replace />
-                )
-              }
-            />
+            <Route path="/" element={isLoggedIn ? <MainPage isVisible={isSidebarVisible} /> : <Navigate to="/signup" />} />
+            <Route path="/DummyChat" element={isLoggedIn ? <DummyChat isVisible={isSidebarVisible} /> : <Navigate to="/signup" />} />
+            <Route path="/message" element={isLoggedIn ? <ProtectedRoute element={<MessagePage />} /> : <Navigate to="/signup" />} />
+            <Route path="*" element={isLoggedIn ? <Navigate to="/" /> : <Navigate to="/signup" />} />
           </Routes>
         </div>
       </div>
