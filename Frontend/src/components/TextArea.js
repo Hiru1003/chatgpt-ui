@@ -48,6 +48,11 @@ const TextAreaTemplete = ({ inputText, setInputText, handleSubmit }) => {
     setShowIcons(!showIcons);
   };
 
+  const convertNewlinesToBr = (text) => {
+    return text.replace(/\n/g, '<br>');
+  };
+
+
   return (
     <div>
       <Box
@@ -118,33 +123,50 @@ const TextAreaTemplete = ({ inputText, setInputText, handleSubmit }) => {
         {/* Text Area */}
         <Box sx={{ width: '100%', mr: 1, position: 'relative' }}>
           
-          <textarea
-            placeholder="Message ChatGPT"
-            value={inputText}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault(); 
-                handleSubmit(e); 
+        <textarea
+        placeholder="Message ChatGPT"
+        value={inputText}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault(); 
+            handleSubmit(e); 
+          } else if (e.key === 'Enter' && e.shiftKey) {
+            setInputText(inputText + '\n');
+          }
+        }}
+        onChange={(e) => setInputText(e.target.value)}
+        style={{
+          width: '100%',
+          padding: '10px',
+          border: '1px solid black',
+          borderRadius: '15px',
+          paddingLeft: '1.5rem', 
+          paddingTop: '0.8rem', 
+          backgroundColor: '#333',
+          color: 'white',
+          resize: 'none',
+          fontSize: '1.2rem',
+          lineHeight: '0.9rem', 
+          verticalAlign: 'middle',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxSizing: 'border-box',
+          fontFamily: 'sans-serif',
+          overflowY: 'auto', 
+          maxHeight: 'calc(0.9rem * 7)',
+          whiteSpace: 'pre-wrap', 
+        }}
+      />
+
+          <style>
+            {`
+              textarea::placeholder {
+                font-size: 1.2rem;
+                line-height: 1.3rem; 
+                vertical-align: middle;
               }
-            }}
-            onChange={(e) => setInputText(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '10px',
-              border: '1px solid black',
-              borderRadius: '15px',
-              backgroundColor: '#333',
-              color: 'white',
-              resize: 'none',
-              fontSize: '1rem',
-              lineHeight: '0.9rem',
-              verticalAlign: 'middle',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxSizing: 'border-box',
-              fontFamily: 'sans-serif',
-            }}
-          />
+            `}
+          </style>
         </Box>
 
         <IconButton type="submit" aria-label="Send" sx={{ fontSize: { xs: '1.5rem', sm: '1.8rem' }, color: "white" }}>

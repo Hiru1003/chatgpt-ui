@@ -10,6 +10,15 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
   const messageWidth = isCodeMessage ? '60%' : 'auto'; 
   const codeContent = isCodeMessage ? msg.text.slice(3, -3) : msg.text;
 
+  const renderMessageWithLineBreaks = (text) => {
+    return text.split('\n').map((line, index) => (
+      <React.Fragment key={index}>
+        {line}
+        <br />
+      </React.Fragment>
+    ));
+  };
+
   return (
     <Box
       sx={{
@@ -59,7 +68,7 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
         }}
       >
         <Typography variant="body1" sx={{ fontSize: '1.2rem', maxWidth: '100%', wordBreak: 'break-word' }}>
-          {codeContent}
+          {renderMessageWithLineBreaks(codeContent)}
         </Typography>
       </Box>
 
@@ -78,15 +87,15 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
                 <HiOutlineSpeakerWave style={{ color: 'grey', fontSize: '1.2rem' }} />
               </IconButton>
 
-                  <IconButton aria-label="Copy">
-                    <MdContentCopy style={{ color: 'grey', fontSize: '1.2rem' }} />
-                  </IconButton>
-                  <IconButton aria-label="Dislike">
-                    <BiDislike style={{ color: 'grey', fontSize: '1.2rem' }} />
-                  </IconButton>
-                  <IconButton aria-label="Like">
-                    <BiLike style={{ color: 'grey', fontSize: '1.2rem' }} />
-                  </IconButton>
+              <IconButton aria-label="Copy">
+                <MdContentCopy style={{ color: 'grey', fontSize: '1.2rem' }} />
+              </IconButton>
+              <IconButton aria-label="Dislike">
+                <BiDislike style={{ color: 'grey', fontSize: '1.2rem' }} />
+              </IconButton>
+              <IconButton aria-label="Like">
+                <BiLike style={{ color: 'grey', fontSize: '1.2rem' }} />
+              </IconButton>
             </>
           )}
           {msg.sender === 'right' && (
