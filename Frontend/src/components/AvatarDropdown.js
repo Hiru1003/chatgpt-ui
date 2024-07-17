@@ -38,7 +38,7 @@ const AvatarDropdown = () => {
   
       if (response.ok) {
         localStorage.removeItem('accessToken');
-        navigate('/signup'); // Redirect to signup page after successful logout
+        navigate('/login'); 
       } else {
         throw new Error('Logout failed');
       }
