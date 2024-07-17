@@ -22,7 +22,7 @@ const LoginPage = () => {
       if (response && response.data && response.data.access_token) {
         const { access_token } = response.data;
         localStorage.setItem('accessToken', access_token);
-        alert('Login successful!');
+        alert('Login successful !');
         navigate('/');
       } else {
         throw new Error('Login failed, please try again.');

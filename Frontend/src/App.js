@@ -17,7 +17,10 @@ import { useNavigate } from 'react-router-dom';
 const theme = createTheme({
   palette: {
     background: {
-      default: '#121212'
+      darker:'#000000',
+      normal: '#121212',
+      light : '#212121',
+      lighter: '#ffffff',
     },
     primary: {
       main: '#1976d2',
@@ -25,6 +28,13 @@ const theme = createTheme({
     secondary: {
       main: '#dc004e',
     },
+    text:{
+      light: '',
+      lighter: '#ffffff',
+    },
+    icon:{
+      light: '#ffffff'
+    }
   },
   components: {
     MuiCssBaseline: {
