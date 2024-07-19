@@ -6,8 +6,9 @@ import { MdOutlineModeEdit } from "react-icons/md";
 import { RiInboxUnarchiveLine } from "react-icons/ri";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
-const ChatHistory = ({ text, onDelete, onRename }) => {
+const ChatHistory = ({ chatId, text, onDelete, onRename }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isRenaming, setIsRenaming] = useState(false);
   const [newText, setNewText] = useState(text);
@@ -25,15 +26,29 @@ const ChatHistory = ({ text, onDelete, onRename }) => {
     handleClose();
   };
 
-  const handleRenameSubmit = () => {
+  const handleRenameSubmit = async () => {
     if (newText.trim()) {
-      onRename(text, newText);
+      try {
+        const response = await axios.put(`/api/chat/rename/${chatId}`, { chatId, new_name: newText });
+        if (response.status === 200) {
+          onRename(chatId, newText);
+          setIsRenaming(false);
+        }
+      } catch (error) {
+        console.error('Error renaming chat:', error);
+      }
     }
-    setIsRenaming(false);
   };
 
-  const handleDeleteClick = () => {
-    onDelete(text);
+  const handleDeleteClick = async () => {
+    try {
+      const response = await axios.delete(`/api/chat/delete/${chatId}`);
+      if (response.status === 200) {
+        onDelete(chatId);
+      }
+    } catch (error) {
+      console.error('Error deleting chat:', error);
+    }
     handleClose();
   };
 

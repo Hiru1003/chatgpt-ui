@@ -8,31 +8,42 @@ import ChatHistory from './ChatHistory';
 import { BsStars } from 'react-icons/bs'; 
 import SidebarFooter from './Footer';
 import SidebarHeaderStatic from './SidebarHeaderStatic';
+import axios from 'axios';
 
 const Sidebar = ({ isVisible, onToggleSidebar }) => {
   const [chatHistory, setChatHistory] = useState([
-    { text: "Recipe for cake" },
-    { text: "Coding with python" },
-    { text: "React app with python" },
-    { text: "How to make a diy table" },
-    { text: "SE project ideas" },
-    { text: "Remake the house style" },
-    { text: "Breakfast ideas" },
-    { text: "OOP concepts" },
-    { text: "Meal plan generator" },
-    { text: "Port change solution" },
+    { chatId: '1', text: "Recipe for cake" },
+    { chatId: '2', text: "Coding with python" },
+    { chatId: '3', text: "React app with python" },
+    { chatId: '4', text: "How to make a diy table" },
+    { chatId: '5', text: "SE project ideas" },
+    { chatId: '6', text: "Remake the house style" },
+    { chatId: '7', text: "Breakfast ideas" },
+    { chatId: '8', text: "OOP concepts" },
+    { chatId: '9', text: "Meal plan generator" },
+    { chatId: '10', text: "Port change solution" },
   ]);
 
-  const handleDelete = (textToDelete) => {
-    setChatHistory(chatHistory.filter((item) => item.text !== textToDelete));
+  const handleDelete = async (chatId) => {
+    try {
+      await axios.delete(`/api/chat/delete/${chatId}`);
+      setChatHistory(chatHistory.filter((item) => item.chatId !== chatId));
+    } catch (error) {
+      console.error('Error deleting chat:', error);
+    }
   };
 
-  const handleRename = (oldText, newText) => {
-    setChatHistory(
-      chatHistory.map((item) =>
-        item.text === oldText ? { ...item, text: newText } : item
-      )
-    );
+  const handleRename = async (chatId, newText) => {
+    try {
+      await axios.put(`/api/chat/rename/${chatId}`, { chatId, new_name: newText });
+      setChatHistory(
+        chatHistory.map((item) =>
+          item.chatId === chatId ? { ...item, text: newText } : item
+        )
+      );
+    } catch (error) {
+      console.error('Error renaming chat:', error);
+    }
   };
 
   return (
@@ -86,7 +97,13 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
                 <Typography variant="subtitle1" style={{ color: 'grey' }}>Today</Typography>
               </Box>
               {chatHistory.slice(0, 4).map((item) => (
-                <ChatHistory text={item.text} onDelete={handleDelete} onRename={handleRename} key={item.text} />
+                <ChatHistory 
+                  key={item.chatId} 
+                  chatId={item.chatId} 
+                  text={item.text} 
+                  onDelete={handleDelete} 
+                  onRename={handleRename} 
+                />
               ))}
             </Box>
             <Box sx={{ paddingLeft: 1 }}>
@@ -94,7 +111,13 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
             </Box>
             <Box>
               {chatHistory.slice(4).map((item) => (
-                <ChatHistory text={item.text} onDelete={handleDelete} onRename={handleRename} key={item.text} />
+                <ChatHistory 
+                  key={item.chatId} 
+                  chatId={item.chatId} 
+                  text={item.text} 
+                  onDelete={handleDelete} 
+                  onRename={handleRename} 
+                />
               ))}
             </Box>
           </div>
