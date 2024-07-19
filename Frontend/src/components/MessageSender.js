@@ -19,6 +19,17 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
     ));
   };
 
+  const handleCopy = () => {
+    const textToCopy = isCodeMessage ? codeContent : msg.text;
+    navigator.clipboard.writeText(textToCopy)
+      .then(() => {
+        console.log('Text copied to clipboard');
+      })
+      .catch(err => {
+        console.error('Failed to copy text: ', err);
+      });
+  };
+
   return (
     <Box
       sx={{
@@ -50,7 +61,7 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
           }}
         >
           <Typography variant="body2" sx={{ color: 'grey.500', mr: 1 }}>console</Typography> 
-          <IconButton aria-label="Copy" sx={{ color: 'grey', fontSize: '0.8rem', ml: 'auto' }}>
+          <IconButton aria-label="Copy" sx={{ color: 'grey', fontSize: '0.8rem', ml: 'auto' }} onClick={handleCopy}>
             <MdContentCopy style={{ color: 'grey', fontSize: '1.1rem' }} />
           </IconButton>
         </Box>
@@ -87,7 +98,7 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
                 <HiOutlineSpeakerWave style={{ color: 'grey', fontSize: '1.2rem' }} />
               </IconButton>
 
-              <IconButton aria-label="Copy">
+              <IconButton aria-label="Copy" onClick={handleCopy}>
                 <MdContentCopy style={{ color: 'grey', fontSize: '1.2rem' }} />
               </IconButton>
               <IconButton aria-label="Dislike">
