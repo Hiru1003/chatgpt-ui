@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, IconButton } from '@mui/material';
 import { MdContentCopy } from "react-icons/md";
 import { BiDislike, BiLike } from "react-icons/bi";
@@ -6,6 +6,8 @@ import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { FaRegPenToSquare } from "react-icons/fa6";
 
 const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLeave }) => {
+  const [responseText, setResponseText] = useState('');
+
   const isCodeMessage = msg.text.startsWith('```') && msg.text.endsWith('```');
   const messageWidth = isCodeMessage ? '60%' : 'auto'; 
   const codeContent = isCodeMessage ? msg.text.slice(3, -3) : msg.text;
@@ -28,6 +30,27 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
       .catch(err => {
         console.error('Failed to copy text: ', err);
       });
+  };
+
+  const handleSendToBackend = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/bot/response', { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: msg.text }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      
+      const data = await response.json();
+      setResponseText(data.text);
+    } catch (error) {
+      console.error('Error fetching response:', error);
+    }
   };
 
   return (
@@ -106,6 +129,9 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
               </IconButton>
               <IconButton aria-label="Like">
                 <BiLike style={{ color: 'grey', fontSize: '1.2rem' }} />
+              </IconButton>
+              <IconButton aria-label="Send to Backend" onClick={handleSendToBackend}>
+                <FaRegPenToSquare style={{ color: 'grey', fontSize: '1.2rem' }} />
               </IconButton>
             </>
           )}

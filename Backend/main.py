@@ -1,6 +1,9 @@
 from datetime import datetime, timedelta
 from typing import Optional
 from typing import List
+import os
+import json
+import http.client
 
 from fastapi import FastAPI, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordBearer
@@ -27,6 +30,7 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
 )
+
 
 # MongoDB connection
 client = MongoClient("mongodb+srv://hirumi:pqDH0vehCYQ0P3F5@cluster0.0awi5vi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
@@ -152,21 +156,54 @@ async def reset_password(user: UserInResetPassword):
 async def logout(token: str = Depends(oauth2_scheme)):
     return {"message": "Logged out successfully"}
 
-# Bot Response
+
+# Response
 class TextRequest(BaseModel):
     text: str
 
 class TextResponse(BaseModel):
     text: str
 
-    
 @app.post("/bot/response", response_model=TextResponse)
 async def get_bot_response(request: TextRequest):
-    response_text = "Hi, how can I assist you?"
-    response_data = {"request": request.text, "response": response_text}
-    response_collection.insert_one(response_data)
-    return {"text": response_text}
+    # Prepare the request data
+    api_key = os.getenv("OPENAI_API_KEY", "sk-proj-mOUCsyRcLMHDKva2qrInT3BlbkFJOoOza5bzwYZciugO2J2o")
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "model": "gpt-3.5-turbo",
+        "messages": [
+            {"role": "system", "content": "You are a friendly assistant, skilled in providing helpful and engaging responses to a variety of everyday life questions."},
+            {"role": "user", "content": request.text}
+        ]
+    }
 
+    # Convert payload to JSON
+    json_payload = json.dumps(payload)
+
+    # Create a connection to the OpenAI API
+    conn = http.client.HTTPSConnection("api.openai.com")
+
+    # Send the request to OpenAI API
+    conn.request("POST", "/v1/chat/completions", body=json_payload, headers=headers)
+
+    # Get the response from OpenAI API
+    response = conn.getresponse()
+    response_data = response.read().decode()
+
+    # Close the connection
+    conn.close()
+
+    # Parse the JSON response
+    response_json = json.loads(response_data)
+    response_text = response_json['choices'][0]['message']['content']
+
+    # Save the request and response to the database
+    response_data = {"request": request.text, "response": response_text}
+
+    return {"text": response_text}
 
 
 
@@ -221,7 +258,6 @@ async def startup_event():
     ]
     if chat_collection.count_documents({}) == 0:  # Check if collection is empty
         chat_collection.insert_many(initial_data)
-
 
 # How to run Backend
 # python -m venv venv
