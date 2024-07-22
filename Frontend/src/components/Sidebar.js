@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Box, Typography, IconButton } from '@mui/material';
 import { BsReverseLayoutTextSidebarReverse } from "react-icons/bs";
 import { FaRegPenToSquare } from "react-icons/fa6";
@@ -11,18 +11,20 @@ import SidebarHeaderStatic from './SidebarHeaderStatic';
 import axios from 'axios';
 
 const Sidebar = ({ isVisible, onToggleSidebar }) => {
-  const [chatHistory, setChatHistory] = useState([
-    { chatId: '1', text: "Recipe for cake" },
-    { chatId: '2', text: "Coding with python" },
-    { chatId: '3', text: "React app with python" },
-    { chatId: '4', text: "How to make a diy table" },
-    { chatId: '5', text: "SE project ideas" },
-    { chatId: '6', text: "Remake the house style" },
-    { chatId: '7', text: "Breakfast ideas" },
-    { chatId: '8', text: "OOP concepts" },
-    { chatId: '9', text: "Meal plan generator" },
-    { chatId: '10', text: "Port change solution" },
-  ]);
+  const [chatHistory, setChatHistory] = useState([]);
+
+  useEffect(() => {
+    const fetchChatHistory = async () => {
+      try {
+        const response = await axios.get('/api/chat/');
+        setChatHistory(response.data);
+      } catch (error) {
+        console.error('Error fetching chat history:', error);
+      }
+    };
+
+    fetchChatHistory();
+  }, []);
 
   const handleDelete = async (chatId) => {
     try {
@@ -35,7 +37,7 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
 
   const handleRename = async (chatId, newText) => {
     try {
-      await axios.put(`/api/chat/rename/${chatId}`, { chatId, new_name: newText });
+      await axios.put(`/api/chat/rename/${chatId}`, { new_name: newText });
       setChatHistory(
         chatHistory.map((item) =>
           item.chatId === chatId ? { ...item, text: newText } : item

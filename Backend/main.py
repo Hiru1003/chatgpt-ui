@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from typing import Optional
+from typing import List
 
 from fastapi import FastAPI, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordBearer
@@ -32,7 +33,7 @@ client = MongoClient("mongodb+srv://hirumi:pqDH0vehCYQ0P3F5@cluster0.0awi5vi.mon
 db = client["chatgpt_web"] 
 users_collection = db["users"]
 response_collection = db["response"]
-chats_collection = db["chats"]
+chat_collection = db["chats"]
 
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -168,42 +169,58 @@ async def get_bot_response(request: TextRequest):
 
 
 
-#Renaming 
+
+
+
+#chat
 class ChatItem(BaseModel):
     chatId: str
     text: str
 
-chat_history = [
-    ChatItem(chatId="1", text="Recipe for cake"),
-    ChatItem(chatId="2", text="Coding with python"),
-    ChatItem(chatId="3", text="React app with python"),
-    ChatItem(chatId="4", text="How to make a diy table"),
-    ChatItem(chatId="5", text="SE project ideas"),
-    ChatItem(chatId="6", text="Remake the house style"),
-    ChatItem(chatId="7", text="Breakfast ideas"),
-    ChatItem(chatId="8", text="OOP concepts"),
-    ChatItem(chatId="9", text="Meal plan generator"),
-    ChatItem(chatId="10", text="Port change solution")
-]
-
 class RenameRequest(BaseModel):
-    chatId: str
     new_name: str
+
+@app.get("/api/chat/")
+async def get_chat_history():
+    chat_items = chat_collection.find()
+    return [ChatItem(chatId=item['chatId'], text=item['text']) for item in chat_items]
 
 @app.put("/api/chat/rename/{chat_id}")
 async def rename_chat_item(chat_id: str, request: RenameRequest):
-    for item in chat_history:
-        if item.chatId == chat_id:
-            item.text = request.new_name
-            return {"message": "Rename successful"}
-    raise HTTPException(status_code=404, detail="Chat not found")
+    result = chat_collection.update_one(
+        {'chatId': chat_id},
+        {'$set': {'text': request.new_name}}
+    )
+    if result.modified_count > 0:
+        return {"message": "Rename successful"}
+    else:
+        raise HTTPException(status_code=404, detail="Chat not found")
 
 @app.delete("/api/chat/delete/{chat_id}")
 async def delete_chat_item(chat_id: str):
-    global chat_history
-    chat_history = [item for item in chat_history if item.chatId != chat_id]
-    return {"message": "Delete successful"}
+    result = chat_collection.delete_one({'chatId': chat_id})
+    if result.deleted_count > 0:
+        return {"message": "Delete successful"}
+    else:
+        raise HTTPException(status_code=404, detail="Chat not found")
 
+# Add initial data to MongoDB if needed
+@app.on_event("startup")
+async def startup_event():
+    initial_data = [
+        {"chatId": "1", "text": "Recipe for cake"},
+        {"chatId": "2", "text": "Coding with python"},
+        {"chatId": "3", "text": "React app with python"},
+        {"chatId": "4", "text": "How to make a diy table"},
+        {"chatId": "5", "text": "SE project ideas"},
+        {"chatId": "6", "text": "Remake the house style"},
+        {"chatId": "7", "text": "Breakfast ideas"},
+        {"chatId": "8", "text": "OOP concepts"},
+        {"chatId": "9", "text": "Meal plan generator"},
+        {"chatId": "10", "text": "Port change solution"}
+    ]
+    if chat_collection.count_documents({}) == 0:  # Check if collection is empty
+        chat_collection.insert_many(initial_data)
 
 
 # How to run Backend
