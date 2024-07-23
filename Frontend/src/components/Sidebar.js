@@ -1,8 +1,8 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, IconButton } from '@mui/material';
 import { BsReverseLayoutTextSidebarReverse } from "react-icons/bs";
 import { FaRegPenToSquare } from "react-icons/fa6";
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FaQuestionCircle } from "react-icons/fa";
 import ChatHistory from './ChatHistory';
 import { BsStars } from 'react-icons/bs'; 
@@ -12,6 +12,7 @@ import axios from 'axios';
 
 const Sidebar = ({ isVisible, onToggleSidebar }) => {
   const [chatHistory, setChatHistory] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchChatHistory = async () => {
@@ -26,12 +27,10 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
     // Fetch chat history initially
     fetchChatHistory();
 
-
     const intervalId = setInterval(() => {
       fetchChatHistory();
     }, 1000); 
 
-  
     return () => clearInterval(intervalId);
   }, []); 
 
@@ -55,6 +54,11 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
     } catch (error) {
       console.error('Error renaming chat:', error);
     }
+  };
+
+  const handleNewChat = () => {
+    navigate('/');
+    window.location.reload();
   };
 
   return (
@@ -83,11 +87,9 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
         <IconButton onClick={onToggleSidebar} style={{ color: 'grey' }}>
           <BsReverseLayoutTextSidebarReverse fontSize="1.3rem" />
         </IconButton>
-        <Link to="/">
-          <IconButton style={{ color: 'grey' }}>
-            <FaRegPenToSquare fontSize="1.3rem" />
-          </IconButton>
-        </Link>
+        <IconButton onClick={handleNewChat} style={{ color: 'grey' }}>
+          <FaRegPenToSquare fontSize="1.3rem" />
+        </IconButton>
         {!isVisible && (
           <>
             <IconButton style={{ color: 'grey', position: 'fixed', bottom: '45px' }}>

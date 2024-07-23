@@ -8,6 +8,10 @@ import { FaRegPenToSquare } from "react-icons/fa6";
 const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLeave }) => {
   const [setResponseText] = useState('');
 
+  if (!msg || !msg.text) {
+    return null;
+  }
+
   const isCodeMessage = msg.text.startsWith('```') && msg.text.endsWith('```');
   const messageWidth = isCodeMessage ? '60%' : 'auto'; 
   const codeContent = isCodeMessage ? msg.text.slice(3, -3) : msg.text;

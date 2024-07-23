@@ -259,11 +259,12 @@ async def startup_event():
     if chat_collection.count_documents({}) == 0:  # Check if collection is empty
         chat_collection.insert_many(initial_data)
 
+
 # How to run Backend
 # python -m venv venv
 # Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 # .\venv\Scripts\activate
-# uvicorn main:app --reload or python -m uvicorn main:app --reload  
+# uvicorn main:app --reload
 
 # MongoDB password: pqDH0vehCYQ0P3F5
 # Username: hirumi
