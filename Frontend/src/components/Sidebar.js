@@ -23,8 +23,17 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
       }
     };
 
+    // Fetch chat history initially
     fetchChatHistory();
-  }, []);
+
+
+    const intervalId = setInterval(() => {
+      fetchChatHistory();
+    }, 1000); 
+
+  
+    return () => clearInterval(intervalId);
+  }, []); 
 
   const handleDelete = async (chatId) => {
     try {

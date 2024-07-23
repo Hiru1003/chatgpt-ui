@@ -263,7 +263,7 @@ async def startup_event():
 # python -m venv venv
 # Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 # .\venv\Scripts\activate
-# uvicorn main:app --reload
+# uvicorn main:app --reload or python -m uvicorn main:app --reload  
 
 # MongoDB password: pqDH0vehCYQ0P3F5
 # Username: hirumi

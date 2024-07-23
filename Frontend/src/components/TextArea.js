@@ -48,10 +48,7 @@ const TextAreaTemplete = ({ inputText, setInputText, handleSubmit }) => {
     setShowIcons(!showIcons);
   };
 
-  const convertNewlinesToBr = (text) => {
-    return text.replace(/\n/g, '<br>');
-  };
-
+ 
 
   return (
     <div>

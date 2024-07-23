@@ -6,7 +6,7 @@ import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { FaRegPenToSquare } from "react-icons/fa6";
 
 const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLeave }) => {
-  const [responseText, setResponseText] = useState('');
+  const [setResponseText] = useState('');
 
   const isCodeMessage = msg.text.startsWith('```') && msg.text.endsWith('```');
   const messageWidth = isCodeMessage ? '60%' : 'auto'; 
