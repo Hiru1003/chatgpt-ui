@@ -7,6 +7,7 @@ import { FaRegPenToSquare } from "react-icons/fa6";
 
 const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLeave }) => {
   const [setResponseText] = useState('');
+  const [setChatName] = useState('');
 
   if (!msg || !msg.text) {
     return null;
@@ -38,6 +39,7 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
 
   const handleSendToBackend = async () => {
     try {
+      // Send message to backend to get response
       const response = await fetch('http://127.0.0.1:8000/bot/response', { 
         method: 'POST',
         headers: {
@@ -52,8 +54,29 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
       
       const data = await response.json();
       setResponseText(data.text);
+
+      // Generate chat name and save it in the database
+      const chatNameResponse = await fetch('http://127.0.0.1:8000/bot/chat_name', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: msg.text }),
+      });
+
+      if (!chatNameResponse.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const chatNameData = await chatNameResponse.json();
+      setChatName(chatNameData.text);
+
+      // Optionally update the chat history or chat list with the new chat name
+      // Assuming you have a function to update chat list
+      // updateChatList(chatNameData);
+      
     } catch (error) {
-      console.error('Error fetching response:', error);
+      console.error('Error fetching response or generating chat name:', error);
     }
   };
 

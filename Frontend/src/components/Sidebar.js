@@ -14,15 +14,19 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
   const [chatHistory, setChatHistory] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchChatHistory = async () => {
-      try {
-        const response = await axios.get('/api/chat/');
-        setChatHistory(response.data);
-      } catch (error) {
-        console.error('Error fetching chat history:', error);
-      }
-    };
+useEffect(() => {
+  const fetchChatHistory = async () => {
+    try {
+      const response = await axios.get('/api/chat/');
+      const sortedChatHistory = response.data.sort((a, b) => {
+        // Assuming createdAt is a timestamp field
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+      setChatHistory(sortedChatHistory);
+    } catch (error) {
+      console.error('Error fetching chat history:', error);
+    }
+  };
 
     // Fetch chat history initially
     fetchChatHistory();
@@ -32,8 +36,9 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
     }, 1000); 
 
     return () => clearInterval(intervalId);
-  }, []); 
+  }, []);
 
+  
   const handleDelete = async (chatId) => {
     try {
       await axios.delete(`/api/chat/delete/${chatId}`);
