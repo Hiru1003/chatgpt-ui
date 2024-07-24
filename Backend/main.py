@@ -310,6 +310,11 @@ async def start_new_chat(request: TextRequest):
         # Parse the JSON response
         response_json = json.loads(response_data)
         chat_topic = response_json['choices'][0]['message']['content'].strip()
+
+        # Truncate the chat topic to a maximum of 15 characters
+        chat_topic = chat_topic[:25]
+
+
     except Exception as e:
         print(f"Error contacting OpenAI API: {e}")
         raise HTTPException(status_code=500, detail="Error contacting OpenAI API")
