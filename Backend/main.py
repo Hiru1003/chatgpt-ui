@@ -4,6 +4,7 @@ from typing import List
 import os
 import json
 import http.client
+import uuid
 
 from fastapi import FastAPI, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordBearer
@@ -38,6 +39,7 @@ db = client["chatgpt_web"]
 users_collection = db["users"]
 response_collection = db["response"]
 chat_collection = db["chats"]
+
 
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -201,7 +203,13 @@ async def get_bot_response(request: TextRequest):
     response_text = response_json['choices'][0]['message']['content']
 
     # Save the request and response to the database
-    response_data = {"request": request.text, "response": response_text}
+    response_data = {
+        "request": request.text,
+        "response": response_text
+    }
+    result = response_collection.insert_one(response_data)
+    if not result.inserted_id:
+        raise HTTPException(status_code=500, detail="Failed to save response to database")
 
     return {"text": response_text}
 
@@ -209,7 +217,7 @@ async def get_bot_response(request: TextRequest):
 
 
 
-#chat
+# chat
 class ChatItem(BaseModel):
     chatId: str
     text: str
@@ -241,7 +249,7 @@ async def delete_chat_item(chat_id: str):
     else:
         raise HTTPException(status_code=404, detail="Chat not found")
 
-# Add initial data to MongoDB if needed
+# Add initial data to MongoDB 
 @app.on_event("startup")
 async def startup_event():
     initial_data = [
@@ -254,18 +262,90 @@ async def startup_event():
         {"chatId": "7", "text": "Breakfast ideas"},
         {"chatId": "8", "text": "OOP concepts"},
         {"chatId": "9", "text": "Meal plan generator"},
-        {"chatId": "10", "text": "Port change solution"}
+        {"chatId": "10", "text": "Port change solution"},
+        {"chatId": "11", "text": "Code solution"}
     ]
-    if chat_collection.count_documents({}) == 0:  # Check if collection is empty
+    if chat_collection.count_documents({}) == 0: 
         chat_collection.insert_many(initial_data)
 
 
+class TextRequest(BaseModel):
+    text: str
+
+class ChatItem(BaseModel):
+    chatId: str
+    text: str
+
+@app.post("/bot/chat_name", response_model=ChatItem)
+async def start_new_chat(request: TextRequest):
+    # Generate a new chat ID
+    new_chat_id = str(uuid.uuid4())
+    
+    # Generate chat topic using OpenAI API
+    api_key = os.getenv("OPENAI_API_KEY", "sk-proj-mOUCsyRcLMHDKva2qrInT3BlbkFJOoOza5bzwYZciugO2J2o")
+    if not api_key:
+        raise HTTPException(status_code=500, detail="OPENAI_API_KEY is not set.")
+        
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+    topic_payload = {
+        "model": "gpt-3.5-turbo",
+        "messages": [
+            {"role": "system", "content": "You are a helpful assistant for generating chat topics."},
+            {"role": "user", "content": f"Generate a topic for: {request.text}"}
+        ]
+    }
+    json_topic_payload = json.dumps(topic_payload)
+
+    try:
+        # Create a connection to the OpenAI API for generating the chat topic
+        conn = http.client.HTTPSConnection("api.openai.com")
+        conn.request("POST", "/v1/chat/completions", body=json_topic_payload, headers=headers)
+        response = conn.getresponse()
+        response_data = response.read().decode()
+        conn.close()
+
+        # Parse the JSON response
+        response_json = json.loads(response_data)
+        chat_topic = response_json['choices'][0]['message']['content'].strip()
+    except Exception as e:
+        print(f"Error contacting OpenAI API: {e}")
+        raise HTTPException(status_code=500, detail="Error contacting OpenAI API")
+
+    # Save the new chat item to the database
+    chat_item = {
+        "chatId": new_chat_id,
+        "text": chat_topic
+    }
+    
+    try:
+        result = chat_collection.insert_one(chat_item)
+        if not result.inserted_id:
+            raise HTTPException(status_code=500, detail="Failed to save new chat item")
+    except Exception as e:
+        print(f"Database error: {e}")
+        raise HTTPException(status_code=500, detail="Database error")
+
+    return ChatItem(chatId=new_chat_id, text=chat_topic)
+
+# Endpoint to get a chat item by ID
+@app.get("/api/chat/{chat_id}", response_model=ChatItem)
+async def get_chat_item(chat_id: str):
+    chat_item = chat_collection.find_one({"chatId": chat_id})
+    if chat_item:
+        return ChatItem(chatId=chat_item['chatId'], text=chat_item['text'])
+    else:
+        raise HTTPException(status_code=404, detail="Chat not found")
+
+
+        
 # How to run Backend
 # python -m venv venv
 # Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 # .\venv\Scripts\activate
 # uvicorn main:app --reload or python -m uvicorn main:app --reload
-
 
 # MongoDB password: pqDH0vehCYQ0P3F5
 # Username: hirumi
