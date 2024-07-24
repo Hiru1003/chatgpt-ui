@@ -34,4 +34,4 @@ Your app is ready to be deployed!
  python -m venv venv </br>
  Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process </br>
  .\venv\Scripts\activate </br>
- uvicorn main:app --reload </br>
+ uvicorn main:app --reload or python -m uvicorn main:app --reload</br>
