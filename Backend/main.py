@@ -26,7 +26,7 @@ origins = [
 ]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
@@ -159,6 +159,14 @@ async def logout(token: str = Depends(oauth2_scheme)):
     return {"message": "Logged out successfully"}
 
 
+
+
+
+
+
+
+
+
 # Response
 class TextRequest(BaseModel):
     text: str
@@ -217,6 +225,10 @@ async def get_bot_response(request: TextRequest):
 
 
 
+
+
+
+
 # chat
 class ChatItem(BaseModel):
     chatId: str
@@ -249,26 +261,19 @@ async def delete_chat_item(chat_id: str):
     else:
         raise HTTPException(status_code=404, detail="Chat not found")
 
-# Add initial data to MongoDB 
-@app.on_event("startup")
-async def startup_event():
-    initial_data = [
-        {"chatId": "1", "text": "Recipe for cake"},
-        {"chatId": "2", "text": "Coding with python"},
-        {"chatId": "3", "text": "React app with python"},
-        {"chatId": "4", "text": "How to make a diy table"},
-        {"chatId": "5", "text": "SE project ideas"},
-        {"chatId": "6", "text": "Remake the house style"},
-        {"chatId": "7", "text": "Breakfast ideas"},
-        {"chatId": "8", "text": "OOP concepts"},
-        {"chatId": "9", "text": "Meal plan generator"},
-        {"chatId": "10", "text": "Port change solution"},
-        {"chatId": "11", "text": "Code solution"}
-    ]
-    if chat_collection.count_documents({}) == 0: 
-        chat_collection.insert_many(initial_data)
 
 
+
+
+
+
+
+
+
+
+
+
+#chat
 class TextRequest(BaseModel):
     text: str
 
@@ -294,7 +299,7 @@ async def start_new_chat(request: TextRequest):
         "model": "gpt-3.5-turbo",
         "messages": [
             {"role": "system", "content": "You are a helpful assistant for generating chat topics."},
-            {"role": "user", "content": f"Generate a topic for: {request.text}"}
+            {"role": "user", "content": f"Generate a topic for: {request.text}. The topic should be concise and less than 25 characters."}
         ]
     }
     json_topic_payload = json.dumps(topic_payload)
@@ -311,9 +316,9 @@ async def start_new_chat(request: TextRequest):
         response_json = json.loads(response_data)
         chat_topic = response_json['choices'][0]['message']['content'].strip()
 
-        # Truncate the chat topic to a maximum of 15 characters
-        chat_topic = chat_topic[:25]
-
+        # Ensure the topic is less than 25 characters
+        if len(chat_topic) > 25:
+            chat_topic = chat_topic[:25]
 
     except Exception as e:
         print(f"Error contacting OpenAI API: {e}")
@@ -335,6 +340,10 @@ async def start_new_chat(request: TextRequest):
 
     return ChatItem(chatId=new_chat_id, text=chat_topic)
 
+
+
+
+
 # Endpoint to get a chat item by ID
 @app.get("/api/chat/{chat_id}", response_model=ChatItem)
 async def get_chat_item(chat_id: str):
@@ -346,6 +355,7 @@ async def get_chat_item(chat_id: str):
 
 
         
+
 # How to run Backend
 # python -m venv venv
 # Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process

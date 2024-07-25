@@ -71,9 +71,6 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
       const chatNameData = await chatNameResponse.json();
       setChatName(chatNameData.text);
 
-      // Optionally update the chat history or chat list with the new chat name
-      // Assuming you have a function to update chat list
-      // updateChatList(chatNameData);
       
     } catch (error) {
       console.error('Error fetching response or generating chat name:', error);
