@@ -56,22 +56,21 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
       setResponseText(data.text);
 
       // Generate chat name and save it in the database
-      const chatNameResponse = await fetch('http://127.0.0.1:8000/bot/chat_name', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text: msg.text }),
-      });
+      // const chatNameResponse = await fetch('http://127.0.0.1:8000/bot/chat_name', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ text: msg.text }),
+      // });
 
-      if (!chatNameResponse.ok) {
-        throw new Error('Network response was not ok');
-      }
+      // if (!chatNameResponse.ok) {
+      //   throw new Error('Network response was not ok');
+      // }
 
-      const chatNameData = await chatNameResponse.json();
-      setChatName(chatNameData.text);
+      // const chatNameData = await chatNameResponse.json();
+      // setChatName(chatNameData.text);
 
-      
     } catch (error) {
       console.error('Error fetching response or generating chat name:', error);
     }

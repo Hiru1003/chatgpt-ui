@@ -98,9 +98,13 @@ class UserInResetPassword(BaseModel):
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/login")
 
+
+
 # Verify password
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
+
+
 
 # Authenticate user
 def authenticate_user(email: str, password: str):
@@ -108,6 +112,8 @@ def authenticate_user(email: str, password: str):
     if not user or not verify_password(password, user["hashed_password"]):
         return False
     return user
+
+
 
 # Signup endpoint
 @app.post("/api/signup", response_model=Token)
@@ -125,6 +131,8 @@ async def signup(user: UserInCreate):
     token = create_access_token(data={"sub": user.email})
     return {"access_token": token}
 
+
+
 # Login endpoint
 @app.post("/api/login", response_model=Token)
 async def login(user: UserInLogin):
@@ -135,12 +143,16 @@ async def login(user: UserInLogin):
     token = create_access_token(data={"sub": user.email})
     return {"access_token": token}
 
+
+
 # Forgot Password endpoint
 @app.post("/api/forgot-password")
 async def forgot_password(user: UserInForgotPassword):
     if not users_collection.find_one({"email": user.email}):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Email not registered")
     return {"message": f"Password reset instructions sent to {user.email}"}
+
+
 
 # Reset Password endpoint
 @app.post("/api/reset-password")
@@ -152,6 +164,8 @@ async def reset_password(user: UserInResetPassword):
     hashed_password = pwd_context.hash(user.new_password)
     users_collection.update_one({"email": user.email}, {"$set": {"hashed_password": hashed_password}})
     return {"message": "Password reset successful"}
+
+
 
 # Logout endpoint (revokes token by not storing it on client-side)
 @app.post("/api/logout")
@@ -177,7 +191,7 @@ class TextResponse(BaseModel):
 @app.post("/bot/response", response_model=TextResponse)
 async def get_bot_response(request: TextRequest):
     # Prepare the request data
-    api_key = os.getenv("OPENAI_API_KEY", "sk-proj-mOUCsyRcLMHDKva2qrInT3BlbkFJOoOza5bzwYZciugO2J2o")
+    api_key = os.getenv("OPENAI_API_KEY")
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
@@ -222,6 +236,24 @@ async def get_bot_response(request: TextRequest):
     return {"text": response_text}
 
 
+# Add initial data to MongoDB 
+# @app.on_event("startup")
+# async def startup_event():
+#     initial_data = [
+#         {"chatId": "1", "text": "Recipe for cake"},
+#         {"chatId": "2", "text": "Coding with python"},
+#         {"chatId": "3", "text": "React app with python"},
+#         {"chatId": "4", "text": "How to make a diy table"},
+#         {"chatId": "5", "text": "SE project ideas"},
+#         {"chatId": "6", "text": "Remake the house style"},
+#         {"chatId": "7", "text": "Breakfast ideas"},
+#         {"chatId": "8", "text": "OOP concepts"},
+#         {"chatId": "9", "text": "Meal plan generator"},
+#         {"chatId": "10", "text": "Port change solution"},
+#         {"chatId": "11", "text": "Code solution"}
+#     ]
+#     if chat_collection.count_documents({}) == 0: 
+#         chat_collection.insert_many(initial_data)
 
 
 
@@ -230,38 +262,36 @@ async def get_bot_response(request: TextRequest):
 
 
 # chat
-class ChatItem(BaseModel):
-    chatId: str
-    text: str
+# class ChatItem(BaseModel):
+#     chatId: str
+#     text: str
 
-class RenameRequest(BaseModel):
-    new_name: str
+# class RenameRequest(BaseModel):
+#     new_name: str
 
-@app.get("/api/chat/")
-async def get_chat_history():
-    chat_items = chat_collection.find()
-    return [ChatItem(chatId=item['chatId'], text=item['text']) for item in chat_items]
+# @app.get("/api/chat/")
+# async def get_chat_history():
+#     chat_items = chat_collection.find()
+#     return [ChatItem(chatId=item['chatId'], text=item['text']) for item in chat_items]
 
-@app.put("/api/chat/rename/{chat_id}")
-async def rename_chat_item(chat_id: str, request: RenameRequest):
-    result = chat_collection.update_one(
-        {'chatId': chat_id},
-        {'$set': {'text': request.new_name}}
-    )
-    if result.modified_count > 0:
-        return {"message": "Rename successful"}
-    else:
-        raise HTTPException(status_code=404, detail="Chat not found")
+# @app.put("/api/chat/rename/{chat_id}")
+# async def rename_chat_item(chat_id: str, request: RenameRequest):
+#     result = chat_collection.update_one(
+#         {'chatId': chat_id},
+#         {'$set': {'text': request.new_name}}
+#     )
+#     if result.modified_count > 0:
+#         return {"message": "Rename successful"}
+#     else:
+#         raise HTTPException(status_code=404, detail="Chat not found")
 
-@app.delete("/api/chat/delete/{chat_id}")
-async def delete_chat_item(chat_id: str):
-    result = chat_collection.delete_one({'chatId': chat_id})
-    if result.deleted_count > 0:
-        return {"message": "Delete successful"}
-    else:
-        raise HTTPException(status_code=404, detail="Chat not found")
-
-
+# @app.delete("/api/chat/delete/{chat_id}")
+# async def delete_chat_item(chat_id: str):
+#     result = chat_collection.delete_one({'chatId': chat_id})
+#     if result.deleted_count > 0:
+#         return {"message": "Delete successful"}
+#     else:
+#         raise HTTPException(status_code=404, detail="Chat not found")
 
 
 
@@ -273,85 +303,87 @@ async def delete_chat_item(chat_id: str):
 
 
 
-#chat
-class TextRequest(BaseModel):
-    text: str
 
-class ChatItem(BaseModel):
-    chatId: str
-    text: str
 
-@app.post("/bot/chat_name", response_model=ChatItem)
-async def start_new_chat(request: TextRequest):
-    # Generate a new chat ID
-    new_chat_id = str(uuid.uuid4())
+# #chat name
+# class TextRequest(BaseModel):
+#     text: str
+
+# class ChatItem(BaseModel):
+#     chatId: str
+#     text: str
+
+# @app.post("/bot/chat_name", response_model=ChatItem)
+# async def start_new_chat(request: TextRequest):
+#     # Generate a new chat ID
+#     new_chat_id = str(uuid.uuid4())
     
-    # Generate chat topic using OpenAI API
-    api_key = os.getenv("OPENAI_API_KEY", "sk-proj-mOUCsyRcLMHDKva2qrInT3BlbkFJOoOza5bzwYZciugO2J2o")
-    if not api_key:
-        raise HTTPException(status_code=500, detail="OPENAI_API_KEY is not set.")
+#     # Generate chat topic using OpenAI API
+#     api_key = os.getenv("OPENAI_API_KEY", "sk-proj-mOUCsyRcLMHDKva2qrInT3BlbkFJOoOza5bzwYZciugO2J2o")
+#     if not api_key:
+#         raise HTTPException(status_code=500, detail="OPENAI_API_KEY is not set.")
         
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json"
-    }
-    topic_payload = {
-        "model": "gpt-3.5-turbo",
-        "messages": [
-            {"role": "system", "content": "You are a helpful assistant for generating chat topics."},
-            {"role": "user", "content": f"Generate a topic for: {request.text}. The topic should be concise and less than 25 characters."}
-        ]
-    }
-    json_topic_payload = json.dumps(topic_payload)
+#     headers = {
+#         "Authorization": f"Bearer {api_key}",
+#         "Content-Type": "application/json"
+#     }
+#     topic_payload = {
+#         "model": "gpt-3.5-turbo",
+#         "messages": [
+#             {"role": "system", "content": "You are a helpful assistant for generating chat topics."},
+#             {"role": "user", "content": f"Generate a topic for: {request.text}. The topic should be concise and less than 25 characters."}
+#         ]
+#     }
+#     json_topic_payload = json.dumps(topic_payload)
 
-    try:
-        # Create a connection to the OpenAI API for generating the chat topic
-        conn = http.client.HTTPSConnection("api.openai.com")
-        conn.request("POST", "/v1/chat/completions", body=json_topic_payload, headers=headers)
-        response = conn.getresponse()
-        response_data = response.read().decode()
-        conn.close()
+#     try:
+#         # Create a connection to the OpenAI API for generating the chat topic
+#         conn = http.client.HTTPSConnection("api.openai.com")
+#         conn.request("POST", "/v1/chat/completions", body=json_topic_payload, headers=headers)
+#         response = conn.getresponse()
+#         response_data = response.read().decode()
+#         conn.close()
 
-        # Parse the JSON response
-        response_json = json.loads(response_data)
-        chat_topic = response_json['choices'][0]['message']['content'].strip()
+#         # Parse the JSON response
+#         response_json = json.loads(response_data)
+#         chat_topic = response_json['choices'][0]['message']['content'].strip()
 
-        # Ensure the topic is less than 25 characters
-        if len(chat_topic) > 25:
-            chat_topic = chat_topic[:25]
+#         # Ensure the topic is less than 25 characters
+#         if len(chat_topic) > 25:
+#             chat_topic = chat_topic[:25]
 
-    except Exception as e:
-        print(f"Error contacting OpenAI API: {e}")
-        raise HTTPException(status_code=500, detail="Error contacting OpenAI API")
+#     except Exception as e:
+#         print(f"Error contacting OpenAI API: {e}")
+#         raise HTTPException(status_code=500, detail="Error contacting OpenAI API")
 
-    # Save the new chat item to the database
-    chat_item = {
-        "chatId": new_chat_id,
-        "text": chat_topic
-    }
+#     # Save the new chat item to the database
+#     chat_item = {
+#         "chatId": new_chat_id,
+#         "text": chat_topic
+#     }
     
-    try:
-        result = chat_collection.insert_one(chat_item)
-        if not result.inserted_id:
-            raise HTTPException(status_code=500, detail="Failed to save new chat item")
-    except Exception as e:
-        print(f"Database error: {e}")
-        raise HTTPException(status_code=500, detail="Database error")
+#     try:
+#         result = chat_collection.insert_one(chat_item)
+#         if not result.inserted_id:
+#             raise HTTPException(status_code=500, detail="Failed to save new chat item")
+#     except Exception as e:
+#         print(f"Database error: {e}")
+#         raise HTTPException(status_code=500, detail="Database error")
 
-    return ChatItem(chatId=new_chat_id, text=chat_topic)
+#     return ChatItem(chatId=new_chat_id, text=chat_topic)
 
 
 
 
 
 # Endpoint to get a chat item by ID
-@app.get("/api/chat/{chat_id}", response_model=ChatItem)
-async def get_chat_item(chat_id: str):
-    chat_item = chat_collection.find_one({"chatId": chat_id})
-    if chat_item:
-        return ChatItem(chatId=chat_item['chatId'], text=chat_item['text'])
-    else:
-        raise HTTPException(status_code=404, detail="Chat not found")
+# @app.get("/api/chat/{chat_id}", response_model=ChatItem)
+# async def get_chat_item(chat_id: str):
+#     chat_item = chat_collection.find_one({"chatId": chat_id})
+#     if chat_item:
+#         return ChatItem(chatId=chat_item['chatId'], text=chat_item['text'])
+#     else:
+#         raise HTTPException(status_code=404, detail="Chat not found")
 
 
         
