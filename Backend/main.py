@@ -182,14 +182,13 @@ async def logout(token: str = Depends(oauth2_scheme)):
 
 
 # Response
-
-# Pydantic models
 class Message(BaseModel):
     role: str
     content: str
 
 class ChatSession(BaseModel):
     chat_id: str
+    topic: Optional[str] = None
     messages: List[Message] = []
 
 class TextRequest(BaseModel):
@@ -198,6 +197,35 @@ class TextRequest(BaseModel):
 
 class TextResponse(BaseModel):
     messages: List[Message]
+    topic: Optional[str] = None
+
+def generate_topic(prompt: str) -> str:
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise HTTPException(status_code=500, detail="API key not found")
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "model": "gpt-3.5-turbo",
+        "messages": [
+            {"role": "system", "content": "Generate a relevant 25-character topic for the following content:"},
+            {"role": "user", "content": prompt}
+        ]
+    }
+
+    json_payload = json.dumps(payload)
+    conn = http.client.HTTPSConnection("api.openai.com")
+    conn.request("POST", "/v1/chat/completions", body=json_payload, headers=headers)
+    response = conn.getresponse()
+    response_data = response.read().decode()
+    conn.close()
+
+    response_json = json.loads(response_data)
+    topic = response_json['choices'][0]['message']['content'].strip()
+    return topic[:25]  # Ensure the topic is 25 characters
 
 @app.post("/bot/response", response_model=TextResponse)
 async def get_bot_response(request: TextRequest):
@@ -234,8 +262,9 @@ async def get_bot_response(request: TextRequest):
     chat_session = chat_collection.find_one({"chat_id": request.chat_id})
 
     if not chat_session:
-        # Create a new chat session if it does not exist
-        new_chat = ChatSession(chat_id=request.chat_id, messages=[message_request, message_response])
+        # Generate a topic if it's the first request
+        topic = generate_topic(request.text)
+        new_chat = ChatSession(chat_id=request.chat_id, topic=topic, messages=[message_request, message_response])
         result = chat_collection.insert_one(new_chat.dict())
         if not result.inserted_id:
             raise HTTPException(status_code=500, detail="Failed to save response to database")
@@ -251,8 +280,27 @@ async def get_bot_response(request: TextRequest):
     if not updated_chat_session:
         raise HTTPException(status_code=500, detail="Failed to retrieve chat session")
 
-    # Return messages as an array
-    return {"messages": updated_chat_session['messages']}
+    # Convert MongoDB document to the appropriate format
+    messages = [Message(**msg) for msg in updated_chat_session['messages']]
+    topic = updated_chat_session.get('topic', None)
+
+    return TextResponse(messages=messages, topic=topic)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # @app.post("/bot/response", response_model=TextResponse)
 # async def get_bot_response(request: TextRequest):
