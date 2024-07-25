@@ -182,16 +182,31 @@ async def logout(token: str = Depends(oauth2_scheme)):
 
 
 # Response
+
+# Pydantic models
+class Message(BaseModel):
+    role: str
+    content: str
+
+class ChatSession(BaseModel):
+    chat_id: str = Field(..., alias="_id")
+    messages: List[Message] = []
+
 class TextRequest(BaseModel):
     text: str
+    chat_id: str
 
 class TextResponse(BaseModel):
     text: str
 
+
+
 @app.post("/bot/response", response_model=TextResponse)
 async def get_bot_response(request: TextRequest):
-    # Prepare the request data
     api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise HTTPException(status_code=500, detail="API key not found")
+
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
@@ -204,36 +219,83 @@ async def get_bot_response(request: TextRequest):
         ]
     }
 
-    # Convert payload to JSON
     json_payload = json.dumps(payload)
-
-    # Create a connection to the OpenAI API
     conn = http.client.HTTPSConnection("api.openai.com")
-
-    # Send the request to OpenAI API
     conn.request("POST", "/v1/chat/completions", body=json_payload, headers=headers)
-
-    # Get the response from OpenAI API
     response = conn.getresponse()
     response_data = response.read().decode()
-
-    # Close the connection
     conn.close()
 
-    # Parse the JSON response
     response_json = json.loads(response_data)
     response_text = response_json['choices'][0]['message']['content']
 
-    # Save the request and response to the database
-    response_data = {
-        "request": request.text,
-        "response": response_text
-    }
-    result = response_collection.insert_one(response_data)
-    if not result.inserted_id:
-        raise HTTPException(status_code=500, detail="Failed to save response to database")
+    message_request = Message(role="user", content=request.text)
+    message_response = Message(role="assistant", content=response_text)
+
+    chat_session = chat_collection.find_one({"_id": request.chat_id})
+
+    if not chat_session:
+        # Create a new chat session if it does not exist
+        new_chat = ChatSession(chat_id=request.chat_id, messages=[message_request, message_response])
+        result = chat_collection.insert_one(new_chat.dict(by_alias=True))
+        if not result.inserted_id:
+            raise HTTPException(status_code=500, detail="Failed to save response to database")
+    else:
+        # Update existing chat session
+        chat_collection.update_one(
+            {"_id": request.chat_id},
+            {"$push": {"messages": {"$each": [message_request.dict(), message_response.dict()]}}}
+        )
 
     return {"text": response_text}
+
+
+# @app.post("/bot/response", response_model=TextResponse)
+# async def get_bot_response(request: TextRequest):
+#     # Prepare the request data
+#     api_key = os.getenv("OPENAI_API_KEY")
+#     headers = {
+#         "Authorization": f"Bearer {api_key}",
+#         "Content-Type": "application/json"
+#     }
+#     payload = {
+#         "model": "gpt-3.5-turbo",
+#         "messages": [
+#             {"role": "system", "content": "You are a friendly assistant, skilled in providing helpful and engaging responses to a variety of everyday life questions."},
+#             {"role": "user", "content": request.text}
+#         ]
+#     }
+
+#     # Convert payload to JSON
+#     json_payload = json.dumps(payload)
+
+#     # Create a connection to the OpenAI API
+#     conn = http.client.HTTPSConnection("api.openai.com")
+
+#     # Send the request to OpenAI API
+#     conn.request("POST", "/v1/chat/completions", body=json_payload, headers=headers)
+
+#     # Get the response from OpenAI API
+#     response = conn.getresponse()
+#     response_data = response.read().decode()
+
+#     # Close the connection
+#     conn.close()
+
+#     # Parse the JSON response
+#     response_json = json.loads(response_data)
+#     response_text = response_json['choices'][0]['message']['content']
+
+#     # Save the request and response to the database
+#     response_data = {
+#         "request": request.text,
+#         "response": response_text
+#     }
+#     result = response_collection.insert_one(response_data)
+#     if not result.inserted_id:
+#         raise HTTPException(status_code=500, detail="Failed to save response to database")
+
+#     return {"text": response_text}
 
 
 # Add initial data to MongoDB 
