@@ -10,7 +10,7 @@ from fastapi import FastAPI, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.middleware.cors import CORSMiddleware
 from passlib.context import CryptContext
-from pydantic import BaseModel, EmailStr, validator
+from pydantic import BaseModel, EmailStr, validator,Field
 from jose import jwt, JWTError
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
@@ -189,7 +189,7 @@ class Message(BaseModel):
     content: str
 
 class ChatSession(BaseModel):
-    chat_id: str = Field(..., alias="_id")
+    chat_id: str
     messages: List[Message] = []
 
 class TextRequest(BaseModel):
@@ -197,9 +197,7 @@ class TextRequest(BaseModel):
     chat_id: str
 
 class TextResponse(BaseModel):
-    text: str
-
-
+    messages: List[Message]
 
 @app.post("/bot/response", response_model=TextResponse)
 async def get_bot_response(request: TextRequest):
@@ -232,23 +230,29 @@ async def get_bot_response(request: TextRequest):
     message_request = Message(role="user", content=request.text)
     message_response = Message(role="assistant", content=response_text)
 
-    chat_session = chat_collection.find_one({"_id": request.chat_id})
+    # Check if a chat session with the given chat_id exists
+    chat_session = chat_collection.find_one({"chat_id": request.chat_id})
 
     if not chat_session:
         # Create a new chat session if it does not exist
         new_chat = ChatSession(chat_id=request.chat_id, messages=[message_request, message_response])
-        result = chat_collection.insert_one(new_chat.dict(by_alias=True))
+        result = chat_collection.insert_one(new_chat.dict())
         if not result.inserted_id:
             raise HTTPException(status_code=500, detail="Failed to save response to database")
     else:
         # Update existing chat session
         chat_collection.update_one(
-            {"_id": request.chat_id},
+            {"chat_id": request.chat_id},
             {"$push": {"messages": {"$each": [message_request.dict(), message_response.dict()]}}}
         )
 
-    return {"text": response_text}
+    # Retrieve the updated chat session
+    updated_chat_session = chat_collection.find_one({"chat_id": request.chat_id})
+    if not updated_chat_session:
+        raise HTTPException(status_code=500, detail="Failed to retrieve chat session")
 
+    # Return messages as an array
+    return {"messages": updated_chat_session['messages']}
 
 # @app.post("/bot/response", response_model=TextResponse)
 # async def get_bot_response(request: TextRequest):
