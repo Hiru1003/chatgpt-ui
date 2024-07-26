@@ -8,7 +8,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const ChatHistory = ({ chatId, text, onDelete, onRename }) => {
+const ChatHistory = ({ chatId, text, onDelete, onRename, onClick }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isRenaming, setIsRenaming] = useState(false);
   const [newText, setNewText] = useState(text);
@@ -29,7 +29,7 @@ const ChatHistory = ({ chatId, text, onDelete, onRename }) => {
   const handleRenameSubmit = async () => {
     if (newText.trim()) {
       try {
-        const response = await axios.put(`/api/chat/rename/${chatId}`, { chatId, new_name: newText });
+        const response = await axios.put(`/api/chat/rename/${chatId}`, { new_name: newText });
         if (response.status === 200) {
           onRename(chatId, newText);
           setIsRenaming(false);
@@ -63,8 +63,12 @@ const ChatHistory = ({ chatId, text, onDelete, onRename }) => {
   return (
     <Box sx={{ p: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', width: '100%' }}>
-        <Typography variant="subtitle1" style={{ color: 'white', flexGrow: 1, fontSize: '17px', marginRight: '8px' }}>
-          <Link to="/DummyChat" style={{ textDecoration: 'none', color: 'inherit' }}>{text}</Link>
+        <Typography
+          variant="subtitle1"
+          style={{ color: 'white', flexGrow: 1, fontSize: '17px', marginRight: '8px', cursor: 'pointer' }}
+          onClick={() => onClick(chatId)}
+        >
+          {text}
         </Typography>
         <IconButton
           aria-label="more"

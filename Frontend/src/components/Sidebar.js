@@ -14,31 +14,29 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
   const [chatHistory, setChatHistory] = useState([]);
   const navigate = useNavigate();
 
-// useEffect(() => {
-//   const fetchChatHistory = async () => {
-//     try {
-//       const response = await axios.get('http://127.0.0.1:8000/api/chat/');
-//       setChatHistory(sortedChatHistory);
-//     } catch (error) {
-//       console.error('Error fetching chat history:', error);
-//     }
-//   };
+  useEffect(() => {
+    const fetchChatHistory = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/api/chat');
+        setChatHistory(response.data.chats);
+      } catch (error) {
+        console.error('Error fetching chat history:', error);
+      }
+    };
 
-//     // Fetch chat history initially
-//     fetchChatHistory();
+    fetchChatHistory();
 
-//     const intervalId = setInterval(() => {
-//       fetchChatHistory();
-//     }, 1000); 
+    const intervalId = setInterval(() => {
+      fetchChatHistory();
+    }, 2000); 
 
-//     return () => clearInterval(intervalId);
-//   }, []);
+    return () => clearInterval(intervalId);
+  }, []);
 
-  
   const handleDelete = async (chatId) => {
     try {
       await axios.delete(`/api/chat/delete/${chatId}`);
-      setChatHistory(chatHistory.filter((item) => item.chatId !== chatId));
+      setChatHistory(chatHistory.filter((item) => item.chat_id !== chatId));
     } catch (error) {
       console.error('Error deleting chat:', error);
     }
@@ -49,7 +47,7 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
       await axios.put(`/api/chat/rename/${chatId}`, { new_name: newText });
       setChatHistory(
         chatHistory.map((item) =>
-          item.chatId === chatId ? { ...item, text: newText } : item
+          item.chat_id === chatId ? { ...item, topic: newText } : item
         )
       );
     } catch (error) {
@@ -112,9 +110,9 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
               </Box>
               {chatHistory.slice(0, 4).map((item) => (
                 <ChatHistory 
-                  key={item.chatId} 
-                  chatId={item.chatId} 
-                  text={item.text} 
+                  key={item.chat_id} 
+                  chatId={item.chat_id} 
+                  text={item.topic} 
                   onDelete={handleDelete} 
                   onRename={handleRename} 
                 />
@@ -126,9 +124,9 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
             <Box>
               {chatHistory.slice(4).map((item) => (
                 <ChatHistory 
-                  key={item.chatId} 
-                  chatId={item.chatId} 
-                  text={item.text} 
+                  key={item.chat_id} 
+                  chatId={item.chat_id} 
+                  text={item.topic} 
                   onDelete={handleDelete} 
                   onRename={handleRename} 
                 />

@@ -387,37 +387,42 @@ async def get_bot_response(request: TextRequest):
 
 
 # chat
-# class ChatItem(BaseModel):
-#     chatId: str
-#     text: str
 
-# class RenameRequest(BaseModel):
-#     new_name: str
+@app.get("/api/chat")
+async def get_chat_history():
+    chat_sessions = list(response_collection.find({}, {"_id": 0, "chat_id": 1, "topic": 1}))
+    return {"chats": chat_sessions}
 
-# @app.get("/api/chat/")
-# async def get_chat_history():
-#     chat_items = chat_collection.find()
-#     return [ChatItem(chatId=item['chatId'], text=item['text']) for item in chat_items]
+@app.get("/api/chat/{chat_id}")
+async def get_chat_details(chat_id: str):
+    chat_session = response_collection.find_one({"chat_id": chat_id}, {"_id": 0})
+    if chat_session:
+        return chat_session
+    else:
+        raise HTTPException(status_code=404, detail="Chat not found")
 
-# @app.put("/api/chat/rename/{chat_id}")
-# async def rename_chat_item(chat_id: str, request: RenameRequest):
-#     result = chat_collection.update_one(
-#         {'chatId': chat_id},
-#         {'$set': {'text': request.new_name}}
-#     )
-#     if result.modified_count > 0:
-#         return {"message": "Rename successful"}
-#     else:
-#         raise HTTPException(status_code=404, detail="Chat not found")
 
-# @app.delete("/api/chat/delete/{chat_id}")
-# async def delete_chat_item(chat_id: str):
-#     result = chat_collection.delete_one({'chatId': chat_id})
-#     if result.deleted_count > 0:
-#         return {"message": "Delete successful"}
-#     else:
-#         raise HTTPException(status_code=404, detail="Chat not found")
+class RenameRequest(BaseModel):
+    new_name: str
 
+@app.put("/api/chat/rename/{chat_id}")
+async def rename_chat_item(chat_id: str, request: RenameRequest):
+    result = response_collection.update_one(
+        {'chat_id': chat_id},
+        {'$set': {'topic': request.new_name}}
+    )
+    if result.modified_count > 0:
+        return {"message": "Rename successful"}
+    else:
+        raise HTTPException(status_code=404, detail="Chat not found or no changes made")
+
+@app.delete("/api/chat/delete/{chat_id}")
+async def delete_chat_item(chat_id: str):
+    result = response_collection.delete_one({'chat_id': chat_id})
+    if result.deleted_count > 0:
+        return {"message": "Delete successful"}
+    else:
+        raise HTTPException(status_code=404, detail="Chat not found")
 
 
 
