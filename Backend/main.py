@@ -5,6 +5,7 @@ import os
 import json
 import http.client
 import uuid
+from bson import ObjectId 
 
 from fastapi import FastAPI, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordBearer
@@ -37,8 +38,7 @@ app.add_middleware(
 client = MongoClient("mongodb+srv://hirumi:pqDH0vehCYQ0P3F5@cluster0.0awi5vi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 db = client["chatgpt_web"] 
 users_collection = db["users"]
-response_collection = db["response"]
-chat_collection = db["chats"]
+response_collection = db["chat_thread"]
 
 
 # Password hashing
@@ -186,18 +186,18 @@ class Message(BaseModel):
     role: str
     content: str
 
-class ChatSession(BaseModel):
-    chat_id: str
-    topic: Optional[str] = None
-    messages: List[Message] = []
-
 class TextRequest(BaseModel):
     text: str
-    chat_id: str
 
 class TextResponse(BaseModel):
     messages: List[Message]
-    topic: Optional[str] = None
+    topic: str
+    chat_id: str
+
+class ChatSession(BaseModel):
+    chat_id: str
+    topic: str
+    messages: List[Message]
 
 def generate_topic(prompt: str) -> str:
     api_key = os.getenv("OPENAI_API_KEY")
@@ -211,9 +211,10 @@ def generate_topic(prompt: str) -> str:
     payload = {
         "model": "gpt-3.5-turbo",
         "messages": [
-            {"role": "system", "content": "Generate a relevant 25-character topic for the following content:"},
+            {"role": "system", "content": "Generate a relevant and concise 25-character topic for the following content:"},
             {"role": "user", "content": prompt}
-        ]
+        ],
+        "max_tokens": 50
     }
 
     json_payload = json.dumps(payload)
@@ -225,7 +226,7 @@ def generate_topic(prompt: str) -> str:
 
     response_json = json.loads(response_data)
     topic = response_json['choices'][0]['message']['content'].strip()
-    return topic[:25]  # Ensure the topic is 25 characters
+    return topic[:25]  # Ensure the topic is up to 25 characters
 
 @app.post("/bot/response", response_model=TextResponse)
 async def get_bot_response(request: TextRequest):
@@ -258,37 +259,41 @@ async def get_bot_response(request: TextRequest):
     message_request = Message(role="user", content=request.text)
     message_response = Message(role="assistant", content=response_text)
 
-    # Check if a chat session with the given chat_id exists
-    chat_session = chat_collection.find_one({"chat_id": request.chat_id})
+    # Generate a new chat ID if not provided
+    chat_id = str(ObjectId())
+
+    chat_session = response_collection.find_one({"chat_id": chat_id})
 
     if not chat_session:
-        # Generate a topic if it's the first request
         topic = generate_topic(request.text)
-        new_chat = ChatSession(chat_id=request.chat_id, topic=topic, messages=[message_request, message_response])
-        result = chat_collection.insert_one(new_chat.dict())
+        new_chat = ChatSession(
+            chat_id=chat_id,
+            topic=topic,
+            messages=[message_request.dict(), message_response.dict()]
+        )
+        result = response_collection.insert_one(new_chat.dict())
         if not result.inserted_id:
             raise HTTPException(status_code=500, detail="Failed to save response to database")
     else:
-        # Update existing chat session
-        chat_collection.update_one(
-            {"chat_id": request.chat_id},
+        response_collection.update_one(
+            {"chat_id": chat_id},
             {"$push": {"messages": {"$each": [message_request.dict(), message_response.dict()]}}}
         )
+        if not chat_session.get('topic'):
+            topic = generate_topic(request.text)
+            response_collection.update_one(
+                {"chat_id": chat_id},
+                {"$set": {"topic": topic}}
+            )
 
-    # Retrieve the updated chat session
-    updated_chat_session = chat_collection.find_one({"chat_id": request.chat_id})
+    updated_chat_session = response_collection.find_one({"chat_id": chat_id})
     if not updated_chat_session:
         raise HTTPException(status_code=500, detail="Failed to retrieve chat session")
 
-    # Convert MongoDB document to the appropriate format
     messages = [Message(**msg) for msg in updated_chat_session['messages']]
     topic = updated_chat_session.get('topic', None)
 
-    return TextResponse(messages=messages, topic=topic)
-
-
-
-
+    return TextResponse(messages=messages, topic=topic, chat_id=chat_id)
 
 
 

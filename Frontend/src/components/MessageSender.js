@@ -37,44 +37,33 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
       });
   };
 
-  const handleSendToBackend = async () => {
+  const handleSendToBackend = async (message) => {
     try {
-      // Send message to backend to get response
-      const response = await fetch('http://127.0.0.1:8000/bot/response', { 
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text: msg.text }),
-      });
-      
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      
-      const data = await response.json();
-      setResponseText(data.text);
+        const userMessage = {
+            text: message
+        };
 
-      // Generate chat name and save it in the database
-      // const chatNameResponse = await fetch('http://127.0.0.1:8000/bot/chat_name', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({ text: msg.text }),
-      // });
+        const response = await fetch('http://localhost:8000/bot/response', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userMessage)
+        });
 
-      // if (!chatNameResponse.ok) {
-      //   throw new Error('Network response was not ok');
-      // }
+        const data = await response.json();
 
-      // const chatNameData = await chatNameResponse.json();
-      // setChatName(chatNameData.text);
+        if (response.ok) {
+            console.log('Response from backend:', data);
 
+            localStorage.setItem('chat_id', data.chat_id);
+        } else {
+            console.error('Error from backend:', data.detail);
+        }
     } catch (error) {
-      console.error('Error fetching response or generating chat name:', error);
+        console.error('Error fetching response:', error);
     }
-  };
+};
 
   return (
     <Box
@@ -153,7 +142,7 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
               <IconButton aria-label="Like">
                 <BiLike style={{ color: 'grey', fontSize: '1.2rem' }} />
               </IconButton>
-              <IconButton aria-label="Send to Backend" onClick={handleSendToBackend}>
+              <IconButton aria-label="Send to Backend" onClick={() => handleSendToBackend(msg.text)}>
                 <FaRegPenToSquare style={{ color: 'grey', fontSize: '1.2rem' }} />
               </IconButton>
             </>
