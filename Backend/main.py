@@ -5,7 +5,7 @@ import os
 import json
 import http.client
 import uuid
-from bson import ObjectId 
+from bson import ObjectId
 
 from fastapi import FastAPI, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordBearer
@@ -187,6 +187,7 @@ class Message(BaseModel):
     content: str
 
 class TextRequest(BaseModel):
+    chat_id: str = None
     text: str
 
 class TextResponse(BaseModel):
@@ -228,6 +229,9 @@ def generate_topic(prompt: str) -> str:
     topic = response_json['choices'][0]['message']['content'].strip()
     return topic[:25]  # Ensure the topic is up to 25 characters
 
+def generate_random_chat_id() -> str:
+    return str(ObjectId())
+
 @app.post("/bot/response", response_model=TextResponse)
 async def get_bot_response(request: TextRequest):
     api_key = os.getenv("OPENAI_API_KEY")
@@ -259,26 +263,26 @@ async def get_bot_response(request: TextRequest):
     message_request = Message(role="user", content=request.text)
     message_response = Message(role="assistant", content=response_text)
 
-    # Generate a new chat ID if not provided
-    chat_id = str(ObjectId())
+    # Generate chat_id if not provided
+    chat_id = request.chat_id or generate_random_chat_id()
 
+    # Check if a chat session with the given chat_id exists
     chat_session = response_collection.find_one({"chat_id": chat_id})
 
     if not chat_session:
+        # Generate a topic if it's the first request
         topic = generate_topic(request.text)
-        new_chat = ChatSession(
-            chat_id=chat_id,
-            topic=topic,
-            messages=[message_request.dict(), message_response.dict()]
-        )
+        new_chat = ChatSession(chat_id=chat_id, topic=topic, messages=[message_request.dict(), message_response.dict()])
         result = response_collection.insert_one(new_chat.dict())
         if not result.inserted_id:
             raise HTTPException(status_code=500, detail="Failed to save response to database")
     else:
+        # Update existing chat session
         response_collection.update_one(
             {"chat_id": chat_id},
             {"$push": {"messages": {"$each": [message_request.dict(), message_response.dict()]}}}
         )
+        # Ensure the topic is set if not present
         if not chat_session.get('topic'):
             topic = generate_topic(request.text)
             response_collection.update_one(
@@ -286,15 +290,16 @@ async def get_bot_response(request: TextRequest):
                 {"$set": {"topic": topic}}
             )
 
+    # Retrieve the updated chat session
     updated_chat_session = response_collection.find_one({"chat_id": chat_id})
     if not updated_chat_session:
         raise HTTPException(status_code=500, detail="Failed to retrieve chat session")
 
+    # Convert MongoDB document to the appropriate format
     messages = [Message(**msg) for msg in updated_chat_session['messages']]
     topic = updated_chat_session.get('topic', None)
 
     return TextResponse(messages=messages, topic=topic, chat_id=chat_id)
-
 
 
 

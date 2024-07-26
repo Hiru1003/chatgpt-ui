@@ -36,11 +36,12 @@ const MainPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (inputText.trim() === '') return;
-
+  
+    // Add user message
     const newMessages = [...messages, { text: inputText, sender: 'right' }];
     setMessages(newMessages);
     setInputText('');
-
+  
     try {
       const response = await fetch('/bot/response', {
         method: 'POST',
@@ -49,36 +50,37 @@ const MainPage = () => {
         },
         body: JSON.stringify({ text: inputText }),
       });
-
+  
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-
+  
       const responseData = await response.json();
-      const fullBotResponse = responseData.text;
-
+      const fullBotResponse = responseData.messages.map(msg => msg.content).join(' ') || ''; // Ensure fullBotResponse is an empty string if undefined
+  
       let botResponse = '';
       setMessages((prevMessages) => [...prevMessages, { text: '', sender: 'left' }]);
-
+  
       const interval = setInterval(() => {
-        botResponse += fullBotResponse[botResponse.length];
-        setMessages((prevMessages) => {
-          const lastMessage = prevMessages[prevMessages.length - 1];
-          return [
-            ...prevMessages.slice(0, prevMessages.length - 1),
-            { ...lastMessage, text: botResponse }
-          ];
-        });
-
-        if (botResponse.length === fullBotResponse.length) {
+        if (fullBotResponse && botResponse.length < fullBotResponse.length) {
+          botResponse += fullBotResponse[botResponse.length];
+          setMessages((prevMessages) => {
+            const lastMessage = prevMessages[prevMessages.length - 1];
+            return [
+              ...prevMessages.slice(0, prevMessages.length - 1),
+              { ...lastMessage, text: botResponse }
+            ];
+          });
+        } else {
           clearInterval(interval);
         }
       }, 50);
-
+  
     } catch (error) {
       console.error('Error fetching bot response:', error);
     }
   };
+  
 
   return (
     <Box sx={{

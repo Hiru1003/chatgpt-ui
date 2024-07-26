@@ -6,8 +6,8 @@ import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { FaRegPenToSquare } from "react-icons/fa6";
 
 const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLeave }) => {
-  const [setResponseText] = useState('');
-  const [setChatName] = useState('');
+  const [responseText, setResponseText] = useState('');
+  const [chatName, setChatName] = useState('');
 
   if (!msg || !msg.text) {
     return null;
@@ -39,31 +39,36 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
 
   const handleSendToBackend = async (message) => {
     try {
-        const userMessage = {
-            text: message
-        };
+      const userMessage = {
+        text: message
+      };
 
-        const response = await fetch('http://localhost:8000/bot/response', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(userMessage)
-        });
+      const response = await fetch('http://127.0.0.1:8000/bot/response', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userMessage)
+      });
 
-        const data = await response.json();
+      const data = await response.json();
 
-        if (response.ok) {
-            console.log('Response from backend:', data);
+      if (response.ok) {
+        console.log('Response from backend:', data);
 
-            localStorage.setItem('chat_id', data.chat_id);
-        } else {
-            console.error('Error from backend:', data.detail);
-        }
+        // Update state with response data
+        setResponseText(data.messages.map(msg => msg.content).join(' '));
+        setChatName(data.topic);
+
+        // Optionally store chat_id in localStorage
+        localStorage.setItem('chat_id', data.chat_id);
+      } else {
+        console.error('Error from backend:', data.detail);
+      }
     } catch (error) {
-        console.error('Error fetching response:', error);
+      console.error('Error fetching response:', error);
     }
-};
+  };
 
   return (
     <Box
