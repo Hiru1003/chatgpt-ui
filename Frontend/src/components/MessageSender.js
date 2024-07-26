@@ -39,36 +39,33 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
 
   const handleSendToBackend = async (message) => {
     try {
-      const userMessage = {
-        text: message
-      };
+        // Send the message to the backend
+        const response = await fetch('http://127.0.0.1:8000/bot/response', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text: message })  // No chat_id is included here
+        });
 
-      const response = await fetch('http://127.0.0.1:8000/bot/response', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userMessage)
-      });
+        const data = await response.json();
 
-      const data = await response.json();
+        if (response.ok) {
+            console.log('Response from backend:', data);
 
-      if (response.ok) {
-        console.log('Response from backend:', data);
+            // Update state with response data
+            setResponseText(data.messages.map(msg => msg.content).join(' '));
+            setChatName(data.topic);
 
-        // Update state with response data
-        setResponseText(data.messages.map(msg => msg.content).join(' '));
-        setChatName(data.topic);
-
-        // Optionally store chat_id in localStorage
-        localStorage.setItem('chat_id', data.chat_id);
-      } else {
-        console.error('Error from backend:', data.detail);
-      }
+            // Chat ID is managed by the backend and sent back to the frontend
+        } else {
+            console.error('Error from backend:', data.detail);
+        }
     } catch (error) {
-      console.error('Error fetching response:', error);
+        console.error('Error fetching response:', error);
     }
-  };
+};
+
 
   return (
     <Box

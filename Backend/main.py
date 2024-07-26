@@ -263,7 +263,7 @@ async def get_bot_response(request: TextRequest):
     message_request = Message(role="user", content=request.text)
     message_response = Message(role="assistant", content=response_text)
 
-    # Generate chat_id if not provided
+    # Use provided chat_id or generate a new one
     chat_id = request.chat_id or generate_random_chat_id()
 
     # Check if a chat session with the given chat_id exists
@@ -299,9 +299,10 @@ async def get_bot_response(request: TextRequest):
     messages = [Message(**msg) for msg in updated_chat_session['messages']]
     topic = updated_chat_session.get('topic', None)
 
-    return TextResponse(messages=messages, topic=topic, chat_id=chat_id)
+    # Filter out only assistant's responses for frontend
+    assistant_messages = [msg for msg in messages if msg.role == "assistant"]
 
-
+    return TextResponse(messages=assistant_messages, topic=topic, chat_id=chat_id)
 
 
 
