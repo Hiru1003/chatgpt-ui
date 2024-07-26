@@ -401,7 +401,6 @@ async def get_chat_details(chat_id: str):
     else:
         raise HTTPException(status_code=404, detail="Chat not found")
 
-
 class RenameRequest(BaseModel):
     new_name: str
 

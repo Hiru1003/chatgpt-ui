@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Box, Typography, IconButton, Menu, MenuItem, TextField, colors, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IoShareOutline } from "react-icons/io5";
@@ -60,15 +61,23 @@ const ChatHistory = ({ chatId, text, onDelete, onRename, onClick }) => {
     handleClose();
   };
 
+  const handleChatClick = () => {
+    if (onClick) {
+      onClick(chatId);
+    } else {
+      console.error('onClick is not defined');
+    }
+  };
+
   return (
     <Box sx={{ p: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', width: '100%' }}>
         <Typography
           variant="subtitle1"
           style={{ color: 'white', flexGrow: 1, fontSize: '17px', marginRight: '8px', cursor: 'pointer' }}
-          onClick={() => onClick(chatId)}
+          onClick={handleChatClick}
         >
-          {text}
+          <Link to={`/chat/${chatId}`} style={{ textDecoration: 'none', color: 'inherit' }}>{text}</Link>
         </Typography>
         <IconButton
           aria-label="more"
@@ -148,6 +157,18 @@ const ChatHistory = ({ chatId, text, onDelete, onRename, onClick }) => {
       </Dialog>
     </Box>
   );
+};
+
+ChatHistory.propTypes = {
+  chatId: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onRename: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired, // Ensure onClick is a function
+};
+
+ChatHistory.defaultProps = {
+  onClick: () => {}, // Default to a no-op function
 };
 
 export default ChatHistory;
