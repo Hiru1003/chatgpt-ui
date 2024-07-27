@@ -28,7 +28,7 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
 
     const intervalId = setInterval(() => {
       fetchChatHistory();
-    }, 2000); 
+    }, 1000); 
 
     return () => clearInterval(intervalId);
   }, []);
@@ -55,6 +55,7 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
     }
   };
 
+
   const handleChatClick = (chatId) => {
     navigate(`/chat/${chatId}`);
   };
@@ -63,6 +64,9 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
     navigate('/');
     window.location.reload();
   };
+
+  // Reverse the chat history array to show newest items at the top
+  const reversedChatHistory = [...chatHistory].reverse();
 
   return (
     <Box
@@ -112,7 +116,7 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
               <Box sx={{ paddingLeft: 1 }}>
                 <Typography variant="subtitle1" style={{ color: 'grey' }}>Today</Typography>
               </Box>
-              {chatHistory.slice(0, 4).map((item) => (
+              {reversedChatHistory.slice(0, 4).map((item) => (
                 <ChatHistory 
                   key={item.chat_id} 
                   chatId={item.chat_id} 
@@ -127,7 +131,7 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
               <Typography variant="subtitle1" style={{ color: 'grey' }}>Previous 7 Days</Typography>
             </Box>
             <Box>
-              {chatHistory.slice(4).map((item) => (
+              {reversedChatHistory.slice(4).map((item) => (
                 <ChatHistory 
                   key={item.chat_id} 
                   chatId={item.chat_id} 

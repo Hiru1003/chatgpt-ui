@@ -212,7 +212,7 @@ def generate_topic(prompt: str) -> str:
     payload = {
         "model": "gpt-3.5-turbo",
         "messages": [
-            {"role": "system", "content": "Generate a relevant and concise 25-character topic for the following content:"},
+            {"role": "system", "content": "Generate a relevant and concise maximum of 25-character menaingfull topic for the following content:"},
             {"role": "user", "content": prompt}
         ],
         "max_tokens": 50
