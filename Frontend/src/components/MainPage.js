@@ -14,6 +14,7 @@ const MainPage = () => {
   const [inputText, setInputText] = useState('');
   const [hoverIndex, setHoverIndex] = useState(null);
   const messagesEndRef = useRef(null);
+  const [chatId, setChatId] = useState('');
 
   useEffect(() => {
     scrollToBottom();
@@ -37,7 +38,6 @@ const MainPage = () => {
     event.preventDefault();
     if (inputText.trim() === '') return;
   
-    // Add user message
     const newMessages = [...messages, { text: inputText, sender: 'right' }];
     setMessages(newMessages);
     setInputText('');
@@ -48,33 +48,42 @@ const MainPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text: inputText }),
+        body: JSON.stringify({ chat_id: chatId, text: inputText }),
       });
   
+      console.log('Response Status:', response.status);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
   
       const responseData = await response.json();
-      const fullBotResponse = responseData.messages.map(msg => msg.content).join(' ') || ''; // Ensure fullBotResponse is an empty string if undefined
+      console.log('Response Data:', responseData);
   
-      let botResponse = '';
-      setMessages((prevMessages) => [...prevMessages, { text: '', sender: 'left' }]);
+      const fullBotResponses = responseData.messages.map(msg => msg.content);
+      setChatId(responseData.chat_id);
   
-      const interval = setInterval(() => {
-        if (fullBotResponse && botResponse.length < fullBotResponse.length) {
-          botResponse += fullBotResponse[botResponse.length];
-          setMessages((prevMessages) => {
-            const lastMessage = prevMessages[prevMessages.length - 1];
-            return [
-              ...prevMessages.slice(0, prevMessages.length - 1),
-              { ...lastMessage, text: botResponse }
-            ];
-          });
-        } else {
-          clearInterval(interval);
-        }
-      }, 50);
+      fullBotResponses.forEach((content, idx) => {
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { text: '', sender: 'left', id: idx }
+        ]);
+  
+        let botResponse = '';
+        const interval = setInterval(() => {
+          if (content && botResponse.length < content.length) {
+            botResponse += content[botResponse.length];
+            setMessages((prevMessages) => {
+              const lastMessage = prevMessages[prevMessages.length - 1];
+              return [
+                ...prevMessages.slice(0, prevMessages.length - 1),
+                { ...lastMessage, text: botResponse }
+              ];
+            });
+          } else {
+            clearInterval(interval);
+          }
+        }, 50);
+      });
   
     } catch (error) {
       console.error('Error fetching bot response:', error);

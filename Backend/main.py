@@ -198,7 +198,7 @@ class TextResponse(BaseModel):
 class ChatSession(BaseModel):
     chat_id: str
     topic: str
-    messages: List[Message]
+    messages: List[Message]  # List of Message objects
 
 def generate_topic(prompt: str) -> str:
     api_key = os.getenv("OPENAI_API_KEY")
@@ -306,80 +306,6 @@ async def get_bot_response(request: TextRequest):
 
 
 
-
-
-
-
-
-
-
-
-# @app.post("/bot/response", response_model=TextResponse)
-# async def get_bot_response(request: TextRequest):
-#     # Prepare the request data
-#     api_key = os.getenv("OPENAI_API_KEY")
-#     headers = {
-#         "Authorization": f"Bearer {api_key}",
-#         "Content-Type": "application/json"
-#     }
-#     payload = {
-#         "model": "gpt-3.5-turbo",
-#         "messages": [
-#             {"role": "system", "content": "You are a friendly assistant, skilled in providing helpful and engaging responses to a variety of everyday life questions."},
-#             {"role": "user", "content": request.text}
-#         ]
-#     }
-
-#     # Convert payload to JSON
-#     json_payload = json.dumps(payload)
-
-#     # Create a connection to the OpenAI API
-#     conn = http.client.HTTPSConnection("api.openai.com")
-
-#     # Send the request to OpenAI API
-#     conn.request("POST", "/v1/chat/completions", body=json_payload, headers=headers)
-
-#     # Get the response from OpenAI API
-#     response = conn.getresponse()
-#     response_data = response.read().decode()
-
-#     # Close the connection
-#     conn.close()
-
-#     # Parse the JSON response
-#     response_json = json.loads(response_data)
-#     response_text = response_json['choices'][0]['message']['content']
-
-#     # Save the request and response to the database
-#     response_data = {
-#         "request": request.text,
-#         "response": response_text
-#     }
-#     result = response_collection.insert_one(response_data)
-#     if not result.inserted_id:
-#         raise HTTPException(status_code=500, detail="Failed to save response to database")
-
-#     return {"text": response_text}
-
-
-# Add initial data to MongoDB 
-# @app.on_event("startup")
-# async def startup_event():
-#     initial_data = [
-#         {"chatId": "1", "text": "Recipe for cake"},
-#         {"chatId": "2", "text": "Coding with python"},
-#         {"chatId": "3", "text": "React app with python"},
-#         {"chatId": "4", "text": "How to make a diy table"},
-#         {"chatId": "5", "text": "SE project ideas"},
-#         {"chatId": "6", "text": "Remake the house style"},
-#         {"chatId": "7", "text": "Breakfast ideas"},
-#         {"chatId": "8", "text": "OOP concepts"},
-#         {"chatId": "9", "text": "Meal plan generator"},
-#         {"chatId": "10", "text": "Port change solution"},
-#         {"chatId": "11", "text": "Code solution"}
-#     ]
-#     if chat_collection.count_documents({}) == 0: 
-#         chat_collection.insert_many(initial_data)
 
 
 

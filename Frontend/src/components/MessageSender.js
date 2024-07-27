@@ -11,7 +11,6 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
     const [chatId, setChatId] = useState(localStorage.getItem('chat_id') || '');
 
     useEffect(() => {
-        // If chatId is not in local storage, initiate a new session
         if (!chatId) {
             initializeChatSession();
         }
