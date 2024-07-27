@@ -6,7 +6,7 @@ import TextAreaTemplete from './TextArea';
 import MessageSender from './MessageSender';
 
 const DummyChat = () => {
-  const { chatId } = useParams();
+  const { chatId } = useParams(); // Extract chatId from URL parameters
   const [hoverIndex, setHoverIndex] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
@@ -21,13 +21,13 @@ const DummyChat = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await fetch(`/api/chat/${chatId}`);
+        const response = await fetch(`/api/chat/${chatId}`); // Fetch chat messages by chatId
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        console.log('Fetched messages:', data); // Debugging line
-        setMessages(data.messages || []); // Adjust based on your response structure
+        console.log('Fetched messages:', data);
+        setMessages(data.messages || []);
       } catch (error) {
         console.error('Error fetching chat messages:', error);
       }
@@ -54,7 +54,8 @@ const DummyChat = () => {
     event.preventDefault();
     if (inputText.trim() === '') return;
 
-    const newMessages = [...messages, { text: inputText, sender: 'right' }];
+    // Add user's message to state
+    const newMessages = [...messages, { role: 'user', content: inputText }];
     setMessages(newMessages);
     setInputText('');
 
@@ -64,7 +65,7 @@ const DummyChat = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text: inputText }),
+        body: JSON.stringify({ chat_id: chatId, text: inputText }), // Include chatId in the request body
       });
 
       if (!response.ok) {
@@ -72,25 +73,15 @@ const DummyChat = () => {
       }
 
       const responseData = await response.json();
-      const fullBotResponse = responseData.text;
+      console.log('Bot response:', responseData);
 
-      let botResponse = '';
-      setMessages((prevMessages) => [...prevMessages, { text: '', sender: 'left' }]);
+      if (!responseData || !Array.isArray(responseData.messages)) {
+        throw new Error('Invalid response format');
+      }
 
-      const interval = setInterval(() => {
-        botResponse += fullBotResponse[botResponse.length];
-        setMessages((prevMessages) => {
-          const lastMessage = prevMessages[prevMessages.length - 1];
-          return [
-            ...prevMessages.slice(0, prevMessages.length - 1),
-            { ...lastMessage, text: botResponse }
-          ];
-        });
-
-        if (botResponse.length === fullBotResponse.length) {
-          clearInterval(interval);
-        }
-      }, 50);
+      // Add only the latest assistant message to state
+      const latestMessage = responseData.messages[0];
+      setMessages(prevMessages => [...prevMessages, latestMessage]);
 
     } catch (error) {
       console.error('Error fetching bot response:', error);
@@ -116,12 +107,10 @@ const DummyChat = () => {
         paddingRight: '10px',
       }}
     >
-      {/* Header */}
       <Box sx={{ padding: '10px 0', bgcolor: 'grey.900' }}>
         <ChatgptDropdownHeader />
       </Box>
 
-      {/* Messages Container */}
       <Box
         sx={{
           flexGrow: 1,
@@ -152,7 +141,6 @@ const DummyChat = () => {
         <div ref={messagesEndRef} />
       </Box>
 
-      {/* Footer with TextArea */}
       <Box
         sx={{
           bgcolor: 'grey.900',

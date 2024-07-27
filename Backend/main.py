@@ -232,6 +232,8 @@ def generate_topic(prompt: str) -> str:
 def generate_random_chat_id() -> str:
     return str(ObjectId())
 
+
+
 @app.post("/bot/response", response_model=TextResponse)
 async def get_bot_response(request: TextRequest):
     api_key = os.getenv("OPENAI_API_KEY")
@@ -263,7 +265,6 @@ async def get_bot_response(request: TextRequest):
     message_request = Message(role="user", content=request.text)
     message_response = Message(role="assistant", content=response_text)
 
-    # Use provided chat_id or generate a new one
     chat_id = request.chat_id or generate_random_chat_id()
 
     # Check if a chat session with the given chat_id exists
@@ -272,15 +273,22 @@ async def get_bot_response(request: TextRequest):
     if not chat_session:
         # Generate a topic if it's the first request
         topic = generate_topic(request.text)
-        new_chat = ChatSession(chat_id=chat_id, topic=topic, messages=[message_request.dict(), message_response.dict()])
+        new_chat = ChatSession(chat_id=chat_id, topic=topic, messages=[
+            {"role": "user", "content": request.text},
+            {"role": "assistant", "content": response_text}
+        ])
         result = response_collection.insert_one(new_chat.dict())
         if not result.inserted_id:
             raise HTTPException(status_code=500, detail="Failed to save response to database")
     else:
-        # Update existing chat session
+        # Update existing chat session with new message and response
         response_collection.update_one(
             {"chat_id": chat_id},
-            {"$push": {"messages": {"$each": [message_request.dict(), message_response.dict()]}}}
+            {"$push": {"messages": {"role": "user", "content": request.text}}}
+        )
+        response_collection.update_one(
+            {"chat_id": chat_id},
+            {"$push": {"messages": {"role": "assistant", "content": response_text}}}
         )
         # Ensure the topic is set if not present
         if not chat_session.get('topic'):
@@ -299,10 +307,12 @@ async def get_bot_response(request: TextRequest):
     messages = [Message(**msg) for msg in updated_chat_session['messages']]
     topic = updated_chat_session.get('topic', None)
 
-    # Filter out only assistant's responses for frontend
-    assistant_messages = [msg for msg in messages if msg.role == "assistant"]
+    return TextResponse(messages=messages, topic=topic, chat_id=chat_id)
 
-    return TextResponse(messages=assistant_messages, topic=topic, chat_id=chat_id)
+
+
+
+
 
 
 
