@@ -6,13 +6,14 @@ import { IoShareOutline } from "react-icons/io5";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { RiInboxUnarchiveLine } from "react-icons/ri";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const ChatHistory = ({ chatId, text, onDelete, onRename, onClick }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isRenaming, setIsRenaming] = useState(false);
   const [newText, setNewText] = useState(text);
+  const navigate = useNavigate(); // Use navigate from react-router-dom
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -62,10 +63,9 @@ const ChatHistory = ({ chatId, text, onDelete, onRename, onClick }) => {
   };
 
   const handleChatClick = () => {
+    navigate(`/chat/${chatId}`);
     if (onClick) {
       onClick(chatId);
-    } else {
-      console.error('onClick is not defined');
     }
   };
 
@@ -77,7 +77,7 @@ const ChatHistory = ({ chatId, text, onDelete, onRename, onClick }) => {
           style={{ color: 'white', flexGrow: 1, fontSize: '17px', marginRight: '8px', cursor: 'pointer' }}
           onClick={handleChatClick}
         >
-          <Link to={`/chat/${chatId}`} style={{ textDecoration: 'none', color: 'inherit' }}>{text}</Link>
+          {text}
         </Typography>
         <IconButton
           aria-label="more"

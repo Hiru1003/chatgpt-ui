@@ -110,7 +110,7 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/" element={isLoggedIn ? <MainPage isVisible={isSidebarVisible} /> : <Navigate to="/signup" />} />
-            <Route path="/DummyChat" element={isLoggedIn ? <DummyChat isVisible={isSidebarVisible} /> : <Navigate to="/signup" />} />
+            <Route path="/chat/:chatId" element={isLoggedIn ? <DummyChat isVisible={isSidebarVisible} /> : <Navigate to="/signup" />} />
             <Route path="/message" element={isLoggedIn ? <ProtectedRoute element={<MessagePage />} /> : <Navigate to="/signup" />} />
             <Route path="*" element={isLoggedIn ? <Navigate to="/" /> : <Navigate to="/signup" />} />
           </Routes>

@@ -6,8 +6,8 @@ import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { FaRegPenToSquare } from "react-icons/fa6";
 
 const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLeave }) => {
-    const [responseText, setResponseText] = useState('');
-    const [chatName, setChatName] = useState('');
+    const [setResponseText] = useState('');
+    const [setChatName] = useState('');
     const [chatId, setChatId] = useState(localStorage.getItem('chat_id') || '');
 
     useEffect(() => {

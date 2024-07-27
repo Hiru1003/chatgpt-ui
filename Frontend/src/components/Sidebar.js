@@ -55,6 +55,10 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
     }
   };
 
+  const handleChatClick = (chatId) => {
+    navigate(`/chat/${chatId}`);
+  };
+
   const handleNewChat = () => {
     navigate('/');
     window.location.reload();
@@ -115,6 +119,7 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
                   text={item.topic} 
                   onDelete={handleDelete} 
                   onRename={handleRename} 
+                  onClick={() => handleChatClick(item.chat_id)} // Add this line
                 />
               ))}
             </Box>
@@ -129,6 +134,7 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
                   text={item.topic} 
                   onDelete={handleDelete} 
                   onRename={handleRename} 
+                  onClick={() => handleChatClick(item.chat_id)} // Add this line
                 />
               ))}
             </Box>

@@ -1,17 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Box } from '@mui/material';
+import { useParams } from 'react-router-dom';
 import ChatgptDropdownHeader from './ChatgptDropdownHeader';
 import TextAreaTemplete from './TextArea';
 import MessageSender from './MessageSender';
 
 const DummyChat = () => {
+  const { chatId } = useParams();
   const [hoverIndex, setHoverIndex] = useState(null);
-  const [messages, setMessages] = useState([
-    { text: 'I am looking for a java code.', sender: 'right' },
-    { text: 'Sure, I can help with that! Do you have any specific code in mind?', sender: 'left' },
-    { text: 'No.', sender: 'right' },
-    { text: '```<TextField id="confirmPassword" label="Confirm Password" type="password" variant="outlined" fullWidth value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} sx={{ mb: 2 }} required/>```', sender: 'left' },
-  ]);
+  const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
   const messagesEndRef = useRef(null);
 
@@ -20,6 +17,26 @@ const DummyChat = () => {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
     }
   };
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const response = await fetch(`/api/chat/${chatId}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log('Fetched messages:', data); // Debugging line
+        setMessages(data.messages || []); // Adjust based on your response structure
+      } catch (error) {
+        console.error('Error fetching chat messages:', error);
+      }
+    };
+
+    if (chatId) {
+      fetchMessages();
+    }
+  }, [chatId]);
 
   useEffect(() => {
     scrollToBottom();
@@ -118,16 +135,20 @@ const DummyChat = () => {
           position: 'relative',
         }}
       >
-        {messages.map((msg, index) => (
-          <MessageSender
-            key={index}
-            msg={msg}
-            index={index}
-            hoverIndex={hoverIndex}
-            handleMouseEnter={handleMouseEnter}
-            handleMouseLeave={handleMouseLeave}
-          />
-        ))}
+        {messages.length > 0 ? (
+          messages.map((msg, index) => (
+            <MessageSender
+              key={index}
+              msg={{ text: msg.content, sender: msg.role === 'user' ? 'right' : 'left' }}
+              index={index}
+              hoverIndex={hoverIndex}
+              handleMouseEnter={handleMouseEnter}
+              handleMouseLeave={handleMouseLeave}
+            />
+          ))
+        ) : (
+          <p style={{ color: 'grey', textAlign: 'center' }}>No messages to display.</p>
+        )}
         <div ref={messagesEndRef} />
       </Box>
 
@@ -143,7 +164,6 @@ const DummyChat = () => {
           <TextAreaTemplete inputText={inputText} setInputText={setInputText} handleSubmit={handleSubmit} />
         </form>
       </Box>
-
     </Box>
   );
 };

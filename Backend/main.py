@@ -313,6 +313,7 @@ async def get_bot_response(request: TextRequest):
 
 
 
+
 # @app.post("/bot/response", response_model=TextResponse)
 # async def get_bot_response(request: TextRequest):
 #     # Prepare the request data
@@ -383,10 +384,7 @@ async def get_bot_response(request: TextRequest):
 
 
 
-
-
-
-# chat
+# chatname in sidebar
 
 @app.get("/api/chat")
 async def get_chat_history():
@@ -424,7 +422,18 @@ async def delete_chat_item(chat_id: str):
         raise HTTPException(status_code=404, detail="Chat not found")
 
 
+@app.post("/bot/initialize", response_model=dict)
+async def initialize_chat_session():
+    chat_id = generate_random_chat_id()
+    topic = generate_topic("Initial topic generation")
 
+    new_chat = ChatSession(chat_id=chat_id, topic=topic, messages=[])
+    result = response_collection.insert_one(new_chat.dict())
+
+    if not result.inserted_id:
+        raise HTTPException(status_code=500, detail="Failed to initialize chat session")
+
+    return {"chat_id": chat_id}
 
 
 
