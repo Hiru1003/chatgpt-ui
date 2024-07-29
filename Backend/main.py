@@ -201,7 +201,9 @@ class ChatSession(BaseModel):
     messages: List[Message]  # List of Message objects
 
 def generate_topic(prompt: str) -> str:
-    api_key = os.getenv("OPENAI_API_KEY")
+    # api_key = os.getenv("OPENAI_API_KEY")
+    api_key = "sk-proj-5kzBUT7QTEfaYlHElpZnT3BlbkFJAOcZxfbAOZH2UEEN0w5f"  # Replace with your actual API key
+    
     if not api_key:
         raise HTTPException(status_code=500, detail="API key not found")
 
@@ -212,7 +214,8 @@ def generate_topic(prompt: str) -> str:
     payload = {
         "model": "gpt-3.5-turbo",
         "messages": [
-            {"role": "system", "content": "Generate a relevant and concise maximum of 25-character menaingfull topic for the following content:"},
+            
+            {"role": "system", "content": "Generate a relevant and concise maximum of 25-character meaningful topic for the following content:"},
             {"role": "user", "content": prompt}
         ],
         "max_tokens": 50
@@ -225,18 +228,30 @@ def generate_topic(prompt: str) -> str:
     response_data = response.read().decode()
     conn.close()
 
-    response_json = json.loads(response_data)
-    topic = response_json['choices'][0]['message']['content'].strip()
-    return topic[:25]  # Ensure the topic is up to 25 characters
+    try:
+        response_json = json.loads(response_data)
+        if 'choices' not in response_json or not response_json['choices']:
+            raise ValueError("Invalid response format or empty 'choices'")
+
+        topic = response_json['choices'][0]['message']['content'].strip()
+        return topic[:25]  # Ensure the topic is up to 25 characters
+
+    except (KeyError, ValueError) as e:
+        raise HTTPException(status_code=500, detail=f"Error processing response: {e}")
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=500, detail="Error decoding JSON response")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Unexpected error: {e}")
 
 def generate_random_chat_id() -> str:
     return str(ObjectId())
 
 
 
-@app.post("/bot/response", response_model=TextResponse)
-async def get_bot_response(request: TextRequest):
-    api_key = os.getenv("OPENAI_API_KEY")
+
+@app.post("/bot/response")
+async def get_bot_response(request: dict):
+    api_key = "sk-proj-5kzBUT7QTEfaYlHElpZnT3BlbkFJAOcZxfbAOZH2UEEN0w5f"  # Replace with your actual API key
     if not api_key:
         raise HTTPException(status_code=500, detail="API key not found")
 
@@ -247,8 +262,8 @@ async def get_bot_response(request: TextRequest):
     payload = {
         "model": "gpt-3.5-turbo",
         "messages": [
-            {"role": "system", "content": "You are a friendly assistant, skilled in providing helpful and engaging responses to a variety of everyday life questions."},
-            {"role": "user", "content": request.text}
+            {"role": "system", "content": "You are a friendly assistant."},
+            {"role": "user", "content": request.get("text", "")}
         ]
     }
 
@@ -259,51 +274,72 @@ async def get_bot_response(request: TextRequest):
     response_data = response.read().decode()
     conn.close()
 
-    response_json = json.loads(response_data)
-    response_text = response_json['choices'][0]['message']['content']
+    # Log or print the entire response for debugging
+    print("Response from OpenAI API:", response_data)
 
-    message_request = Message(role="user", content=request.text)
+    try:
+        response_json = json.loads(response_data)
+        # Debugging: Check the structure of the response
+        print("Parsed JSON response:", response_json)
+        
+        # Ensure 'choices' exists and is a non-empty list
+        if 'choices' not in response_json or not response_json['choices']:
+            raise HTTPException(status_code=500, detail="No choices in response from OpenAI API")
+
+        # Extract the content from the response
+        response_text = response_json['choices'][0]['message']['content'].strip()
+    except KeyError as e:
+        print(f"KeyError: {e}")  # Log the missing key error
+        raise HTTPException(status_code=500, detail=f"Missing key in response: {e}")
+    except json.JSONDecodeError:
+        print("Error decoding response JSON")
+        raise HTTPException(status_code=500, detail="Error decoding response JSON")
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        raise HTTPException(status_code=500, detail="Unexpected error occurred")
+
+    # Prepare message and chat handling
+    message_request = Message(role="user", content=request.get("text", ""))
     message_response = Message(role="assistant", content=response_text)
 
-    chat_id = request.chat_id or generate_random_chat_id()
+    chat_id = request.get("chat_id") or generate_random_chat_id()
 
-    # Check if a chat session with the given chat_id exists
+    # Assuming `response_collection` is your MongoDB collection instance
     chat_session = response_collection.find_one({"chat_id": chat_id})
 
     if not chat_session:
-        # Generate a topic if it's the first request
-        topic = generate_topic(request.text)
-        new_chat = ChatSession(chat_id=chat_id, topic=topic, messages=[
-            {"role": "user", "content": request.text},
-            {"role": "assistant", "content": response_text}
-        ])
-        result = response_collection.insert_one(new_chat.dict())
+        topic = generate_topic(request.get("text", ""))
+        new_chat = {
+            "chat_id": chat_id,
+            "topic": topic,
+            "messages": [
+                {"role": "user", "content": request.get("text", "")},
+                {"role": "assistant", "content": response_text}
+            ]
+        }
+        result = response_collection.insert_one(new_chat)
         if not result.inserted_id:
             raise HTTPException(status_code=500, detail="Failed to save response to database")
     else:
-        # Update existing chat session with new message and response
         response_collection.update_one(
             {"chat_id": chat_id},
-            {"$push": {"messages": {"role": "user", "content": request.text}}}
+            {"$push": {"messages": {"role": "user", "content": request.get("text", "")}}}
         )
         response_collection.update_one(
             {"chat_id": chat_id},
             {"$push": {"messages": {"role": "assistant", "content": response_text}}}
         )
-        # Ensure the topic is set if not present
         if not chat_session.get('topic'):
-            topic = generate_topic(request.text)
+            topic = generate_topic(request.get("text", ""))
             response_collection.update_one(
                 {"chat_id": chat_id},
                 {"$set": {"topic": topic}}
             )
 
-    # Retrieve the updated chat session
     updated_chat_session = response_collection.find_one({"chat_id": chat_id})
     if not updated_chat_session:
         raise HTTPException(status_code=500, detail="Failed to retrieve chat session")
 
-    # Convert MongoDB document to the appropriate format
     messages = [Message(**msg) for msg in updated_chat_session['messages']]
     topic = updated_chat_session.get('topic', None)
 
