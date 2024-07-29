@@ -56,7 +56,6 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
     }
   };
 
-
   const handleChatClick = (chatId) => {
     navigate(`/chat/${chatId}`);
   };

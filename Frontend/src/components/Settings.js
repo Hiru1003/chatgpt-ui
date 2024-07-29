@@ -270,7 +270,7 @@ const Settings = ({ onClose }) => {
         {/* Connected apps settings content */}
         <Box sx={{ mb: 2 }}>
             <Typography variant="subtitle1" sx={{ color: 'white', mb: 1, fontSize:'18px', fontWeight:'bold' }}>
-            Connect apps to access their information in ChatGPT.
+            Connect apps to access their information in Lissa.
             </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
             <Typography variant="body1" sx={{ color: 'white' }}>
