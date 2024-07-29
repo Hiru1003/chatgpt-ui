@@ -41,8 +41,10 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
             if (part.startsWith('```') && part.endsWith('```')) {
                 const codeContent = part.slice(3, -3);
                 return (
-                    <Box key={index} sx={{ backgroundColor: '#272822', color: 'white', padding: 1, borderRadius: 1, mb: 1 }}>
-                        <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>{codeContent}</Typography>
+                    
+                    <Box key={index} sx={{ backgroundColor: '#272822', color: 'white', padding: 1, borderRadius: 1, mb: 1, fontSize: '1.2rem' }}>
+                        
+                        <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap', fontSize: '1.2rem' }}>{codeContent}</Typography>
                     </Box>
                 );
             } else {
