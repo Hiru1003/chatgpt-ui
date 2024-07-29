@@ -4,9 +4,10 @@ import { useParams } from 'react-router-dom';
 import ChatgptDropdownHeader from './ChatgptDropdownHeader';
 import TextAreaTemplete from './TextArea';
 import MessageSender from './MessageSender';
+import axios from 'axios';
 
 const DummyChat = () => {
-  const { chatId } = useParams(); // Extract chatId from URL parameters
+  const { chatId } = useParams();
   const [hoverIndex, setHoverIndex] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
@@ -19,23 +20,18 @@ const DummyChat = () => {
   };
 
   useEffect(() => {
-    const fetchMessages = async () => {
+    const fetchChatHistory = async () => {
       try {
-        const response = await fetch(`/api/chat/${chatId}`); // Fetch chat messages by chatId
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+        if (chatId) {
+          const response = await axios.get(`http://127.0.0.1:8000/api/chat/${chatId}`);
+          setMessages(response.data.messages || []);
         }
-        const data = await response.json();
-        console.log('Fetched messages:', data);
-        setMessages(data.messages || []);
       } catch (error) {
-        console.error('Error fetching chat messages:', error);
+        console.error('Error fetching chat history:', error);
       }
     };
 
-    if (chatId) {
-      fetchMessages();
-    }
+    fetchChatHistory();
   }, [chatId]);
 
   useEffect(() => {
@@ -54,39 +50,40 @@ const DummyChat = () => {
     event.preventDefault();
     if (inputText.trim() === '') return;
 
-    // Add user's message to state
+    // Add the user's message to the state
     const newMessages = [...messages, { role: 'user', content: inputText }];
     setMessages(newMessages);
     setInputText('');
 
     try {
-      const response = await fetch('/bot/response', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ chat_id: chatId, text: inputText }), // Include chatId in the request body
-      });
+        const response = await fetch('/bot/response', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ chat_id: chatId, text: inputText }),
+        });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
 
-      const responseData = await response.json();
-      console.log('Bot response:', responseData);
+        const responseData = await response.json();
+        console.log('Bot response:', responseData);
 
-      if (!responseData || !Array.isArray(responseData.messages)) {
-        throw new Error('Invalid response format');
-      }
+        // Ensure responseData contains the messages array
+        if (!responseData || !Array.isArray(responseData.messages)) {
+            throw new Error('Invalid response format');
+        }
 
-      // Add only the latest assistant message to state
-      const latestMessage = responseData.messages[0];
-      setMessages(prevMessages => [...prevMessages, latestMessage]);
+        // Add all the new messages to state
+        setMessages(prevMessages => [...prevMessages, ...responseData.messages]);
 
     } catch (error) {
-      console.error('Error fetching bot response:', error);
+        console.error('Error fetching bot response:', error);
     }
-  };
+};
+
 
   return (
     <Box

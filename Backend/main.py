@@ -215,7 +215,7 @@ def generate_topic(prompt: str) -> str:
         "model": "gpt-3.5-turbo",
         "messages": [
 
-            {"role": "system", "content": "Generate a relevant and concise maximum of 25-character meaningful topic for the following content:"},
+            {"role": "system", "content": "Generate a relevant and meaningful, maximum of 25-character  topic for the following content:"},
             {"role": "user", "content": prompt}
         ],
         "max_tokens": 50
@@ -251,8 +251,7 @@ def generate_random_chat_id() -> str:
 
 @app.post("/bot/response")
 async def get_bot_response(request: dict):
-    # api_key = os.getenv("OPENAI_API_KEY")
-    api_key = "sk-None-HFemnJR7AkOo68UgjvCaT3BlbkFJRTBGcaOJgxkDjyUq8FoW"
+    api_key = "sk-None-HFemnJR7AkOo68UgjvCaT3BlbkFJRTBGcaOJgxkDjyUq8FoW"  # Use secure API key management
     if not api_key:
         raise HTTPException(status_code=500, detail="API key not found")
 
@@ -275,37 +274,21 @@ async def get_bot_response(request: dict):
     response_data = response.read().decode()
     conn.close()
 
-    # Log or print the entire response for debugging
-    print("Response from OpenAI API:", response_data)
-
     try:
         response_json = json.loads(response_data)
-        # Debugging: Check the structure of the response
-        print("Parsed JSON response:", response_json)
-        
-        # Ensure 'choices' exists and is a non-empty list
         if 'choices' not in response_json or not response_json['choices']:
             raise HTTPException(status_code=500, detail="No choices in response from OpenAI API")
 
-        # Extract the content from the response
         response_text = response_json['choices'][0]['message']['content'].strip()
     except KeyError as e:
-        print(f"KeyError: {e}")  # Log the missing key error
         raise HTTPException(status_code=500, detail=f"Missing key in response: {e}")
     except json.JSONDecodeError:
-        print("Error decoding response JSON")
         raise HTTPException(status_code=500, detail="Error decoding response JSON")
     except Exception as e:
-        print(f"Unexpected error: {e}")
         raise HTTPException(status_code=500, detail="Unexpected error occurred")
-
-    # Prepare message and chat handling
-    message_request = Message(role="user", content=request.get("text", ""))
-    message_response = Message(role="assistant", content=response_text)
 
     chat_id = request.get("chat_id") or generate_random_chat_id()
 
-    # Assuming `response_collection` is your MongoDB collection instance
     chat_session = response_collection.find_one({"chat_id": chat_id})
 
     if not chat_session:
