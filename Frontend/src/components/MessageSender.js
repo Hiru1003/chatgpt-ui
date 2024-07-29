@@ -35,22 +35,28 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
         return null;
     }
 
-    const isCodeMessage = msg.text.startsWith('```') && msg.text.endsWith('```');
-    const messageWidth = isCodeMessage ? '60%' : 'auto'; 
-    const codeContent = isCodeMessage ? msg.text.slice(3, -3) : msg.text;
-
     const renderMessageWithLineBreaks = (text) => {
-        return text.split('\n').map((line, index) => (
-            <React.Fragment key={index}>
-                {line}
-                <br />
-            </React.Fragment>
-        ));
+        const parts = text.split(/(```[\s\S]*?```)/g);
+        return parts.map((part, index) => {
+            if (part.startsWith('```') && part.endsWith('```')) {
+                const codeContent = part.slice(3, -3);
+                return (
+                    <Box key={index} sx={{ backgroundColor: '#272822', color: 'white', padding: 1, borderRadius: 1, mb: 1 }}>
+                        <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>{codeContent}</Typography>
+                    </Box>
+                );
+            } else {
+                return (
+                    <Typography key={index} variant="body1" sx={{ whiteSpace: 'pre-wrap', fontSize: '1.2rem', maxWidth: '100%', wordBreak: 'break-word' }}>
+                        {part}
+                    </Typography>
+                );
+            }
+        });
     };
 
     const handleCopy = () => {
-        const textToCopy = isCodeMessage ? codeContent : msg.text;
-        navigator.clipboard.writeText(textToCopy)
+        navigator.clipboard.writeText(msg.text)
             .then(() => {
                 console.log('Text copied to clipboard');
             })
@@ -107,14 +113,14 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
                 position: 'relative',
                 pr: 7,
                 pl: 4,
-                backgroundColor: isCodeMessage ? 'transparent' : 'transparent',
-                borderRadius: isCodeMessage ? '10px' : '0',
-                width: '100%', 
+                backgroundColor: 'transparent',
+                borderRadius: '10px',
+                width: '100%',
             }}
             onMouseEnter={() => handleMouseEnter(index)}
             onMouseLeave={handleMouseLeave}
         >
-            {isCodeMessage && (
+            {msg.text.startsWith('```') && msg.text.endsWith('```') && (
                 <Box
                     sx={{
                         display: 'flex',
@@ -126,7 +132,7 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
                         width: '60%',
                     }}
                 >
-                    <Typography variant="body2" sx={{ color: 'grey.500', mr: 1 }}>console</Typography> 
+                    <Typography variant="body2" sx={{ color: 'grey.500', mr: 1 }}>console</Typography>
                     <IconButton aria-label="Copy" sx={{ color: 'grey', fontSize: '0.8rem', ml: 'auto' }} onClick={handleCopy}>
                         <MdContentCopy style={{ color: 'grey', fontSize: '1.1rem' }} />
                     </IconButton>
@@ -135,18 +141,16 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
 
             <Box
                 sx={{
-                    bgcolor: isCodeMessage ? '#272822' : (msg.sender === 'left' ? '#1D1A1A' : '#343131'),
+                    bgcolor: msg.text.startsWith('```') && msg.text.endsWith('```') ? '#272822' : (msg.sender === 'left' ? '#1D1A1A' : '#343131'),
                     color: 'white',
                     borderRadius: 1,
                     p: 1,
-                    mt: isCodeMessage ? '-1px' : '0', 
+                    mt: msg.text.startsWith('```') && msg.text.endsWith('```') ? '-1px' : '0',
                     maxWidth: '60%',
-                    width: messageWidth,
+                    width: msg.text.startsWith('```') && msg.text.endsWith('```') ? '60%' : 'auto',
                 }}
             >
-                <Typography variant="body1" sx={{ fontSize: '1.2rem', maxWidth: '100%', wordBreak: 'break-word' }}>
-                    {renderMessageWithLineBreaks(codeContent)}
-                </Typography>
+                {renderMessageWithLineBreaks(msg.text)}
             </Box>
 
             {(hoverIndex === index) && (
