@@ -202,7 +202,7 @@ class ChatSession(BaseModel):
 
 def generate_topic(prompt: str) -> str:
     # api_key = os.getenv("OPENAI_API_KEY")
-    api_key = "sk-proj-5kzBUT7QTEfaYlHElpZnT3BlbkFJAOcZxfbAOZH2UEEN0w5f"  # Replace with your actual API key
+    api_key = "sk-proj-vP8zsZKF57DYVD4PEWE3T3BlbkFJ4uK5Q9L4tR2HpywdbWNs"  # Replace with your actual API key
     
     if not api_key:
         raise HTTPException(status_code=500, detail="API key not found")
@@ -214,7 +214,7 @@ def generate_topic(prompt: str) -> str:
     payload = {
         "model": "gpt-3.5-turbo",
         "messages": [
-            
+
             {"role": "system", "content": "Generate a relevant and concise maximum of 25-character meaningful topic for the following content:"},
             {"role": "user", "content": prompt}
         ],
@@ -251,7 +251,7 @@ def generate_random_chat_id() -> str:
 
 @app.post("/bot/response")
 async def get_bot_response(request: dict):
-    api_key = "sk-proj-5kzBUT7QTEfaYlHElpZnT3BlbkFJAOcZxfbAOZH2UEEN0w5f"  # Replace with your actual API key
+    api_key = "sk-proj-vP8zsZKF57DYVD4PEWE3T3BlbkFJ4uK5Q9L4tR2HpywdbWNs"  # Replace with your actual API key
     if not api_key:
         raise HTTPException(status_code=500, detail="API key not found")
 

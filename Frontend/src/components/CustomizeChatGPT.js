@@ -30,7 +30,7 @@ const CustomizeChatGPT = ({ onClose }) => {
             textAlign: 'left' 
           }}
         >
-          Customize ChatGPT
+          Customize Lissa
         </Typography>
         <Divider sx={{ borderColor: 'white', borderBottomWidth: 1, mb: 2 }} />
 
@@ -44,7 +44,7 @@ const CustomizeChatGPT = ({ onClose }) => {
             textAlign: 'left' 
           }}
         > 
-          What would you like ChatGPT to know about you to provide better responses?
+          What would you like Lissa to know about you to provide better responses?
         </Typography>
         <TextField 
             placeholder="Enter your prompt here..." 
@@ -75,7 +75,7 @@ const CustomizeChatGPT = ({ onClose }) => {
              textAlign: 'left' 
            }}
          > 
-           How would you like ChatGPT to respond?
+           How would you like Lissa to respond?
           </Typography>
           <TextField 
               placeholder="Enter your prompt here..." 

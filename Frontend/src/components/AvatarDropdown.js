@@ -88,7 +88,7 @@ const AvatarDropdown = () => {
               <LuBookDown style={{ fontSize: '1.5rem' }} />
             </Box>
             <Box sx={{ color: 'white' }}>
-              <Typography variant="subtitle1" style={{ color: 'white', fontSize: { xs: '1rem', sm: '1.5rem' }  }}>Customize ChatGPT</Typography>
+              <Typography variant="subtitle1" style={{ color: 'white', fontSize: { xs: '1rem', sm: '1.5rem' }  }}>Customize Lissa</Typography>
             </Box>
           </Box>
         </MenuItem>

@@ -121,7 +121,7 @@ const TextAreaTemplete = ({ inputText, setInputText, handleSubmit }) => {
         <Box sx={{ width: '100%', mr: 1, position: 'relative' }}>
           
         <textarea
-        placeholder="Message ChatGPT"
+        placeholder="Message Lissa ..."
         value={inputText}
         onKeyDown={(e) => {
           if (e.key === 'Enter' && !e.shiftKey) {
@@ -173,7 +173,7 @@ const TextAreaTemplete = ({ inputText, setInputText, handleSubmit }) => {
 
       <Box sx={{ position: 'relative', bottom: -35, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Typography sx={{ color: "grey", fontSize: { xs: '8px', sm: '14px' }, textAlign: 'center' }}>
-          ChatGPT can make mistakes. Check important info.
+          Lissa can make mistakes. Check important info.
         </Typography>
       </Box>
 

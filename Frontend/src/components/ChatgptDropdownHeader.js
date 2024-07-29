@@ -61,8 +61,8 @@ const MainHeader = () => {
                   <BsStars style={{ fontSize: { xs: '1rem', sm: '1.5rem' } }} />
                 </Box>
                 <Box sx={{ color: 'white' }}>
-                  <Typography variant="subtitle1" sx={{ color: 'white', fontSize: { xs: '0.9rem', sm: '1.1rem' } }}>ChatGPT Plus</Typography>
-                  <Typography variant="body2" sx={{ color: 'white', fontSize: { xs: '0.7rem', sm: '0.8rem' } }}>Get GPT-4, DALL-E, and more</Typography>
+                  <Typography variant="subtitle1" sx={{ color: 'white', fontSize: { xs: '0.9rem', sm: '1.1rem' } }}>Lissa Plus</Typography>
+                  <Typography variant="body2" sx={{ color: 'white', fontSize: { xs: '0.7rem', sm: '0.8rem' } }}>Get Lissa Pro, DALL-E, and more</Typography>
                 </Box>
               </Box>
             </MenuItem>
@@ -84,7 +84,7 @@ const MainHeader = () => {
                   <RiWechatChannelsFill style={{ fontSize: { xs: '1rem', sm: '1.5rem' } }} />
                 </Box>
                 <Box sx={{ color: 'white' }}>
-                  <Typography variant="subtitle1" sx={{ color: 'white', fontSize: { xs: '0.9rem', sm: '1.1rem' } }}>ChatGPT</Typography>
+                  <Typography variant="subtitle1" sx={{ color: 'white', fontSize: { xs: '0.9rem', sm: '1.1rem' } }}>Lissa</Typography>
                   <Typography variant="body2" sx={{ color: 'white', fontSize: { xs: '0.7rem', sm: '0.8rem' } }}>Great for everyday tasks</Typography>
                 </Box>
               </Box>

@@ -25,13 +25,14 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
     };
 
     fetchChatHistory();
-
-    const intervalId = setInterval(() => {
-      fetchChatHistory();
-    }, 1000); 
-
-    return () => clearInterval(intervalId);
   }, []);
+
+    // const intervalId = setInterval(() => {
+    //   fetchChatHistory();
+    // }, 
+    // 100000
+    // return () => clearInterval(intervalId);
+
 
   const handleDelete = async (chatId) => {
     try {
@@ -62,7 +63,8 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
 
   const handleNewChat = () => {
     navigate('/');
-    window.location.reload();
+    //Remove reloading page when clicking new chat
+    //window.location.reload();
   };
 
   // Reverse the chat history array to show newest items at the top

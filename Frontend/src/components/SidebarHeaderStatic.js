@@ -11,7 +11,7 @@ const SidebarHeaderStatic = () => {
                 <BsStars style={{ fontSize: '1.2rem', color:'grey' }} />
               </Box>
               <Box sx={{ color: 'white' }}>
-                <Typography style={{ color: 'white', fontSize: '1rem' }}>GTP Pro<br /></Typography>
+                <Typography style={{ color: 'white', fontSize: '1rem' }}>Lissa Pro<br /></Typography>
               </Box>
             </Box>
           </Box>
