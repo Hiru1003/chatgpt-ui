@@ -15,7 +15,7 @@ const DummyChat = () => {
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }
   };
 
@@ -35,7 +35,7 @@ const DummyChat = () => {
   }, [chatId]);
 
   useEffect(() => {
-    scrollToBottom();
+    scrollToBottom(); // Scroll to the bottom when messages change
   }, [messages]);
 
   const handleMouseEnter = (index) => {
@@ -50,40 +50,58 @@ const DummyChat = () => {
     event.preventDefault();
     if (inputText.trim() === '') return;
 
-    // Add the user's message to the state
     const newMessages = [...messages, { role: 'user', content: inputText }];
     setMessages(newMessages);
     setInputText('');
 
     try {
-        const response = await fetch('/bot/response', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ chat_id: chatId, text: inputText }),
-        });
+      const response = await fetch('/bot/response', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ chat_id: chatId, text: inputText }),
+      });
 
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
 
-        const responseData = await response.json();
-        console.log('Bot response:', responseData);
+      const responseData = await response.json();
 
-        // Ensure responseData contains the messages array
-        if (!responseData || !Array.isArray(responseData.messages)) {
-            throw new Error('Invalid response format');
-        }
+      // Add bot responses with typing effect
+      const fullBotResponses = responseData.messages.map(msg => msg.content);
+      setMessages(prevMessages => [
+        ...prevMessages,
+        ...fullBotResponses.map((content, idx) => ({
+          role: 'bot',
+          content: '',
+          id: idx
+        }))
+      ]);
 
-        // Add all the new messages to state
-        setMessages(prevMessages => [...prevMessages, ...responseData.messages]);
+      fullBotResponses.forEach((content, idx) => {
+        let botResponse = '';
+        const interval = setInterval(() => {
+          if (content && botResponse.length < content.length) {
+            botResponse += content[botResponse.length];
+            setMessages(prevMessages => {
+              const lastMessage = prevMessages[prevMessages.length - 1];
+              return [
+                ...prevMessages.slice(0, prevMessages.length - 1),
+                { ...lastMessage, content: botResponse }
+              ];
+            });
+          } else {
+            clearInterval(interval);
+          }
+        }, 50);
+      });
 
     } catch (error) {
-        console.error('Error fetching bot response:', error);
+      console.error('Error fetching bot response:', error);
     }
-};
-
+  };
 
   return (
     <Box
@@ -104,10 +122,12 @@ const DummyChat = () => {
         paddingRight: '10px',
       }}
     >
+      {/* Header */}
       <Box sx={{ padding: '10px 0', bgcolor: 'grey.900' }}>
         <ChatgptDropdownHeader />
       </Box>
 
+      {/* Messages Container */}
       <Box
         sx={{
           flexGrow: 1,
@@ -138,6 +158,7 @@ const DummyChat = () => {
         <div ref={messagesEndRef} />
       </Box>
 
+      {/* Footer with TextArea */}
       <Box
         sx={{
           bgcolor: 'grey.900',
