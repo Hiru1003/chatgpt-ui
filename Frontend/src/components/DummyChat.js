@@ -35,7 +35,7 @@ const DummyChat = () => {
   }, [chatId]);
 
   useEffect(() => {
-    scrollToBottom(); // Scroll to the bottom when messages change
+    scrollToBottom();
   }, [messages]);
 
   const handleMouseEnter = (index) => {

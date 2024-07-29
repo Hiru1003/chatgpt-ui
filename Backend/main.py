@@ -177,10 +177,6 @@ async def logout(token: str = Depends(oauth2_scheme)):
 
 
 
-
-
-
-
 # Response
 class Message(BaseModel):
     role: str
@@ -251,7 +247,7 @@ def generate_random_chat_id() -> str:
 
 @app.post("/bot/response")
 async def get_bot_response(request: dict):
-    api_key = "sk-None-HFemnJR7AkOo68UgjvCaT3BlbkFJRTBGcaOJgxkDjyUq8FoW"  # Use secure API key management
+    api_key = "sk-None-HFemnJR7AkOo68UgjvCaT3BlbkFJRTBGcaOJgxkDjyUq8FoW"
     if not api_key:
         raise HTTPException(status_code=500, detail="API key not found")
 
@@ -262,7 +258,7 @@ async def get_bot_response(request: dict):
     payload = {
         "model": "gpt-3.5-turbo",
         "messages": [
-            {"role": "system", "content": "You are a friendly assistant."},
+            {"role": "system", "content": "You are a friendly helpful assistant."},
             {"role": "user", "content": request.get("text", "")}
         ]
     }
@@ -336,12 +332,7 @@ async def get_bot_response(request: dict):
 
 
 
-
-
-
-
 # chatname in sidebar
-
 @app.get("/api/chat")
 async def get_chat_history():
     chat_sessions = list(response_collection.find({}, {"_id": 0, "chat_id": 1, "topic": 1}))
@@ -390,82 +381,6 @@ async def initialize_chat_session():
         raise HTTPException(status_code=500, detail="Failed to initialize chat session")
 
     return {"chat_id": chat_id}
-
-
-
-
-
-
-
-
-
-# #chat name
-# class TextRequest(BaseModel):
-#     text: str
-
-# class ChatItem(BaseModel):
-#     chatId: str
-#     text: str
-
-# @app.post("/bot/chat_name", response_model=ChatItem)
-# async def start_new_chat(request: TextRequest):
-#     # Generate a new chat ID
-#     new_chat_id = str(uuid.uuid4())
-    
-#     # Generate chat topic using OpenAI API
-#     api_key = os.getenv("OPENAI_API_KEY", "sk-proj-mOUCsyRcLMHDKva2qrInT3BlbkFJOoOza5bzwYZciugO2J2o")
-#     if not api_key:
-#         raise HTTPException(status_code=500, detail="OPENAI_API_KEY is not set.")
-        
-#     headers = {
-#         "Authorization": f"Bearer {api_key}",
-#         "Content-Type": "application/json"
-#     }
-#     topic_payload = {
-#         "model": "gpt-3.5-turbo",
-#         "messages": [
-#             {"role": "system", "content": "You are a helpful assistant for generating chat topics."},
-#             {"role": "user", "content": f"Generate a topic for: {request.text}. The topic should be concise and less than 25 characters."}
-#         ]
-#     }
-#     json_topic_payload = json.dumps(topic_payload)
-
-#     try:
-#         # Create a connection to the OpenAI API for generating the chat topic
-#         conn = http.client.HTTPSConnection("api.openai.com")
-#         conn.request("POST", "/v1/chat/completions", body=json_topic_payload, headers=headers)
-#         response = conn.getresponse()
-#         response_data = response.read().decode()
-#         conn.close()
-
-#         # Parse the JSON response
-#         response_json = json.loads(response_data)
-#         chat_topic = response_json['choices'][0]['message']['content'].strip()
-
-#         # Ensure the topic is less than 25 characters
-#         if len(chat_topic) > 25:
-#             chat_topic = chat_topic[:25]
-
-#     except Exception as e:
-#         print(f"Error contacting OpenAI API: {e}")
-#         raise HTTPException(status_code=500, detail="Error contacting OpenAI API")
-
-#     # Save the new chat item to the database
-#     chat_item = {
-#         "chatId": new_chat_id,
-#         "text": chat_topic
-#     }
-    
-#     try:
-#         result = chat_collection.insert_one(chat_item)
-#         if not result.inserted_id:
-#             raise HTTPException(status_code=500, detail="Failed to save new chat item")
-#     except Exception as e:
-#         print(f"Database error: {e}")
-#         raise HTTPException(status_code=500, detail="Database error")
-
-#     return ChatItem(chatId=new_chat_id, text=chat_topic)
-
 
 
 
