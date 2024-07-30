@@ -6,8 +6,8 @@ import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { FaRegPenToSquare } from "react-icons/fa6";
 
 const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLeave }) => {
-    const [responseText, setResponseText] = useState('');
-    const [chatName, setChatName] = useState('');
+    const [setResponseText] = useState('');
+    const [setChatName] = useState('');
     const [chatId, setChatId] = useState(localStorage.getItem('chat_id') || '');
 
     useEffect(() => {
@@ -22,7 +22,7 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
             const data = await response.json();
             if (response.ok) {
                 setChatId(data.chat_id);
-                localStorage.setItem('chat_id', data.chat_id);
+                localStorage.setItem('chat_id', data.chat_id); // Store chat_id in local storage
             } else {
                 console.error('Error initializing chat session:', data.detail);
             }
@@ -31,8 +31,12 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
         }
     };
 
+    if (!msg || !msg.text) {
+        return null;
+    }
+
     const renderTable = (text) => {
-        const rows = text.trim().split('\n').filter(row => row.trim() !== '' && !row.startsWith('-------')); 
+        const rows = text.trim().split('\n').filter(row => row.trim() !== '' && !row.startsWith('-------'));
         const headers = rows[0].split('|').map(cell => cell.trim()).filter(header => header); // Filter out empty headers
         const bodyRows = rows.slice(1).map(row => row.split('|').map(cell => cell.trim()).filter(cell => cell)); // Filter out empty cells
 
@@ -94,7 +98,6 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
     const renderMessageWithLineBreaks = (text) => {
         const parts = text.split(/(```[\s\S]*?```)/g);
         return parts.map((part, index) => {
-            // Check for table syntax
             if (part.trim().startsWith('|') && part.includes('|')) {
                 return renderTable(part);
             } else if (part.startsWith('```') && part.endsWith('```')) {
@@ -237,6 +240,11 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
                                 <BiLike style={{ color: 'grey', fontSize: '1.2rem' }} />
                             </IconButton>
                         </>
+                    )}
+                    {msg.sender === 'right' && (
+                        <IconButton aria-label="Edit">
+                            <FaRegPenToSquare style={{ color: 'grey', fontSize: '1.2rem' }} />
+                        </IconButton>
                     )}
                 </Box>
             )}
