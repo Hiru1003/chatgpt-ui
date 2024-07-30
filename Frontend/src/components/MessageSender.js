@@ -68,7 +68,7 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
                             fontSize: '1.2rem'
                         }}
                     >
-                        <Typography variant="body2">{header}</Typography>
+                        <Typography sx={{fontSize: '1.2rem'}}>{header}</Typography>
                     </Box>
                 ))}
                 {bodyRows.map((row, rowIndex) => (
@@ -83,10 +83,10 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
                                     textAlign: 'center',
                                     backgroundColor: '#2c2c2c',
                                     color: '#e0e0e0',
-                                    fontSize: '1.2rem'
+                                    
                                 }}
                             >
-                                <Typography variant="body2">{cell}</Typography>
+                                <Typography sx={{fontSize: '1rem'}}>{cell}</Typography>
                             </Box>
                         ))}
                     </React.Fragment>
