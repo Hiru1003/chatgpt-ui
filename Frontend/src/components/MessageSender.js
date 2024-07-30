@@ -31,9 +31,59 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
         }
     };
 
-    if (!msg || !msg.text) {
-        return null;
-    }
+    const renderTable = (text) => {
+        const rows = text.trim().split('\n');
+        const headers = rows[0].split('|').map(cell => cell.trim());
+        const bodyRows = rows.slice(1).map(row => row.split('|').map(cell => cell.trim()));
+
+        return (
+            <Box
+                sx={{
+                    display: 'grid',
+                    gridTemplateColumns: `repeat(${headers.length}, 1fr)`,
+                    gap: '1px',
+                    border: '1px solid #ddd',
+                    borderRadius: '4px',
+                    width: '100%',
+                    backgroundColor: 'transparent',
+                }}
+            >
+                {headers.map((header, index) => (
+                    <Box
+                        key={`header-${index}`}
+                        sx={{
+                            backgroundColor: '#3a3a3a',
+                            padding: '8px',
+                            borderRight: '1px solid #ddd',
+                            textAlign: 'center',
+                            fontWeight: 'bold',
+                            borderBottom: '1px solid #ddd',
+                        }}
+                    >
+                        <Typography variant="body2">{header}</Typography>
+                    </Box>
+                ))}
+                {bodyRows.map((row, rowIndex) => (
+                    <React.Fragment key={`row-${rowIndex}`}>
+                        {row.map((cell, cellIndex) => (
+                            <Box
+                                key={`cell-${rowIndex}-${cellIndex}`}
+                                sx={{
+                                    padding: '8px',
+                                    borderRight: cellIndex < row.length - 1 ? '1px solid #ddd' : 'none',
+                                    borderBottom: rowIndex < bodyRows.length - 1 ? '1px solid #ddd' : 'none',
+                                    textAlign: 'center',
+                                    backgroundColor: 'transparent', // Transparent background for cells
+                                }}
+                            >
+                                <Typography variant="body2">{cell}</Typography>
+                            </Box>
+                        ))}
+                    </React.Fragment>
+                ))}
+            </Box>
+        );
+    };
 
     const renderMessageWithLineBreaks = (text) => {
         const parts = text.split(/(```[\s\S]*?```)/g);
@@ -41,18 +91,21 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
             if (part.startsWith('```') && part.endsWith('```')) {
                 const codeContent = part.slice(3, -3);
                 return (
-                    
                     <Box key={index} sx={{ backgroundColor: '#272822', color: 'white', padding: 1, borderRadius: 1, mb: 1, fontSize: '1.2rem' }}>
-                        
                         <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap', fontSize: '1.2rem' }}>{codeContent}</Typography>
                     </Box>
                 );
             } else {
-                return (
-                    <Typography key={index} variant="body1" sx={{ whiteSpace: 'pre-wrap', fontSize: '1.2rem', maxWidth: '100%', wordBreak: 'break-word' }}>
-                        {part}
-                    </Typography>
-                );
+                // Check for table syntax and render as table if found
+                if (part.startsWith('|') && part.includes('|')) {
+                    return renderTable(part);
+                } else {
+                    return (
+                        <Typography key={index} variant="body1" sx={{ whiteSpace: 'pre-wrap', fontSize: '1.2rem', maxWidth: '100%', wordBreak: 'break-word' }}>
+                            {part}
+                        </Typography>
+                    );
+                }
             }
         });
     };
@@ -186,7 +239,7 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
                     )}
                     {msg.sender === 'right' && (
                         <IconButton aria-label="edit" sx={{ color: 'grey', fontSize: '1.2rem' }}>
-                            <FaRegPenToSquare />
+                            <FaRegPenToSquare style={{ color: 'grey', fontSize: '1.2rem' }} />
                         </IconButton>
                     )}
                 </Box>

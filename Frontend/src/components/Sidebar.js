@@ -16,23 +16,20 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
 
   useEffect(() => {
     const fetchChatHistory = async () => {
-      try {
-        const response = await axios.get('http://127.0.0.1:8000/api/chat');
-        setChatHistory(response.data.chats);
-      } catch (error) {
-        console.error('Error fetching chat history:', error);
-      }
+        try {
+            const response = await axios.get('http://127.0.0.1:8000/api/chat');
+            setChatHistory(response.data.chats);
+        } catch (error) {
+            console.error('Error fetching chat history:', error);
+        }
     };
 
     fetchChatHistory();
-  }, []);
-
-    // const intervalId = setInterval(() => {
-    //   fetchChatHistory();
-    // }, 
-    // 100000
-    // return () => clearInterval(intervalId);
-
+    const intervalId = setInterval(() => {
+        fetchChatHistory();
+    }, 120000);
+    return () => clearInterval(intervalId);
+}, []);
 
   const handleDelete = async (chatId) => {
     try {
