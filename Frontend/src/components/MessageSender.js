@@ -31,16 +31,16 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
         }
     };
 
-    if (!msg || !msg.text) {
-        return null;
-    }
+    const hasTableSymbol = (text) => {
+        return text.includes('|');
+    };
 
     const renderTable = (text) => {
         const rows = text.trim().split('\n').filter(row => row.trim() !== '' && !row.startsWith('-------'));
         const headers = rows[0].split('|').map(cell => cell.trim()).filter(header => header); // Filter out empty headers
         const bodyRows = rows.slice(1).map(row => row.split('|').map(cell => cell.trim()).filter(cell => cell)); // Filter out empty cells
 
-        if (headers.length === 0) return null; // If no headers, return null
+        if (headers.length === 0) return null; 
 
         return (
             <Box
@@ -98,7 +98,7 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
     const renderMessageWithLineBreaks = (text) => {
         const parts = text.split(/(```[\s\S]*?```)/g);
         return parts.map((part, index) => {
-            if (part.trim().startsWith('|') && part.includes('|')) {
+            if (hasTableSymbol(part)) {
                 return renderTable(part);
             } else if (part.startsWith('```') && part.endsWith('```')) {
                 const codeContent = part.slice(3, -3);
@@ -240,11 +240,6 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
                                 <BiLike style={{ color: 'grey', fontSize: '1.2rem' }} />
                             </IconButton>
                         </>
-                    )}
-                    {msg.sender === 'right' && (
-                        <IconButton aria-label="Edit">
-                            <FaRegPenToSquare style={{ color: 'grey', fontSize: '1.2rem' }} />
-                        </IconButton>
                     )}
                 </Box>
             )}
