@@ -6,8 +6,8 @@ import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { FaRegPenToSquare } from "react-icons/fa6";
 
 const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLeave }) => {
-    const [setResponseText] = useState('');
-    const [setChatName] = useState('');
+    const [responseText, setResponseText] = useState('');
+    const [chatName, setChatName] = useState('');
     const [chatId, setChatId] = useState(localStorage.getItem('chat_id') || '');
 
     useEffect(() => {
@@ -22,7 +22,7 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
             const data = await response.json();
             if (response.ok) {
                 setChatId(data.chat_id);
-                localStorage.setItem('chat_id', data.chat_id); // Store chat_id in local storage
+                localStorage.setItem('chat_id', data.chat_id);
             } else {
                 console.error('Error initializing chat session:', data.detail);
             }
@@ -32,9 +32,11 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
     };
 
     const renderTable = (text) => {
-        const rows = text.trim().split('\n');
-        const headers = rows[0].split('|').map(cell => cell.trim());
-        const bodyRows = rows.slice(1).map(row => row.split('|').map(cell => cell.trim()));
+        const rows = text.trim().split('\n').filter(row => row.trim() !== '' && !row.startsWith('-------')); 
+        const headers = rows[0].split('|').map(cell => cell.trim()).filter(header => header); // Filter out empty headers
+        const bodyRows = rows.slice(1).map(row => row.split('|').map(cell => cell.trim()).filter(cell => cell)); // Filter out empty cells
+
+        if (headers.length === 0) return null; // If no headers, return null
 
         return (
             <Box
@@ -58,6 +60,8 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
                             textAlign: 'center',
                             fontWeight: 'bold',
                             borderBottom: '1px solid #ddd',
+                            color: '#e0e0e0',
+                            fontSize: '1.2rem'
                         }}
                     >
                         <Typography variant="body2">{header}</Typography>
@@ -73,7 +77,9 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
                                     borderRight: cellIndex < row.length - 1 ? '1px solid #ddd' : 'none',
                                     borderBottom: rowIndex < bodyRows.length - 1 ? '1px solid #ddd' : 'none',
                                     textAlign: 'center',
-                                    backgroundColor: 'transparent', // Transparent background for cells
+                                    backgroundColor: '#2c2c2c',
+                                    color: '#e0e0e0',
+                                    fontSize: '1.2rem'
                                 }}
                             >
                                 <Typography variant="body2">{cell}</Typography>
@@ -88,7 +94,10 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
     const renderMessageWithLineBreaks = (text) => {
         const parts = text.split(/(```[\s\S]*?```)/g);
         return parts.map((part, index) => {
-            if (part.startsWith('```') && part.endsWith('```')) {
+            // Check for table syntax
+            if (part.trim().startsWith('|') && part.includes('|')) {
+                return renderTable(part);
+            } else if (part.startsWith('```') && part.endsWith('```')) {
                 const codeContent = part.slice(3, -3);
                 return (
                     <Box key={index} sx={{ backgroundColor: '#272822', color: 'white', padding: 1, borderRadius: 1, mb: 1, fontSize: '1.2rem' }}>
@@ -96,16 +105,11 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
                     </Box>
                 );
             } else {
-                // Check for table syntax and render as table if found
-                if (part.startsWith('|') && part.includes('|')) {
-                    return renderTable(part);
-                } else {
-                    return (
-                        <Typography key={index} variant="body1" sx={{ whiteSpace: 'pre-wrap', fontSize: '1.2rem', maxWidth: '100%', wordBreak: 'break-word' }}>
-                            {part}
-                        </Typography>
-                    );
-                }
+                return (
+                    <Typography key={index} variant="body1" sx={{ whiteSpace: 'pre-wrap', fontSize: '1.2rem', maxWidth: '100%', wordBreak: 'break-word' }}>
+                        {part}
+                    </Typography>
+                );
             }
         });
     };
@@ -232,15 +236,7 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
                             <IconButton aria-label="Like">
                                 <BiLike style={{ color: 'grey', fontSize: '1.2rem' }} />
                             </IconButton>
-                            <IconButton aria-label="Send to Backend" onClick={() => handleSendToBackend(msg.text)}>
-                                <FaRegPenToSquare style={{ color: 'grey', fontSize: '1.2rem' }} />
-                            </IconButton>
                         </>
-                    )}
-                    {msg.sender === 'right' && (
-                        <IconButton aria-label="edit" sx={{ color: 'grey', fontSize: '1.2rem' }}>
-                            <FaRegPenToSquare style={{ color: 'grey', fontSize: '1.2rem' }} />
-                        </IconButton>
                     )}
                 </Box>
             )}
