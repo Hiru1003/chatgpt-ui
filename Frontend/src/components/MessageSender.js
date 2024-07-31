@@ -125,6 +125,11 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
         });
     };
 
+    if (!msg || !msg.text) {
+        return null;
+    }
+    
+
     const handleCopy = () => {
         navigator.clipboard.writeText(msg.text)
             .then(() => {
@@ -260,3 +265,6 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
 };
 
 export default MessageSender;
+
+
+
