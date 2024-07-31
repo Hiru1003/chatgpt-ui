@@ -36,12 +36,18 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
     };
 
     const renderTable = (text) => {
+        // Split rows by newline, filter out empty rows and rows with only hyphens
         const rows = text.trim().split('\n').filter(row => row.trim() !== '' && !row.startsWith('-------'));
-        const headers = rows[0].split('|').map(cell => cell.trim()).filter(header => header); // Filter out empty headers
-        const bodyRows = rows.slice(1).map(row => row.split('|').map(cell => cell.trim()).filter(cell => cell)); // Filter out empty cells
-
-        if (headers.length === 0) return null; 
-
+        
+        // Extract headers from the first row
+        const headers = rows[0].split('|').map(cell => cell.trim()).filter(header => header);
+        
+        // Extract body rows starting from the second row
+        const bodyRows = rows.slice(1).map(row => row.split('|').map(cell => cell.trim()).filter(cell => cell));
+    
+        // If there are no headers, return null
+        if (headers.length === 0) return null;
+    
         return (
             <Box
                 sx={{
@@ -65,10 +71,10 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
                             fontWeight: 'bold',
                             borderBottom: '1px solid #ddd',
                             color: '#e0e0e0',
-                            fontSize: '1.2rem'
+                            fontSize: '1.2rem',
                         }}
                     >
-                        <Typography sx={{fontSize: '1.2rem'}}>{header}</Typography>
+                        <Typography sx={{ fontSize: '1.2rem' }}>{header}</Typography>
                     </Box>
                 ))}
                 {bodyRows.map((row, rowIndex) => (
@@ -83,10 +89,9 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
                                     textAlign: 'center',
                                     backgroundColor: '#2c2c2c',
                                     color: '#e0e0e0',
-                                    
                                 }}
                             >
-                                <Typography sx={{fontSize: '1rem'}}>{cell}</Typography>
+                                <Typography sx={{ fontSize: '1rem' }}>{cell}</Typography>
                             </Box>
                         ))}
                     </React.Fragment>
@@ -94,13 +99,15 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
             </Box>
         );
     };
-
+    
     const renderMessageWithLineBreaks = (text) => {
-        const parts = text.split(/(```[\s\S]*?```)/g);
+        const parts = text.split(/(```[\s\S]*?```|(?:\|\s*[^|]+\s*){2,}\|)/g);
         return parts.map((part, index) => {
-            if (hasTableSymbol(part)) {
+            if (hasTableSymbol(part) && part.trim().startsWith('|')) {
+                // It's a table section
                 return renderTable(part);
             } else if (part.startsWith('```') && part.endsWith('```')) {
+                // It's a code block
                 const codeContent = part.slice(3, -3);
                 return (
                     <Box key={index} sx={{ backgroundColor: '#272822', color: 'white', padding: 1, borderRadius: 1, mb: 1, fontSize: '1.2rem' }}>
@@ -108,6 +115,7 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
                     </Box>
                 );
             } else {
+                // Regular text
                 return (
                     <Typography key={index} variant="body1" sx={{ whiteSpace: 'pre-wrap', fontSize: '1.2rem', maxWidth: '100%', wordBreak: 'break-word' }}>
                         {part}
