@@ -15,6 +15,7 @@ const MainPage = () => {
   const [hoverIndex, setHoverIndex] = useState(null);
   const messagesEndRef = useRef(null);
   const [chatId, setChatId] = useState('');
+  const [chatName, setChatName] = useState('');
 
   useEffect(() => {
     scrollToBottom();
@@ -37,59 +38,64 @@ const MainPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (inputText.trim() === '') return;
-  
+
     const newMessages = [...messages, { text: inputText, sender: 'right' }];
     setMessages(newMessages);
     setInputText('');
-  
+
     try {
-      const response = await fetch('/bot/response', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ chat_id: chatId, text: inputText }),
-      });
-  
-      console.log('Response Status:', response.status);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-  
-      const responseData = await response.json();
-      console.log('Response Data:', responseData);
-  
-      const fullBotResponses = responseData.messages.map(msg => msg.content);
-      setChatId(responseData.chat_id);
-  
-      fullBotResponses.forEach((content, idx) => {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { text: '', sender: 'left', id: idx }
-        ]);
-  
-        let botResponse = '';
-        const interval = setInterval(() => {
-          if (content && botResponse.length < content.length) {
-            botResponse += content[botResponse.length];
-            setMessages((prevMessages) => {
-              const lastMessage = prevMessages[prevMessages.length - 1];
-              return [
-                ...prevMessages.slice(0, prevMessages.length - 1),
-                { ...lastMessage, text: botResponse }
-              ];
-            });
-          } else {
-            clearInterval(interval);
-          }
-        }, 50);
-      });
-  
+        // First, send the message to the /chat/thread endpoint
+        const response = await fetch('/chat/thread', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ chat_id: chatId, text: inputText }),
+        });
+
+        console.log('Response Status:', response.status);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const responseData = await response.json();
+        console.log('Response Data:', responseData);
+
+        // Update the chat ID if necessary
+        setChatId(responseData.chat_id);
+
+        // Extract and set the bot responses
+        const fullBotResponses = responseData.messages.filter(msg => msg.role === 'assistant').map(msg => msg.content);
+        setChatName(responseData.topic);
+
+        fullBotResponses.forEach((content, idx) => {
+            setMessages((prevMessages) => [
+                ...prevMessages,
+                { text: '', sender: 'left', id: idx }
+            ]);
+
+            let botResponse = '';
+            const interval = setInterval(() => {
+                if (content && botResponse.length < content.length) {
+                    botResponse += content[botResponse.length];
+                    setMessages((prevMessages) => {
+                        const lastMessage = prevMessages[prevMessages.length - 1];
+                        return [
+                            ...prevMessages.slice(0, prevMessages.length - 1),
+                            { ...lastMessage, text: botResponse }
+                        ];
+                    });
+                } else {
+                    clearInterval(interval);
+                }
+            }, 50);
+        });
+
     } catch (error) {
-      console.error('Error fetching bot response:', error);
+        console.error('Error fetching bot response:', error);
     }
-  };
-  
+};
+
 
   return (
     <Box sx={{

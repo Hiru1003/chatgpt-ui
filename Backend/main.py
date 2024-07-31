@@ -198,7 +198,7 @@ class ChatSession(BaseModel):
 
 def generate_topic(prompt: str) -> str:
     # api_key = os.getenv("OPENAI_API_KEY")
-    api_key = "sk-proj-8fCuqcWAVatJMJXia0UBT3BlbkFJGYB5Yx2Nzsh453nj045W"
+    api_key = "sk-proj-bEMq2ymvDISSMFjLi0ZJT3BlbkFJ3GwKVAklncYx4UqvS01M"
     
     if not api_key:
         raise HTTPException(status_code=500, detail="API key not found")
@@ -244,10 +244,10 @@ def generate_random_chat_id() -> str:
 
 
 
-
+# ChatBot Response
 @app.post("/bot/response")
-async def get_bot_response(request: dict):
-    api_key = "sk-proj-8fCuqcWAVatJMJXia0UBT3BlbkFJGYB5Yx2Nzsh453nj045W"
+async def get_bot_response(request: dict) -> str:
+    api_key = "sk-proj-bEMq2ymvDISSMFjLi0ZJT3BlbkFJ3GwKVAklncYx4UqvS01M"
     if not api_key:
         raise HTTPException(status_code=500, detail="API key not found")
 
@@ -283,17 +283,29 @@ async def get_bot_response(request: dict):
     except Exception as e:
         raise HTTPException(status_code=500, detail="Unexpected error occurred")
 
+    return response_text
+
+
+
+
+# Chat Thread
+@app.post("/chat/thread")
+async def manage_chat_thread(request: dict):
+    user_text = request.get("text", "")
     chat_id = request.get("chat_id") or generate_random_chat_id()
+
+    # Fetch bot response
+    response_text = await get_bot_response({"text": user_text})
 
     chat_session = response_collection.find_one({"chat_id": chat_id})
 
     if not chat_session:
-        topic = generate_topic(request.get("text", ""))
+        topic = generate_topic(user_text)
         new_chat = {
             "chat_id": chat_id,
             "topic": topic,
             "messages": [
-                {"role": "user", "content": request.get("text", "")},
+                {"role": "user", "content": user_text},
                 {"role": "assistant", "content": response_text}
             ]
         }
@@ -303,14 +315,14 @@ async def get_bot_response(request: dict):
     else:
         response_collection.update_one(
             {"chat_id": chat_id},
-            {"$push": {"messages": {"role": "user", "content": request.get("text", "")}}}
+            {"$push": {"messages": {"role": "user", "content": user_text}}}
         )
         response_collection.update_one(
             {"chat_id": chat_id},
             {"$push": {"messages": {"role": "assistant", "content": response_text}}}
         )
         if not chat_session.get('topic'):
-            topic = generate_topic(request.get("text", ""))
+            topic = generate_topic(user_text)
             response_collection.update_one(
                 {"chat_id": chat_id},
                 {"$set": {"topic": topic}}

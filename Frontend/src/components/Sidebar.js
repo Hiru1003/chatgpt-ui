@@ -60,7 +60,7 @@ const Sidebar = ({ isVisible, onToggleSidebar }) => {
   const handleNewChat = () => {
     navigate('/');
     //Remove reloading page when clicking new chat
-    //window.location.reload();
+    window.location.reload();
   };
 
   // Reverse the chat history array to show newest items at the top
