@@ -239,14 +239,17 @@ def generate_topic(prompt: str) -> str:
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Unexpected error: {e}")
 
+
+
 def generate_random_chat_id() -> str:
     return str(ObjectId())
 
 
 
+
+
 # ChatBot Response
-@app.post("/bot/response")
-async def get_bot_response(request: dict) -> str:
+async def fetch_gpt_response(text: str) -> str:
     api_key = "sk-proj-bEMq2ymvDISSMFjLi0ZJT3BlbkFJ3GwKVAklncYx4UqvS01M"
     if not api_key:
         raise HTTPException(status_code=500, detail="API key not found")
@@ -259,13 +262,15 @@ async def get_bot_response(request: dict) -> str:
         "model": "gpt-3.5-turbo",
         "messages": [
             {"role": "system", "content": "You are a friendly helpful assistant."},
-            {"role": "user", "content": request.get("text", "")}
+            {"role": "user", "content": text}
         ]
     }
 
     json_payload = json.dumps(payload)
+
     conn = http.client.HTTPSConnection("api.openai.com")
     conn.request("POST", "/v1/chat/completions", body=json_payload, headers=headers)
+
     response = conn.getresponse()
     response_data = response.read().decode()
     conn.close()
@@ -288,6 +293,7 @@ async def get_bot_response(request: dict) -> str:
 
 
 
+
 # Chat Thread
 @app.post("/chat/thread")
 async def manage_chat_thread(request: dict):
@@ -295,7 +301,7 @@ async def manage_chat_thread(request: dict):
     chat_id = request.get("chat_id") or generate_random_chat_id()
 
     # Fetch bot response
-    response_text = await get_bot_response({"text": user_text})
+    response_text = await fetch_gpt_response(user_text)
 
     chat_session = response_collection.find_one({"chat_id": chat_id})
 
@@ -336,7 +342,6 @@ async def manage_chat_thread(request: dict):
     topic = updated_chat_session.get('topic', None)
 
     return TextResponse(messages=messages, topic=topic, chat_id=chat_id)
-
 
 
 
