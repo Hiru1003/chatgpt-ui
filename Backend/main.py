@@ -346,9 +346,6 @@ async def manage_chat_thread(request: dict):
 
 
 
-
-
-
 # chatname in sidebar
 @app.get("/api/chat")
 async def get_chat_history():
