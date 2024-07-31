@@ -237,7 +237,6 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
                             <IconButton aria-label="Read Aloud">
                                 <HiOutlineSpeakerWave style={{ color: 'grey', fontSize: '1.2rem' }} />
                             </IconButton>
-
                             <IconButton aria-label="Copy" onClick={handleCopy}>
                                 <MdContentCopy style={{ color: 'grey', fontSize: '1.2rem' }} />
                             </IconButton>
@@ -248,6 +247,11 @@ const MessageSender = ({ msg, index, hoverIndex, handleMouseEnter, handleMouseLe
                                 <BiLike style={{ color: 'grey', fontSize: '1.2rem' }} />
                             </IconButton>
                         </>
+                    )}
+                    {msg.sender === 'right' && (
+                        <IconButton aria-label="Edit">
+                            <FaRegPenToSquare style={{ color: 'grey', fontSize: '1.2rem' }} />
+                        </IconButton>
                     )}
                 </Box>
             )}

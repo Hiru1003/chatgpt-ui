@@ -198,7 +198,7 @@ class ChatSession(BaseModel):
 
 def generate_topic(prompt: str) -> str:
     # api_key = os.getenv("OPENAI_API_KEY")
-    api_key = "sk-proj-9zoKlJEUVhHUvxRoiIrtT3BlbkFJovRCw8lZ1LTF6Qy1rhmC"
+    api_key = "sk-proj-lhsLRxfAvACvFeIn9VbaT3BlbkFJUPq1C4lG4nIEDdRKnDeY"
     
     if not api_key:
         raise HTTPException(status_code=500, detail="API key not found")
@@ -247,7 +247,7 @@ def generate_random_chat_id() -> str:
 
 @app.post("/bot/response")
 async def get_bot_response(request: dict):
-    api_key = "sk-proj-9zoKlJEUVhHUvxRoiIrtT3BlbkFJovRCw8lZ1LTF6Qy1rhmC"
+    api_key = "sk-proj-lhsLRxfAvACvFeIn9VbaT3BlbkFJUPq1C4lG4nIEDdRKnDeY"
     if not api_key:
         raise HTTPException(status_code=500, detail="API key not found")
 
