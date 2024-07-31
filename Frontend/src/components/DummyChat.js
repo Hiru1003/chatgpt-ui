@@ -55,53 +55,54 @@ const DummyChat = () => {
     setInputText('');
 
     try {
-      const response = await fetch('/bot/response', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ chat_id: chatId, text: inputText }),
-      });
+        const threadResponse = await fetch('/chat/thread', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ chat_id: chatId, text: inputText }),
+        });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+        if (!threadResponse.ok) {
+            throw new Error('Network response was not ok');
+        }
 
-      const responseData = await response.json();
+        const threadData = await threadResponse.json();
 
-      // Add bot responses with typing effect
-      const fullBotResponses = responseData.messages.map(msg => msg.content);
-      setMessages(prevMessages => [
-        ...prevMessages,
-        ...fullBotResponses.map((content, idx) => ({
-          role: 'bot',
-          content: '',
-          id: idx
-        }))
-      ]);
+        const fullBotResponses = threadData.messages.map(msg => msg.content);
 
-      fullBotResponses.forEach((content, idx) => {
-        let botResponse = '';
-        const interval = setInterval(() => {
-          if (content && botResponse.length < content.length) {
-            botResponse += content[botResponse.length];
-            setMessages(prevMessages => {
-              const lastMessage = prevMessages[prevMessages.length - 1];
-              return [
-                ...prevMessages.slice(0, prevMessages.length - 1),
-                { ...lastMessage, content: botResponse }
-              ];
-            });
-          } else {
-            clearInterval(interval);
-          }
-        }, 50);
-      });
+        setMessages(prevMessages => [
+            ...prevMessages,
+            ...fullBotResponses.map((content, idx) => ({
+                role: 'bot',
+                content: '',
+                id: idx
+            }))
+        ]);
+
+        fullBotResponses.forEach((content, idx) => {
+            let botResponse = '';
+            const interval = setInterval(() => {
+                if (content && botResponse.length < content.length) {
+                    botResponse += content[botResponse.length];
+                    setMessages(prevMessages => {
+                        const lastMessage = prevMessages[prevMessages.length - 1];
+                        return [
+                            ...prevMessages.slice(0, prevMessages.length - 1),
+                            { ...lastMessage, content: botResponse }
+                        ];
+                    });
+                } else {
+                    clearInterval(interval);
+                }
+            }, 50);
+        });
 
     } catch (error) {
-      console.error('Error fetching bot response:', error);
+        console.error('Error handling chat submission:', error);
     }
   };
+  
 
   return (
     <Box
